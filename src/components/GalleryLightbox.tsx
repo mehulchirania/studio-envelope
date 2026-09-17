@@ -80,7 +80,7 @@ export default function GalleryLightbox({
               type="button"
               onClick={close}
               aria-label="Close lightbox"
-              className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center text-fg transition-colors hover:text-brass sm:right-8 sm:top-8"
+              className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center text-white transition-colors hover:text-brass sm:right-8 sm:top-8"
             >
               <X size={26} />
             </button>
@@ -92,7 +92,7 @@ export default function GalleryLightbox({
                 prev();
               }}
               aria-label="Previous image"
-              className="absolute left-2 z-10 flex h-12 w-12 items-center justify-center text-fg transition-colors hover:text-brass sm:left-6"
+              className="absolute left-2 z-10 flex h-12 w-12 items-center justify-center text-white transition-colors hover:text-brass sm:left-6"
             >
               <ChevronLeft size={30} />
             </button>
@@ -122,12 +122,12 @@ export default function GalleryLightbox({
                 next();
               }}
               aria-label="Next image"
-              className="absolute right-2 z-10 flex h-12 w-12 items-center justify-center text-fg transition-colors hover:text-brass sm:right-6"
+              className="absolute right-2 z-10 flex h-12 w-12 items-center justify-center text-white transition-colors hover:text-brass sm:right-6"
             >
               <ChevronRight size={30} />
             </button>
 
-            <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs text-muted">
+            <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs text-white/70">
               {index + 1} / {images.length}
             </p>
           </motion.div>
@@ -136,3 +136,4 @@ export default function GalleryLightbox({
     </>
   );
 }
+

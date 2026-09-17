@@ -43,10 +43,10 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
   const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
 
   const metaItems = [
-    { icon: MapPin, label: "Location", value: project.location },
-    { icon: Calendar, label: "Year", value: String(project.year) },
+    ...(project.location ? [{ icon: MapPin, label: "Location", value: project.location }] : []),
+    { icon: Calendar, label: project.source ? "Shared on Instagram" : "Year", value: project.source?.publishedAt ?? String(project.year) },
     ...(project.area ? [{ icon: Ruler, label: "Area", value: project.area }] : []),
-    { icon: CircleCheck, label: "Status", value: project.status },
+    ...(project.status ? [{ icon: CircleCheck, label: "Status", value: project.status }] : []),
   ];
 
   return (
@@ -64,7 +64,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
         <div className="absolute inset-x-0 bottom-0 px-5 pb-12 sm:px-8 sm:pb-16">
           <div className="mx-auto max-w-7xl">
             <p className="eyebrow mb-4">{project.category}</p>
-            <h1 className="max-w-3xl font-display text-4xl text-fg sm:text-6xl">
+            <h1 className="max-w-3xl font-display text-4xl text-white sm:text-6xl">
               {project.title}
             </h1>
           </div>
@@ -105,6 +105,8 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
 
             <RevealOnScroll delay={0.1}>
               <div className="space-y-5">
+                {project.source && <p className="eyebrow">From the studio journal</p>}
+                {project.source && <a href={project.source.url} target="_blank" rel="noopener noreferrer" className="line-link">View original Instagram post <ArrowUpRight size={18} /></a>}
                 {project.description.split("\n\n").map((para, i) => (
                   <p key={i} className="text-base leading-relaxed text-fg/85 sm:text-lg">
                     {para}
@@ -141,9 +143,9 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
           />
           <div className="absolute inset-0 bg-ink/60 transition-colors duration-500 group-hover:bg-ink/70" />
           <div className="relative flex h-full flex-col items-center justify-center px-5 text-center">
-            <p className="eyebrow mb-4 text-fg">Next project</p>
-            <h2 className="font-display text-4xl text-fg sm:text-6xl">{nextProject.title}</h2>
-            <span className="mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-[0.15em] text-fg/80">
+            <p className="eyebrow mb-4 text-white">Next project</p>
+            <h2 className="font-display text-4xl text-white sm:text-6xl">{nextProject.title}</h2>
+            <span className="mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-[0.15em] text-white/80">
               View project <ArrowUpRight size={16} />
             </span>
           </div>
@@ -152,3 +154,5 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
     </>
   );
 }
+
+

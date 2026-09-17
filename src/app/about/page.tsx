@@ -91,12 +91,7 @@ export default async function AboutPage() {
               {site.principal.role}
             </p>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-              Prachi leads every project at Studio Envelope from first sketch to
-              final styling, with a design language rooted in warm materiality,
-              traditional Indian craft and a restrained, editorial sense of space.
-              Her work draws on architecture, art and interior design in equal
-              measure — treating each project as an opportunity to design an
-              experience, not just a room.
+              Ar. Prachi Chirania is the creative head of Studio Envelope. The studio brings art, architecture and interior design together with a simple intention: “Here to design experiences.” Explore the studio journal for a closer look at the spaces and details shared by the practice.
             </p>
             <a
               href={site.principal.instagram}
@@ -160,3 +155,4 @@ export default async function AboutPage() {
     </>
   );
 }
+

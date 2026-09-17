@@ -25,7 +25,7 @@ export default function MagneticButton({
   const prefersReducedMotion = useReducedMotion();
 
   function handleMouseMove(e: MouseEvent<HTMLSpanElement>) {
-    if (prefersReducedMotion || !ref.current) return;
+    if (prefersReducedMotion || !window.matchMedia("(pointer: fine)").matches || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const x = (e.clientX - rect.left - rect.width / 2) * strength;
     const y = (e.clientY - rect.top - rect.height / 2) * strength;
@@ -48,3 +48,4 @@ export default function MagneticButton({
     </motion.span>
   );
 }
+

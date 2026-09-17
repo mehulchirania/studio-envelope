@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Phone, MessageCircle, Mail, MapPin } from "lucide-react";
+import { Phone, MessageCircle, MapPin } from "lucide-react";
 import { site } from "@/lib/site";
 import PageHero from "@/components/PageHero";
 import RevealOnScroll from "@/components/RevealOnScroll";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const CONTACT_ITEMS = [
   { icon: Phone, label: "Call", value: site.contact.phone, href: site.contact.phoneHref },
   { icon: MessageCircle, label: "WhatsApp", value: "Message us", href: site.contact.whatsapp },
-  { icon: Mail, label: "Email", value: site.contact.email, href: `mailto:${site.contact.email}` },
+
   {
     icon: InstagramIcon,
     label: "Instagram",
@@ -84,3 +84,4 @@ export default function ContactPage() {
     </>
   );
 }
+

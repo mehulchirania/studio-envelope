@@ -1,25 +1,9 @@
 "use client";
-
 import { ReactLenis } from "lenis/react";
-import type { ReactNode } from "react";
-
-/**
- * Wraps the app in Lenis smooth scrolling. Lenis respects
- * `prefers-reduced-motion` itself (lerp is forced to 1, i.e. native scroll),
- * so no extra handling is required here.
- */
+import { useSyncExternalStore, type ReactNode } from "react";
+const query = "(prefers-reduced-motion: reduce)";
+function subscribe(callback: () => void) { const media = window.matchMedia(query); media.addEventListener("change", callback); return () => media.removeEventListener("change", callback); }
 export default function SmoothScroll({ children }: { children: ReactNode }) {
-  return (
-    <ReactLenis
-      root
-      options={{
-        lerp: 0.1,
-        duration: 1.1,
-        wheelMultiplier: 1,
-        autoRaf: true,
-      }}
-    >
-      {children}
-    </ReactLenis>
-  );
+  const reduced = useSyncExternalStore(subscribe, () => window.matchMedia(query).matches, () => true);
+  return <ReactLenis root options={{ smoothWheel: !reduced, lerp: reduced ? 1 : 0.1, duration: reduced ? 0 : 1.1, anchors: true, autoRaf: true }}>{children}</ReactLenis>;
 }

@@ -10,27 +10,15 @@ import { useEffect } from "react";
  * they stagger. Content stays visible without JS or with reduced motion,
  * because the hidden state only applies under `html.reveal-ready`.
  */
-const FADE_SELECTORS = [
-  ".hero-type > *",
-  ".discipline-strip > *",
-  ".section-heading > *",
-  ".selected-grid > *",
-  ".manifesto-top > *",
-  ".manifesto-grid > div > *",
-  ".services-intro > *",
-  ".service-list > details",
-  ".journal-strip > *",
-  ".footer-invitation > div",
-  ".footer-bottom",
-];
-
-const IMAGE_SELECTORS = [".hero-scene", ".project-tile-image", ".manifesto-photo"];
+const FADE_SELECTORS = [".discipline-strip > *", ".manifesto-top > *", ".footer-invitation > div", ".footer-bottom"];
+const IMAGE_SELECTORS = [".project-tile-image", ".manifesto-photo"];
 
 export default function ScrollReveal() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (preference.matches) return;
     const root = document.documentElement;
 
     const observer = new IntersectionObserver(
@@ -65,6 +53,8 @@ export default function ScrollReveal() {
     scan();
     root.classList.add("reveal-ready");
 
+    const reduceMotion = () => { if (preference.matches) root.classList.remove("reveal-ready"); };
+    preference.addEventListener("change", reduceMotion);
     // Catch elements rendered later (e.g. the project filter swapping cards).
     let frame = 0;
     const mutations = new MutationObserver(() => {
@@ -76,9 +66,12 @@ export default function ScrollReveal() {
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
+      preference.removeEventListener("change", reduceMotion);
+      root.classList.remove("reveal-ready");
       mutations.disconnect();
     };
   }, [pathname]);
 
   return null;
 }
+

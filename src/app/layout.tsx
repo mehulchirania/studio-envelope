@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Grain from "@/components/Grain";
 import SmoothScroll from "@/components/SmoothScroll";
+import SiteMotion from "@/components/SiteMotion";
 import ScrollReveal from "@/components/ScrollReveal";
 
 import { site } from "@/lib/site";
@@ -28,6 +29,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  icons: { icon: site.logo, apple: site.logo },
   title: {
     default: `${site.name} — Architecture & Interior Design Studio`,
     template: `%s — ${site.name}`,
@@ -67,16 +69,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${cormorant.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col text-fg">
+      <body id="page-top" className="flex min-h-full flex-col text-fg">
         <SmoothScroll>
+          <SiteMotion>
           <Grain />
           <ScrollReveal />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          </SiteMotion>
         </SmoothScroll>
       </body>
     </html>
   );
 }
+
+
 
