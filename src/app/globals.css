@@ -6,7 +6,7 @@
   --color-surface-2: #c5dee5;
   --color-fg: #123e4e;
   --color-muted: #58717a;
-  --color-teal: #104c5c;
+  --color-teal: #0e4b5e;
   --color-teal-light: #88c3d3;
   --color-brass: #22677f;
   --color-hairline: rgb(16 76 92 / 18%);
@@ -131,7 +131,7 @@ html.lenis body {
 
 
 /* Studio Envelope / graphic identity */
-:root { --signal: #9fd4e3; --dark: #104c5c; --paper: #f5f8f9; }
+:root { --signal: #9fd4e3; --dark: #0e4b5e; --paper: #f5f8f9; }
 .page-gutter { padding-left: 5%; padding-right: 5%; }
 .micro-label { font-size: 10px; line-height: 1.5; text-transform: uppercase; letter-spacing: .11em; font-weight: 600; }
 .new-header { background: var(--dark); color: var(--paper); position: relative; z-index: 50; padding: 0 5%; }
@@ -252,9 +252,12 @@ html.lenis body {
 .reveal-ready .project-tile:hover [data-reveal].is-revealed img { transition-duration: 0.6s; }
 
 /* Motion and the studio's verified teal / brass identity. */
-.studio-official-logo { border-radius: 50%; flex-shrink: 0; object-fit: contain; }
+/* The mark is a JPEG: a white square behind a teal disc. Clipping just inside the
+   disc removes the white antialiasing fringe, and the surrounding teal is set to
+   the disc's own #0e4b5e so the circle reads as part of the surface, not a sticker. */
+.studio-official-logo { clip-path: circle(47.5% at 50% 50%); flex-shrink: 0; object-fit: contain; }
 .reading-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 90; background: var(--signal); transform-origin: 0 50%; pointer-events: none; }
-.back-to-top { position: fixed; z-index: 55; right: 24px; bottom: 24px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: #104c5c; color: #fff; box-shadow: 0 3px 18px #0003; }
+.back-to-top { position: fixed; z-index: 55; right: 24px; bottom: 24px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: #0e4b5e; color: #fff; box-shadow: 0 3px 18px #0003; }
 .back-to-top:hover { background: var(--color-brass); }
 .reveal-pending { opacity: 0; }
 .hero-type h1.hero-heading { margin-right: 0; }
@@ -282,7 +285,7 @@ html.lenis body {
 .journal-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 18px; }
 .journal-actions > div { display: flex; gap: 10px; }
 .journal-actions button { width: 40px; height: 40px; border: 1px solid var(--color-hairline); border-radius: 50%; display: grid; place-items: center; cursor: pointer; }
-.journal-actions button:hover { color: #fff; background: #104c5c; }
+.journal-actions button:hover { color: #fff; background: #0e4b5e; }
 .journal-track { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain; scrollbar-width: thin; scrollbar-color: var(--color-brass) transparent; padding: 4px 2px 18px; }
 .journal-photo { position: relative; flex: 0 0 27%; aspect-ratio: 4/5; overflow: hidden; scroll-snap-align: start; cursor: zoom-in; background: var(--color-surface); }
 .journal-photo > img { transition: transform .65s cubic-bezier(.16,1,.3,1); }
@@ -316,13 +319,13 @@ html.lenis body {
 body:has(.journal-dialog[open]) { overflow: hidden; }
 
 /* Ocean-blue design system, drawn from the official Studio Envelope mark. */
-.new-header { background: #104c5c; }
+.new-header { background: #0e4b5e; }
 .new-header-inner { height: 108px; }
 .new-nav { font-size: 12px; }
 .new-nav sup { color: #91bdc9; }
 .start-link { border: 1px solid #b1d8e14d; border-radius: 30px; padding: 14px 20px; }
 .start-link:hover { background: #ffffff0c; color: white; }
-.new-hero { padding-top: 8px; background: #104c5c; }
+.new-hero { padding-top: 8px; background: #0e4b5e; }
 .hero-topline { color: #b1d0d9; padding: 22px 0 32px; }
 .hero-stage { grid-template-columns: 1.15fr .85fr; gap: 50px; min-height: 565px; padding-bottom: 24px; }
 .hero-type { padding-top: 30px; padding-bottom: 20px; }
@@ -336,7 +339,7 @@ body:has(.journal-dialog[open]) { overflow: hidden; }
 .hero-slide { overflow: hidden; border-radius: inherit; }
 .hero-scene .hero-slide img { object-position: center center; }
 .scene-caption { border-radius: 0 0 6px 6px; background: linear-gradient(transparent,#082f3cc9); padding: 65px 25px 72px; }
-.hero-project-link { position: absolute; left: -45px; top: auto; bottom: 115px; width: 105px; height: 105px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; border-radius: 50%; background: #e8f3f6; color: #104c5c; box-shadow: 0 4px 25px #0a344020; transition: transform .3s, background .3s; }
+.hero-project-link { position: absolute; left: -45px; top: auto; bottom: 115px; width: 105px; height: 105px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; border-radius: 50%; background: #e8f3f6; color: #0e4b5e; box-shadow: 0 4px 25px #0a344020; transition: transform .3s, background .3s; }
 .hero-project-link svg { width: 25px; height: 25px; }
 .hero-project-link span { font-size: 11px; text-align: center; font-weight: 600; }
 .hero-project-link:hover { transform: translateY(-5px); background: #cce6ed; }
@@ -352,10 +355,10 @@ body:has(.journal-dialog[open]) { overflow: hidden; }
 .selected-lead .project-tile-image, .selected-small .project-tile-image { aspect-ratio: 4/5; }
 .project-tile-image { border-radius: 5px; }
 .project-tile-caption h3 { font-size: 18px; letter-spacing: -.03em; }
-.project-pill { background: #f5fafbe8; color: #104c5c; border-radius: 15px; padding: 8px 12px; }
+.project-pill { background: #f5fafbe8; color: #0e4b5e; border-radius: 15px; padding: 8px 12px; }
 .project-arrow { border-radius: 50%; background: #f5fafb; }
 .project-tile:focus-visible .project-arrow { background: #c5e6ef; }
-.manifesto-section { background: #e0edf1; color: #104c5c; padding-top: 55px; padding-bottom: 75px; }
+.manifesto-section { background: #e0edf1; color: #0e4b5e; padding-top: 55px; padding-bottom: 75px; }
 .manifesto-star { color: #508b9e; }
 .manifesto-grid { grid-template-columns: 1.15fr 1fr; gap: 12%; align-items: center; margin-top: 10px; }
 .manifesto-grid h2 { font-size: clamp(48px, 5.5vw, 90px); font-weight: 400; }
@@ -371,7 +374,7 @@ body:has(.journal-dialog[open]) { overflow: hidden; }
 .studio-journal { background: #f5f8f9; }
 .journal-photo { border-radius: 6px; }
 .journal-photo > span { background: linear-gradient(transparent,#092e3cc9); }
-.new-footer { background: #104c5c; color: #f5f8f9; }
+.new-footer { background: #0e4b5e; color: #f5f8f9; }
 .footer-title { font-weight: 400; letter-spacing: -.06em; }
 .footer-title svg { color: #9fd4e3; }
 .footer-title:hover { color: #a6d6e4; }
