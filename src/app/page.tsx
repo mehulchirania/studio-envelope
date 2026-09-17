@@ -9,6 +9,7 @@ import ProjectCard from "@/components/ProjectCard";
 import RevealOnScroll from "@/components/RevealOnScroll";
 import ServicesAccordion from "@/components/ServicesAccordion";
 import StudioJournal from "@/components/StudioJournal";
+import PracticeAreas from "@/components/PracticeAreas";
 export const metadata: Metadata = { title: "Home" };
 const services = [
   { title: "Architecture", text: "From the first sketch to the final structure, we design homes and places around their surroundings, natural light and the people who use them.", tags: "New builds / Renovations / Spatial planning" },
@@ -29,6 +30,7 @@ export default async function Home() {
     </section>
     <section id="studio" className="manifesto-section page-gutter"><div className="manifesto-top"><p className="micro-label">02 / The studio</p><span className="manifesto-star" aria-hidden="true">✳</span></div><div className="manifesto-grid"><RevealOnScroll><h2>Less expected.<br />More <em>you.</em></h2><p className="manifesto-copy">A space should do more than look good.<br />It should feel like it couldn’t belong to anyone else.</p><Link href="/about" className="line-link">Meet Studio Envelope <ArrowUpRight size={20} /></Link></RevealOnScroll><RevealOnScroll delay={.12} className="manifesto-right"><div className="manifesto-photo"><Image src={studioImage} alt="Natural materials and warm textures in a residential interior" fill sizes="(max-width: 700px) 100vw, 35vw" className="object-cover" /></div><p>We’re an independent practice working at the intersection of architecture, interiors and art. Curious by nature. Personal by design.</p><span className="micro-label">Led by {site.principal.name}</span></RevealOnScroll></div></section>
     <section className="services-section page-gutter"><RevealOnScroll className="services-intro"><p className="micro-label">03 / Our practice</p><h2>One vision.<br />Every detail.</h2><p>From the shape of a building to the feel of a handle, we connect the big picture with the smallest moments.</p><Link href="/contact" className="line-link">Find your starting point <ArrowUpRight size={20} /></Link></RevealOnScroll><ServicesAccordion services={services} /></section>
+    <PracticeAreas projects={projects} />
     <StudioJournal />
   </>;
 }

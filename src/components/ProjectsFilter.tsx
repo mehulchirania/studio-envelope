@@ -2,16 +2,18 @@
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import type { Project, ProjectCategory } from "@/lib/types";
+import { categories as allCategories } from "@/lib/categories";
 import ProjectCard from "./ProjectCard";
 
 const ALL = "All" as const;
 
 export default function ProjectsFilter({ projects }: { projects: Project[] }) {
-  const categories = useMemo(() => {
-    const set = new Set<ProjectCategory>(projects.map((p) => p.category));
-    return [ALL, ...Array.from(set)];
-  }, [projects]);
+  // Every practice area is listed, including ones without published work yet, so the
+  // range of the practice is visible; empty ones link through to their enquiry page.
+  const tabs = useMemo(() => [ALL, ...allCategories.map((c) => c.name)], []);
 
   const [active, setActive] = useState<ProjectCategory | typeof ALL>(ALL);
 
@@ -27,7 +29,7 @@ export default function ProjectsFilter({ projects }: { projects: Project[] }) {
         role="tablist"
         aria-label="Filter projects by category"
       >
-        {categories.map((cat) => (
+        {tabs.map((cat) => (
           <button
             key={cat}
             type="button"
@@ -72,8 +74,18 @@ export default function ProjectsFilter({ projects }: { projects: Project[] }) {
         </motion.div>
       </LayoutGroup>
 
-      {filtered.length === 0 && (
-        <p className="py-16 text-center text-muted">No projects in this category yet.</p>
+      {filtered.length === 0 && active !== ALL && (
+        <div className="py-16 text-center">
+          <p className="text-muted">
+            No {active.toLowerCase()} work is published here yet — it&rsquo;s on its way.
+          </p>
+          <Link
+            href={`/projects/category/${allCategories.find((c) => c.name === active)?.slug ?? ""}`}
+            className="line-link mt-6 inline-flex"
+          >
+            About our {active.toLowerCase()} work <ArrowUpRight size={18} />
+          </Link>
+        </div>
       )}
     </div>
   );
