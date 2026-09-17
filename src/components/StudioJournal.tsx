@@ -6,7 +6,7 @@ import { useReducedMotion } from "framer-motion";
 import { instagramPosts } from "@/lib/instagram";
 import RevealOnScroll from "./RevealOnScroll";
 
-const AUTOPLAY_MS = 5000;
+const AUTOPLAY_MS = 3000;
 
 export default function StudioJournal() {
   const track = useRef<HTMLDivElement>(null);
