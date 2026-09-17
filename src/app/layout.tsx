@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Grain from "@/components/Grain";
 import SmoothScroll from "@/components/SmoothScroll";
+import ScrollReveal from "@/components/ScrollReveal";
 
 import { site } from "@/lib/site";
 
@@ -69,7 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col text-fg">
         <SmoothScroll>
           <Grain />
-
+          <ScrollReveal />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
