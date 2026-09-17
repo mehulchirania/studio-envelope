@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-const links = [{ href: "/projects", label: "Work", number: "01" }, { href: "/about", label: "Studio", number: "02" }, { href: "/contact", label: "Contact", number: "03" }];
+const links = [{ href: "/projects", label: "Work", number: "01" }, { href: "/services", label: "Services", number: "02" }, { href: "/about", label: "Studio", number: "03" }, { href: "/contact", label: "Contact", number: "04" }];
 export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);

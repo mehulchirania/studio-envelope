@@ -430,3 +430,17 @@ body:has(.journal-dialog[open]) { overflow: hidden; }
   .category-meta { flex-direction: column; gap: 8px; }
   .category-page { padding-bottom: 60px; }
 }
+
+/* Instagram carousel (05) */
+.journal-carousel { position: relative; }
+.journal-track { scroll-behavior: auto; padding-bottom: 14px; }
+.journal-track:focus-visible { outline: 1.5px solid var(--color-brass); outline-offset: 4px; }
+.journal-slide { flex: 0 0 27%; scroll-snap-align: start; display: flex; }
+.journal-slide .journal-photo { flex: 1 1 auto; }
+.journal-dots { display: flex; justify-content: center; gap: 9px; padding-top: 6px; }
+.journal-dots button { width: 7px; height: 7px; border-radius: 50%; background: var(--color-hairline); transition: width .3s, background .3s; cursor: pointer; }
+.journal-dots button.is-active { width: 26px; border-radius: 4px; background: var(--color-teal); }
+.journal-dots button:hover { background: var(--color-teal-light); }
+.journal-actions > div button:disabled { opacity: .4; cursor: default; }
+.journal-hint { text-align: center; }
+@media (max-width: 700px) { .journal-slide { flex-basis: 78%; } .journal-hint { text-align: left; } }
