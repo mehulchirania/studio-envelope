@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import AuthGuard from "@/components/admin/AuthGuard";
 
 export const metadata: Metadata = {
-  title: "Admin — Studio Envelope",
+  title: "Admin",
   robots: { index: false, follow: false },
 };
 
