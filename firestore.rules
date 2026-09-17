@@ -1,0 +1,62 @@
+rules_version = '2';
+
+// Admin allowlist. This project runs on Firebase's free Spark plan with no
+// service account available to seed a config doc, so the allowlist is
+// hardcoded here instead of living in Firestore. To add or remove an admin:
+//   1. Edit the list below and redeploy: `firebase deploy --only firestore`.
+//   2. Edit ADMIN_EMAILS in the Vercel/`.env.local` env vars to match (used
+//      server-side by /api/revalidate and /api/upload) and redeploy the app.
+// Keep both lists in sync — an email must be in both to get full admin access.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in [
+          'mehulchirania@gmail.com'
+        ];
+    }
+
+    function isValidMessage() {
+      let incoming = request.resource.data;
+      let allowedKeys = ['name', 'email', 'message', 'phone', 'projectType', 'budget', 'read', 'createdAt'];
+      let requiredKeys = ['name', 'email', 'message', 'read', 'createdAt'];
+      return incoming.keys().hasOnly(allowedKeys)
+        && incoming.keys().hasAll(requiredKeys)
+        && incoming.name is string && incoming.name.size() > 0 && incoming.name.size() <= 100
+        && incoming.email is string && incoming.email.size() > 0 && incoming.email.size() <= 200
+        && incoming.message is string && incoming.message.size() > 0 && incoming.message.size() <= 3000
+        && (!('phone' in incoming) || (incoming.phone is string && incoming.phone.size() <= 30))
+        && (!('projectType' in incoming) || (incoming.projectType is string && incoming.projectType.size() <= 60))
+        && (!('budget' in incoming) || (incoming.budget is string && incoming.budget.size() <= 60))
+        && incoming.read == false
+        && incoming.createdAt == request.time;
+    }
+
+    // projects: publicly readable when published; admins can read/write everything.
+    // The public read condition intentionally matches the public query shape
+    // (where("published", "==", true)) so Firestore can validate `list`
+    // requests against the rule without per-document reads.
+    match /projects/{projectId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // messages: anyone can submit a well-formed, unread message; only
+    // admins can read the inbox or mark/delete messages.
+    match /messages/{messageId} {
+      allow create: if isValidMessage();
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
