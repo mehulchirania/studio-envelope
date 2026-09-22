@@ -11,7 +11,8 @@ const scopeBySlug: Record<string, Project["scope"]> = Object.fromEntries(
 );
 
 /** All / Interior / Architecture & Interior filter chips for /projects,
- * synced to the ?scope= URL param, plus the filtered project list itself. */
+ * synced to the ?scope= URL param, plus the filtered project list itself.
+ * The chip row is band-dark so it reads as a continuation of ProjectsHero. */
 export default function ProjectsFilter({ projects }: { projects: Project[] }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -33,30 +34,36 @@ export default function ProjectsFilter({ projects }: { projects: Project[] }) {
   const filtered = activeScope ? projects.filter((p) => p.scope === activeScope) : projects;
 
   return (
-    <div>
-      <div role="group" aria-label="Filter projects by scope" className="mb-14 flex flex-wrap gap-3">
-        <button type="button" aria-pressed={!activeScope} onClick={() => setScope(null)} className={chipClass(!activeScope)}>
-          All
-        </button>
-        {categories.map((c) => (
-          <button
-            key={c.slug}
-            type="button"
-            aria-pressed={activeScope === c.name}
-            onClick={() => setScope(c.slug)}
-            className={chipClass(activeScope === c.name)}
-          >
-            {c.name}
-          </button>
-        ))}
+    <>
+      <div className="band-dark pb-14 sm:pb-20">
+        <div className="container-x">
+          <div role="group" aria-label="Filter projects by scope" className="flex flex-wrap gap-3">
+            <button type="button" aria-pressed={!activeScope} onClick={() => setScope(null)} className={chipClass(!activeScope)}>
+              All
+            </button>
+            {categories.map((c) => (
+              <button
+                key={c.slug}
+                type="button"
+                aria-pressed={activeScope === c.name}
+                onClick={() => setScope(c.slug)}
+                className={chipClass(activeScope === c.name)}
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       <ProjectBlocks projects={filtered} />
-    </div>
+    </>
   );
 }
 
 function chipClass(active: boolean) {
   return `label border px-4 py-2 transition-colors ${
-    active ? "border-teal bg-teal text-paper" : "border-hairline text-muted hover:border-teal hover:text-ink"
+    active
+      ? "border-marigold bg-marigold text-abyss"
+      : "border-hairline-light text-mist hover:border-bone hover:text-bone"
   }`;
 }

@@ -3,20 +3,34 @@
 /* Design tokens — see BRIEF "the letter". Everything else in this file lives
    inside @layer so Tailwind's own utilities always win over these rules. */
 @theme {
-  --color-paper: #f6f3ee;
-  --color-paper-2: #ece7de;
-  --color-ink: #10323d;
-  --color-teal: #0e4b5e;
+  /* v2 palette — "cinematic, dense, dark-led". Token NAMES kept where
+     possible so existing v1 code keeps compiling; values remapped. */
+  --color-night: #0a2a33; /* primary dark ground — hero, most feature sections */
+  --color-abyss: #061a20; /* deepest — footer, preloader, lightbox */
+  --color-teal: #0e4b5e; /* brand — panels, hover fills, active states */
   --color-teal-deep: #0a3845;
-  --color-muted: #5b6b6f;
-  --color-marigold: #fcb618;
-  --color-hairline: rgb(14 75 94 / 16%);
+  --color-bone: #e9e2d6; /* light ground — replaces "white" paper */
+  --color-ink: #0f2830; /* text on bone */
+  --color-mist: #a9bcc0; /* secondary text on dark, >=4.5:1 on night */
+  --color-marigold: #fcb618; /* accent: rules, numbers, underlines, cursor */
+
+  --color-paper: #e9e2d6; /* = bone, kept for back-compat */
+  --color-paper-2: #ddd4c5;
+  --color-muted: #5a6a6e;
+  --color-hairline: rgb(15 40 48 / 18%); /* on bone/light grounds */
+  --color-hairline-light: rgb(233 226 214 / 16%); /* on night/abyss grounds */
 
   --font-display: var(--font-cormorant), "Cormorant Garamond", serif;
   --font-sans: var(--font-jost), "Jost", system-ui, sans-serif;
 }
 
 @layer base {
+  /* Scaled parallax images and marquees must never widen the page; clip (unlike hidden) keeps sticky sections working. */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   * {
     border-color: var(--color-hairline);
   }
@@ -27,7 +41,7 @@
   }
 
   body {
-    background: var(--color-paper);
+    background: var(--color-bone);
     color: var(--color-ink);
     font-family: var(--font-sans);
   }
@@ -78,47 +92,112 @@
 }
 
 @layer components {
-  /* Small tracked uppercase label — meta text, nav, captions. */
+  /* Small tracked uppercase label — meta text, nav, captions. Inherits
+     color so it reads correctly on both bone (.text-muted) and dark
+     (.text-mist) grounds; set a color utility alongside it. */
   .label {
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 12px;
     line-height: 1.4;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.18em;
     color: var(--color-muted);
   }
 
+  /* Band utilities — pages alternate dark and bone sections. Applied to a
+     full-width section wrapper; sets background, default text and link
+     colors, and the ambient .label color for that band. */
+  .band-dark,
+  .band-darkest,
+  .band-teal {
+    color: var(--color-bone);
+  }
+
+  .band-dark {
+    background: var(--color-night);
+  }
+
+  .band-darkest {
+    background: var(--color-abyss);
+  }
+
+  .band-teal {
+    background: var(--color-teal);
+  }
+
+  .band-bone {
+    background: var(--color-bone);
+    color: var(--color-ink);
+  }
+
+  .band-dark .label,
+  .band-darkest .label,
+  .band-teal .label {
+    color: var(--color-mist);
+  }
+
+  .band-dark a,
+  .band-darkest a,
+  .band-teal a {
+    color: var(--color-bone);
+  }
+
   .container-x {
-    max-width: 1440px;
+    max-width: 1600px;
     margin-inline: auto;
-    padding-inline: clamp(20px, 5vw, 72px);
+    padding-inline: clamp(16px, 3vw, 48px);
   }
 
   .section-y {
-    padding-block: clamp(72px, 9vw, 144px);
+    padding-block: clamp(56px, 6vw, 104px);
   }
 
   .display-xl {
     font-family: var(--font-display);
     font-weight: 300;
-    font-size: clamp(44px, 6vw, 92px);
-    line-height: 1.02;
+    font-size: clamp(56px, 9vw, 160px);
+    line-height: 0.92;
     letter-spacing: -0.01em;
   }
 
   .h1 {
     font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(40px, 5vw, 72px);
-    line-height: 1.05;
+    font-weight: 300;
+    font-size: clamp(44px, 6vw, 110px);
+    line-height: 0.98;
   }
 
   .h2 {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(30px, 3.2vw, 48px);
-    line-height: 1.1;
+    font-size: clamp(40px, 5vw, 88px);
+    line-height: 1.02;
+  }
+
+  /* Animated underline that grows from the left on hover, in marigold.
+     Works on either band since it doesn't touch text color. */
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.2em;
+    width: 100%;
+    height: 1px;
+    background: var(--color-marigold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
   }
 
   /* Text link with an arrow that nudges on hover; teal underline. */

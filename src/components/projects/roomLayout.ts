@@ -17,23 +17,45 @@ export function projectImages(project: Project): RoomImage[] {
   return project.rooms.flatMap((room) => room.images);
 }
 
+function orientation(image: RoomImage): "landscape" | "portrait" {
+  return image.width >= image.height ? "landscape" : "portrait";
+}
+
 export type RoomChunk =
-  | { type: "wide"; image: RoomImage }
-  | { type: "pair"; images: [RoomImage, RoomImage] };
+  | { type: "single"; image: RoomImage }
+  | { type: "pair"; images: [RoomImage, RoomImage] }
+  | { type: "mixed"; wide: RoomImage; narrow: RoomImage };
 
-/** Lays a room's images out per the brief: one image goes wide; two sit side
- * by side; three or more are paired up, with a trailing odd image wide. */
-export function chunkRoomImages(images: RoomImage[]): RoomChunk[] {
-  if (images.length === 0) return [];
-  if (images.length === 1) return [{ type: "wide", image: images[0] }];
-  if (images.length === 2) return [{ type: "pair", images: [images[0], images[1]] }];
-
+/**
+ * Lays a room's images out per the v2 direction: a lone landscape image goes
+ * full-bleed; two portraits sit side by side as a pair; a landscape next to
+ * a portrait splits 2/3 + 1/3 (landscape wide); two adjacent landscapes each
+ * go full-bleed in turn. Greedy left-to-right over the room's image list.
+ */
+export function layoutRoom(images: RoomImage[]): RoomChunk[] {
   const chunks: RoomChunk[] = [];
-  for (let i = 0; i < images.length; i += 2) {
-    if (i + 1 < images.length) {
-      chunks.push({ type: "pair", images: [images[i], images[i + 1]] });
+  let i = 0;
+  while (i < images.length) {
+    const a = images[i];
+    const b = images[i + 1];
+    if (!b) {
+      chunks.push({ type: "single", image: a });
+      i += 1;
+      continue;
+    }
+    const oa = orientation(a);
+    const ob = orientation(b);
+    if (oa === "portrait" && ob === "portrait") {
+      chunks.push({ type: "pair", images: [a, b] });
+      i += 2;
+    } else if (oa === "landscape" && ob === "landscape") {
+      chunks.push({ type: "single", image: a });
+      i += 1;
     } else {
-      chunks.push({ type: "wide", image: images[i] });
+      const wide = oa === "landscape" ? a : b;
+      const narrow = oa === "landscape" ? b : a;
+      chunks.push({ type: "mixed", wide, narrow });
+      i += 2;
     }
   }
   return chunks;

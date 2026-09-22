@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Plus, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
-import RevealOnScroll from "@/components/RevealOnScroll";
+import Marquee from "@/components/motion/Marquee";
+import HorizontalGallery from "@/components/motion/HorizontalGallery";
+import Seal from "@/components/Seal";
+import ServiceGroup from "@/components/studio/ServiceGroup";
+import FaqItem from "@/components/studio/FaqItem";
+import ProcessCard from "@/components/studio/ProcessCard";
+import { getProjects } from "@/lib/data";
 import { services } from "@/lib/site";
+import type { Project } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -29,6 +36,8 @@ const GROUPS = [
   { name: "Furnish & Style", items: services.furnishAndStyle },
   { name: "Deliver", items: services.deliver },
 ];
+
+const ALL_SERVICES = [...services.design, ...services.furnishAndStyle, ...services.deliver];
 
 const PROCESS = [
   {
@@ -76,102 +85,126 @@ const FAQS = [
   },
 ];
 
-export default function ServicesPage() {
+function findImage(project: Project | undefined, filename: string) {
+  return project?.rooms.flatMap((room) => room.images).find((img) => img.src.endsWith(filename));
+}
+
+export default async function ServicesPage() {
+  const projects = await getProjects();
+  const james = projects.find((p) => p.slug === "james-residence");
+  const shyamkutir = projects.find((p) => p.slug === "shyamkutir");
+  const doshi = projects.find((p) => p.slug === "doshi-residence");
+
+  const heroImage = findImage(doshi, "living-dining-1.jpg");
+  const groupImages = [findImage(shyamkutir, "tv-unit.jpg"), findImage(james, "master-bedroom-1.jpg"), findImage(doshi, "living-dining-1.jpg")];
+
+  const startIndices = GROUPS.reduce<number[]>((acc, group, i) => {
+    acc.push(i === 0 ? 1 : acc[i - 1] + GROUPS[i - 1].items.length);
+    return acc;
+  }, []);
+
   return (
     <>
-      <PageHero label="Services" title="Everything a home needs, in one studio.">
-        From the first consultation to the final photo shoot, we carry every layer of a project — design, furnishing and delivery — under one roof.
+      <PageHero
+        label="Services"
+        title="Everything a home needs, in one studio."
+        background={heroImage ? { src: heroImage.src, alt: heroImage.alt } : undefined}
+      >
+        From the first consultation to the final photo shoot, we carry every layer of a project — design, furnishing
+        and delivery — under one roof.
       </PageHero>
 
-      <section className="section-y">
+      {/* 10 services, grouped */}
+      <section className="band-bone section-y">
         <div className="container-x">
-          <SectionHeader seal label="What is included" heading="Ten services, three stages." className="mb-16" />
+          <SectionHeader seal label="What is included" heading="Ten services, three stages." className="mb-14" />
 
-          <div className="grid gap-14 lg:grid-cols-3">
-            {GROUPS.map((group) => (
-              <RevealOnScroll key={group.name}>
-                <h3 className="font-display text-2xl text-ink">{group.name}</h3>
-                <ul className="mt-6">
-                  {group.items.map((item) => (
-                    <li key={item} className="border-t border-hairline py-5 last:border-b">
-                      <p className="text-ink">{item}</p>
-                      <p className="mt-1.5 text-base text-muted">{SERVICE_DESCRIPTIONS[item]}</p>
-                    </li>
-                  ))}
-                </ul>
-              </RevealOnScroll>
-            ))}
+          <div className="flex flex-col gap-14">
+            {GROUPS.map((group, gi) => {
+              const startIndex = startIndices[gi];
+              const image = groupImages[gi];
+              return (
+                <ServiceGroup
+                  key={group.name}
+                  name={group.name}
+                  startIndex={startIndex}
+                  rows={group.items.map((item) => ({ name: item, description: SERVICE_DESCRIPTIONS[item] }))}
+                  image={image ?? { src: "/images/projects/james-residence/kitchen-dining.jpg", alt: group.name, width: 1483, height: 988 }}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="section-y border-t border-hairline bg-paper-2">
-        <div className="container-x">
-          <SectionHeader label="Scope" heading="Two ways we take on a project." className="mb-16" />
+      {/* Marquee ribbon */}
+      <section className="band-dark border-y border-hairline-light py-8">
+        <Marquee speed={28}>
+          {ALL_SERVICES.map((s, i) => (
+            <span key={`${s}-${i}`} className="flex items-center gap-8">
+              <span className="font-display text-3xl font-light text-bone sm:text-4xl">{s}</span>
+              <Seal tone="dark" />
+            </span>
+          ))}
+        </Marquee>
+      </section>
 
+      {/* Scope */}
+      <section className="band-teal section-y">
+        <div className="container-x">
+          <SectionHeader label="Scope" heading="Two ways we take on a project." tone="dark" className="mb-16" />
           <div className="grid gap-14 md:grid-cols-2">
-            <RevealOnScroll>
-              <h3 className="font-display text-2xl text-ink">Interior design</h3>
-              <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
+            <div>
+              <h3 className="font-display text-2xl text-bone">Interior design</h3>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-mist">
                 Interiors planned and detailed within an existing shell — space planning, material and furniture
                 selection, styling and delivery, without touching the building itself.
               </p>
-            </RevealOnScroll>
-            <RevealOnScroll delay={0.06}>
-              <h3 className="font-display text-2xl text-ink">Architecture & interiors</h3>
-              <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
+            </div>
+            <div>
+              <h3 className="font-display text-2xl text-bone">Architecture &amp; interiors</h3>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-mist">
                 Renovations and additions that span both the built form and the interiors within it. Shyamkutir, our
                 Ballari bungalow renovation, is one example.{" "}
-                <Link href="/projects/shyamkutir" className="link-arrow">
-                  View project <ArrowUpRight size={14} />
+                <Link href="/projects/shyamkutir" className="link-underline text-bone">
+                  View project <ArrowUpRight size={14} className="inline" />
                 </Link>
               </p>
-            </RevealOnScroll>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="section-y">
-        <div className="container-x">
-          <SectionHeader label="How we work" heading="From first conversation to handover." className="mb-16" />
-
-          <ol className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
-            {PROCESS.map((step, i) => (
-              <li key={step.title}>
-                <RevealOnScroll delay={i * 0.06}>
-                  <span className="label text-teal">0{i + 1}</span>
-                  <h3 className="mt-3 font-display text-xl text-ink">{step.title}</h3>
-                  <p className="mt-2 text-base leading-relaxed text-muted">{step.text}</p>
-                </RevealOnScroll>
-              </li>
+      {/* Process */}
+      <section className="band-dark section-y">
+        <div className="container-x mb-14">
+          <SectionHeader label="How we work" heading="From first conversation to handover." tone="dark" />
+        </div>
+        <div className="container-x lg:px-0">
+          <HorizontalGallery
+            className="lg:pl-[clamp(16px,3vw,48px)]"
+            items={PROCESS.map((step, i) => (
+              <ProcessCard key={step.title} number={String(i + 1).padStart(2, "0")} title={step.title} text={step.text} />
             ))}
-          </ol>
+          />
         </div>
       </section>
 
-      <section className="section-y border-t border-hairline bg-paper-2">
+      {/* FAQ */}
+      <section className="band-bone section-y">
         <div className="container-x">
-          <SectionHeader label="FAQ" heading="Questions we hear before we start." className="mb-16" />
-
+          <SectionHeader label="FAQ" heading="Questions we hear before we start." className="mb-14" />
           <div className="max-w-3xl">
-            {FAQS.map((faq, i) => (
-              <RevealOnScroll key={faq.q} delay={i * 0.05}>
-                <details className="group border-b border-hairline py-6">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 [&::-webkit-details-marker]:hidden">
-                    <h3 className="font-display text-xl text-ink">{faq.q}</h3>
-                    <Plus size={18} className="shrink-0 text-teal transition-transform duration-300 group-open:rotate-45" aria-hidden="true" />
-                  </summary>
-                  <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">{faq.a}</p>
-                </details>
-              </RevealOnScroll>
+            {FAQS.map((faq) => (
+              <FaqItem key={faq.q} q={faq.q} a={faq.a} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section-y border-t border-hairline">
+      <section className="band-bone border-t border-hairline py-14">
         <div className="container-x">
-          <Link href="/contact" className="link-arrow text-xl">
+          <Link href="/contact" className="link-arrow link-underline text-xl">
             Have a space in mind? Write to us <ArrowUpRight size={18} />
           </Link>
         </div>

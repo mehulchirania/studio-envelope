@@ -65,7 +65,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[80] flex items-center justify-center bg-ink/95 p-4 sm:p-10"
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-abyss/97 p-4 sm:p-10"
           onClick={onClose}
         >
           <button

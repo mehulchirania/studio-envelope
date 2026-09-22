@@ -9,13 +9,21 @@ type ProjectImageProps = {
   sizes: string;
   className?: string;
   priority?: boolean;
+  /** Which band this sits on, so the "Visualisation" chip stays legible on
+   * both bone and dark grounds. Defaults to "light" (bone). */
+  tone?: "dark" | "light";
+  /** data-cursor hint consumed by CursorFollower, e.g. "view". */
+  cursor?: "view" | "drag";
 };
 
 /** Standard project photograph: square corners, no shadow. Renders (as
  * opposed to photos) get a small "Visualisation" chip bottom-left. */
-export default function ProjectImage({ image, sizes, className, priority }: ProjectImageProps) {
+export default function ProjectImage({ image, sizes, className, priority, tone = "light", cursor }: ProjectImageProps) {
   return (
-    <div className={clsx("relative overflow-hidden bg-paper-2", className)}>
+    <div
+      className={clsx("relative overflow-hidden", tone === "dark" ? "bg-teal/30" : "bg-paper-2", className)}
+      data-cursor={cursor}
+    >
       <Image
         src={image.src}
         alt={image.alt}
@@ -26,7 +34,12 @@ export default function ProjectImage({ image, sizes, className, priority }: Proj
         className="h-full w-full object-cover"
       />
       {image.kind === "render" && (
-        <span className="label absolute bottom-3 left-3 bg-paper/80 px-2.5 py-1 text-ink">
+        <span
+          className={clsx(
+            "label absolute bottom-3 left-3 px-2.5 py-1",
+            tone === "dark" ? "bg-abyss/80 text-bone" : "bg-bone/80 text-ink"
+          )}
+        >
           Visualisation
         </span>
       )}

@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import SiteMotion from "@/components/SiteMotion";
 import ScrollReveal from "@/components/ScrollReveal";
+import Preloader from "@/components/motion/Preloader";
+import CursorFollower from "@/components/motion/CursorFollower";
 
 import { site } from "@/lib/site";
 
@@ -67,10 +69,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${cormorant.variable} ${jost.variable} h-full antialiased`}
     >
-      <body id="page-top" className="flex min-h-full flex-col bg-paper font-sans text-ink">
+      <body id="page-top" className="flex min-h-full flex-col bg-bone font-sans text-ink">
+        <Preloader />
+        <CursorFollower />
         <SmoothScroll>
           <SiteMotion>
             <ScrollReveal />
+            {/* Header is fixed and overlays the page (every page now opens on
+                a dark hero) — do NOT add top padding to <main>; each hero
+                handles its own clearance for the fixed header. */}
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />

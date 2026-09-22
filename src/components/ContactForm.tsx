@@ -1,9 +1,23 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { LoaderCircle, CircleCheckBig, CircleAlert } from "lucide-react";
+import MagneticButton from "@/components/motion/MagneticButton";
 import { submitContact } from "@/lib/contact";
 import type { ContactMessage } from "@/lib/types";
+
+/** Wraps an input/select/textarea with an animated marigold underline that
+ * grows in on focus (via :focus-within, so it works with any field type
+ * without per-field JS state). */
+function Field({ children }: { children: ReactNode }) {
+  return (
+    <div className="group relative">
+      {children}
+      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-marigold transition-transform duration-300 ease-out group-focus-within:scale-x-100" />
+    </div>
+  );
+}
 
 const PROJECT_TYPES = ["Interior", "Architecture & Interior", "Renovation", "Not sure yet"];
 
@@ -26,6 +40,7 @@ export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [errorMessage, setErrorMessage] = useState("");
+  const reduced = useReducedMotion();
 
   function validate(data: ContactMessage): Errors {
     const next: Errors = {};
@@ -41,6 +56,7 @@ export default function ContactForm() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === "submitting") return;
     const form = new FormData(e.currentTarget);
     const data: ContactMessage = {
       name: String(form.get("name") ?? "").trim(),
@@ -77,8 +93,19 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-start gap-4 border border-hairline bg-paper p-8">
-        <CircleCheckBig className="text-teal" size={32} />
+      <motion.div
+        initial={reduced ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col items-start gap-4 border border-hairline bg-paper-2 p-8"
+      >
+        <motion.span
+          initial={reduced ? false : { scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <CircleCheckBig className="text-teal" size={32} />
+        </motion.span>
         <div>
           <p className="font-display text-2xl text-ink">Message sent</p>
           <p className="mt-2 text-base text-muted">
@@ -88,7 +115,7 @@ export default function ContactForm() {
         <button type="button" onClick={() => setStatus("idle")} className="label mt-2 text-teal hover:text-teal-deep">
           Send another message
         </button>
-      </div>
+      </motion.div>
     );
   }
 
@@ -99,16 +126,18 @@ export default function ContactForm() {
           <label htmlFor="name" className="label mb-2 block">
             Name*
           </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            autoComplete="name"
-            required
-            className={inputClasses}
-            aria-invalid={Boolean(errors.name)}
-            aria-describedby={errors.name ? "name-error" : undefined}
-          />
+          <Field>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              required
+              className={inputClasses}
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? "name-error" : undefined}
+            />
+          </Field>
           {errors.name && (
             <p id="name-error" className={errorTextClass}>
               {errors.name}
@@ -120,16 +149,18 @@ export default function ContactForm() {
           <label htmlFor="email" className="label mb-2 block">
             Email*
           </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            className={inputClasses}
-            aria-invalid={Boolean(errors.email)}
-            aria-describedby={errors.email ? "email-error" : undefined}
-          />
+          <Field>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              className={inputClasses}
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "email-error" : undefined}
+            />
+          </Field>
           {errors.email && (
             <p id="email-error" className={errorTextClass}>
               {errors.email}
@@ -141,85 +172,99 @@ export default function ContactForm() {
           <label htmlFor="phone" className="label mb-2 block">
             Phone
           </label>
-          <input id="phone" name="phone" type="tel" autoComplete="tel" className={inputClasses} />
+          <Field>
+            <input id="phone" name="phone" type="tel" autoComplete="tel" className={inputClasses} />
+          </Field>
         </div>
 
         <div>
           <label htmlFor="projectType" className="label mb-2 block">
             Project type
           </label>
-          <select id="projectType" name="projectType" defaultValue="" className={inputClasses}>
-            <option value="" disabled>
-              Select one
-            </option>
-            {PROJECT_TYPES.map((t) => (
-              <option key={t} value={t}>
-                {t}
+          <Field>
+            <select id="projectType" name="projectType" defaultValue="" className={inputClasses}>
+              <option value="" disabled>
+                Select one
               </option>
-            ))}
-          </select>
+              {PROJECT_TYPES.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </Field>
         </div>
 
         <div>
           <label htmlFor="city" className="label mb-2 block">
             City
           </label>
-          <input id="city" name="city" type="text" autoComplete="address-level2" className={inputClasses} />
+          <Field>
+            <input id="city" name="city" type="text" autoComplete="address-level2" className={inputClasses} />
+          </Field>
         </div>
 
         <div>
           <label htmlFor="area" className="label mb-2 block">
             Area (approx. sq ft)
           </label>
-          <input id="area" name="area" type="text" inputMode="numeric" className={inputClasses} />
+          <Field>
+            <input id="area" name="area" type="text" inputMode="numeric" className={inputClasses} />
+          </Field>
         </div>
 
         <div>
           <label htmlFor="budget" className="label mb-2 block">
             Estimated budget
           </label>
-          <select id="budget" name="budget" defaultValue="" className={inputClasses}>
-            <option value="" disabled>
-              Select a range
-            </option>
-            {BUDGETS.map((b) => (
-              <option key={b} value={b}>
-                {b}
+          <Field>
+            <select id="budget" name="budget" defaultValue="" className={inputClasses}>
+              <option value="" disabled>
+                Select a range
               </option>
-            ))}
-          </select>
+              {BUDGETS.map((b) => (
+                <option key={b} value={b}>
+                  {b}
+                </option>
+              ))}
+            </select>
+          </Field>
         </div>
 
         <div>
           <label htmlFor="timeline" className="label mb-2 block">
             Timeline
           </label>
-          <select id="timeline" name="timeline" defaultValue="" className={inputClasses}>
-            <option value="" disabled>
-              Select one
-            </option>
-            {TIMELINES.map((t) => (
-              <option key={t} value={t}>
-                {t}
+          <Field>
+            <select id="timeline" name="timeline" defaultValue="" className={inputClasses}>
+              <option value="" disabled>
+                Select one
               </option>
-            ))}
-          </select>
+              {TIMELINES.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </Field>
         </div>
 
         <div className="sm:col-span-2">
           <label htmlFor="hearAbout" className="label mb-2 block">
             How did you hear about us?
           </label>
-          <select id="hearAbout" name="hearAbout" defaultValue="" className={inputClasses}>
-            <option value="" disabled>
-              Select one
-            </option>
-            {SOURCES.map((s) => (
-              <option key={s} value={s}>
-                {s}
+          <Field>
+            <select id="hearAbout" name="hearAbout" defaultValue="" className={inputClasses}>
+              <option value="" disabled>
+                Select one
               </option>
-            ))}
-          </select>
+              {SOURCES.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </Field>
         </div>
       </div>
 
@@ -227,15 +272,17 @@ export default function ContactForm() {
         <label htmlFor="message" className="label mb-2 block">
           Tell us about your project*
         </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={5}
-          required
-          className={`${inputClasses} resize-none`}
-          aria-invalid={Boolean(errors.message)}
-          aria-describedby={errors.message ? "message-error" : undefined}
-        />
+        <Field>
+          <textarea
+            id="message"
+            name="message"
+            rows={5}
+            required
+            className={`${inputClasses} resize-none`}
+            aria-invalid={Boolean(errors.message)}
+            aria-describedby={errors.message ? "message-error" : undefined}
+          />
+        </Field>
         {errors.message && (
           <p id="message-error" className={errorTextClass}>
             {errors.message}
@@ -249,10 +296,11 @@ export default function ContactForm() {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={status === "submitting"}
-        className="group inline-flex items-center gap-3 bg-teal px-8 py-3.5 text-sm uppercase tracking-[0.16em] text-paper transition-colors hover:bg-teal-deep disabled:opacity-60"
+      <MagneticButton
+        strength={10}
+        className={`!w-fit !flex-row gap-3 !rounded-none !bg-teal px-8 py-3.5 text-sm uppercase tracking-[0.16em] !text-bone hover:!bg-teal-deep ${
+          status === "submitting" ? "pointer-events-none opacity-60" : ""
+        }`}
       >
         {status === "submitting" ? (
           <>
@@ -261,7 +309,7 @@ export default function ContactForm() {
         ) : (
           "Send message"
         )}
-      </button>
+      </MagneticButton>
     </form>
   );
 }
