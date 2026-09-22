@@ -191,7 +191,7 @@ export default function AdminDashboardPage() {
                   {p.title || "Untitled"}
                 </Link>
                 <p className="text-xs text-[#EDE8E0]/40 truncate">
-                  {p.category} · {p.location} · {p.year}
+                  {p.scope} · {p.location} · {p.year ?? "Ongoing"}
                 </p>
               </div>
 

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Grain from "@/components/Grain";
 import SmoothScroll from "@/components/SmoothScroll";
 import SiteMotion from "@/components/SiteMotion";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -15,46 +14,45 @@ const SITE_URL = "https://studioenvelope.in";
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+const jost = Jost({
+  variable: "--font-jost",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  icons: { icon: site.logo, apple: site.logo },
+  icons: { icon: "/icon.svg" },
   title: {
-    default: `${site.name} — Architecture & Interior Design Studio`,
-    template: `%s — ${site.name}`,
+    default: "Studio Envelope — Architecture & Interior Design, Bangalore",
+    template: "%s — Studio Envelope",
   },
   description: site.description,
   keywords: [
     "Studio Envelope",
-    "architecture studio India",
-    "interior design India",
+    "architecture studio Bangalore",
+    "interior design Bangalore",
     "Prachi Chirania",
     "residential interior design",
-    "art and installations",
   ],
   authors: [{ name: site.principal.name }],
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `${site.name} — Architecture & Interior Design Studio`,
+    title: "Studio Envelope — Architecture & Interior Design, Bangalore",
     description: site.description,
     url: SITE_URL,
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — Architecture & Interior Design Studio`,
+    title: "Studio Envelope — Architecture & Interior Design, Bangalore",
     description: site.description,
   },
   robots: {
@@ -67,22 +65,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${manrope.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${jost.variable} h-full antialiased`}
     >
-      <body id="page-top" className="flex min-h-full flex-col text-fg">
+      <body id="page-top" className="flex min-h-full flex-col bg-paper font-sans text-ink">
         <SmoothScroll>
           <SiteMotion>
-          <Grain />
-          <ScrollReveal />
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+            <ScrollReveal />
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
           </SiteMotion>
         </SmoothScroll>
       </body>
     </html>
   );
 }
-
-
-

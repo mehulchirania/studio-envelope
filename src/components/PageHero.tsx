@@ -1,27 +1,26 @@
 import type { ReactNode } from "react";
 import RevealOnScroll from "./RevealOnScroll";
 
+/** Page-opening header: a label, a Cormorant h1 and an optional intro
+ * paragraph, on paper. Used at the top of every top-level page. */
 export default function PageHero({
-  eyebrow,
+  label,
   title,
   children,
 }: {
-  eyebrow: string;
+  label: string;
   title: string;
   children?: ReactNode;
 }) {
   return (
-    <div className="border-b border-hairline px-5 py-20 sm:px-8 sm:py-28">
-      <div className="mx-auto max-w-7xl">
+    <div className="border-b border-hairline bg-paper">
+      <div className="container-x py-20 sm:py-28">
         <RevealOnScroll>
-          <p className="eyebrow mb-6">{eyebrow}</p>
-          <h1 className="max-w-4xl font-display text-5xl leading-[0.93] tracking-[-0.04em] text-fg sm:text-7xl lg:text-8xl">
-            {title}
-          </h1>
+          <p className="label mb-6">{label}</p>
+          <h1 className="h1 max-w-4xl text-ink">{title}</h1>
           {children && <div className="mt-8 max-w-xl text-base leading-relaxed text-muted">{children}</div>}
         </RevealOnScroll>
       </div>
     </div>
   );
 }
-

@@ -1,11 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowUpRight, MapPin, Calendar, Ruler, CircleCheck } from "lucide-react";
+import Image from "next/image";
+import Datasheet from "@/components/Datasheet";
 import { getProject, getProjects } from "@/lib/data";
-import RevealOnScroll from "@/components/RevealOnScroll";
-import GalleryLightbox from "@/components/GalleryLightbox";
+import ProjectLightboxProvider from "@/components/projects/ProjectLightboxProvider";
+import LightboxImage from "@/components/projects/LightboxImage";
+import RoomIndex from "@/components/projects/RoomIndex";
+import NextProjectBand from "@/components/projects/NextProjectBand";
+import { chunkRoomImages, findImageMeta, projectImages, slugifyRoom } from "@/components/projects/roomLayout";
 
 export const revalidate = 60;
 
@@ -14,13 +16,10 @@ export async function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata(
-  props: PageProps<"/projects/[slug]">
-): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const project = await getProject(slug);
   if (!project) return {};
-
   return {
     title: project.title,
     description: project.summary,
@@ -36,123 +35,146 @@ export async function generateMetadata(
 export default async function ProjectDetailPage(props: PageProps<"/projects/[slug]">) {
   const { slug } = await props.params;
   const [project, allProjects] = await Promise.all([getProject(slug), getProjects()]);
-
   if (!project) notFound();
+
+  const roomImages = projectImages(project);
+  const lightboxImages = [...roomImages, ...project.drawings.map((d) => ({ ...d, kind: "photo" as const }))];
+  const indexBySrc = new Map(lightboxImages.map((image, i) => [image.src, i]));
+  const hasRenders = roomImages.some((image) => image.kind === "render");
+
+  const cover = findImageMeta(project, project.coverImage) ?? {
+    src: project.coverImage,
+    alt: project.title,
+    width: 1600,
+    height: 1067,
+    kind: "photo" as const,
+  };
+
+  const statusValue = project.status === "Ongoing" ? "Ongoing" : `Completed · ${project.year}`;
+  const datasheetItems = [
+    { label: "Location", value: project.location },
+    ...(project.area ? [{ label: "Area", value: project.area }] : []),
+    { label: "Scope", value: project.scope },
+    { label: "Status", value: statusValue },
+    ...(project.credit ? [{ label: "Credit", value: project.credit }] : []),
+  ];
 
   const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
   const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
 
-  const metaItems = [
-    ...(project.location ? [{ icon: MapPin, label: "Location", value: project.location }] : []),
-    { icon: Calendar, label: project.source ? "Shared on Instagram" : "Year", value: project.source?.publishedAt ?? String(project.year) },
-    ...(project.area ? [{ icon: Ruler, label: "Area", value: project.area }] : []),
-    ...(project.status ? [{ icon: CircleCheck, label: "Status", value: project.status }] : []),
-  ];
+  const roomLinks = project.rooms.map((room) => ({ id: slugifyRoom(room.name), name: room.name }));
 
   return (
-    <>
-      <div className="relative h-[65svh] min-h-[420px] w-full overflow-hidden bg-surface">
-        <Image
-          src={project.coverImage}
-          alt={`${project.title} — cover image`}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-ink/0" />
-        <div className="absolute inset-x-0 bottom-0 px-5 pb-12 sm:px-8 sm:pb-16">
-          <div className="mx-auto max-w-7xl">
-            <p className="eyebrow mb-4">{project.category}</p>
-            <h1 className="max-w-3xl font-display text-4xl text-white sm:text-6xl">
-              {project.title}
-            </h1>
+    <ProjectLightboxProvider images={lightboxImages}>
+      <article>
+        <div className="container-x py-20 sm:py-28">
+          <p className="label mb-6">{project.scope}</p>
+          <h1 className="display-xl max-w-4xl text-ink">{project.title}</h1>
+          {project.subtitle && (
+            <p className="mt-6 max-w-2xl font-display text-2xl italic text-muted sm:text-3xl">{project.subtitle}</p>
+          )}
+          <Datasheet items={datasheetItems} className="mt-12" />
+        </div>
+
+        <div className="container-x">
+          <div
+            className="relative mx-auto w-full overflow-hidden bg-paper-2"
+            style={{ maxHeight: "80vh", aspectRatio: `${cover.width} / ${cover.height}` }}
+          >
+            <Image
+              src={cover.src}
+              alt={cover.alt}
+              fill
+              sizes="(min-width: 1440px) 1296px, 90vw"
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
-      </div>
 
-      <div className="px-5 py-16 sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.4fr]">
-            <RevealOnScroll>
-              <dl className="grid grid-cols-2 gap-8 border-t border-hairline pt-8 sm:grid-cols-1 sm:border-t-0 sm:pt-0">
-                {metaItems.map(({ icon: Icon, label, value }) => (
-                  <div key={label}>
-                    <dt className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-muted">
-                      <Icon size={14} /> {label}
-                    </dt>
-                    <dd className="font-display text-xl text-fg">{value}</dd>
+        <div className="container-x py-16 sm:py-24">
+          <div className="max-w-[62ch] space-y-6 text-[17px] leading-[1.75] text-ink sm:text-[18px]">
+            {project.description.split("\n\n").map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
+          {hasRenders && (
+            <p className="mt-6 max-w-[62ch] text-sm text-muted">Some images are design visualisations.</p>
+          )}
+        </div>
+
+        <div className="container-x grid gap-12 pb-4 lg:grid-cols-[220px_1fr] lg:gap-16">
+          <RoomIndex rooms={roomLinks} />
+
+          <div className="space-y-24 sm:space-y-32">
+            {project.rooms.map((room, i) => {
+              const chunks = chunkRoomImages(room.images);
+              return (
+                <section key={room.name} id={slugifyRoom(room.name)} className="scroll-mt-28">
+                  <p className="label mb-3">
+                    Room {String(i + 1).padStart(2, "0")} / {String(project.rooms.length).padStart(2, "0")}
+                  </p>
+                  <h2 className="font-display text-3xl italic text-ink sm:text-4xl">{room.name}</h2>
+                  <div className="mt-8 space-y-4 sm:space-y-6">
+                    {chunks.map((chunk, ci) =>
+                      chunk.type === "wide" ? (
+                        <div
+                          key={ci}
+                          className="w-full"
+                          style={{ aspectRatio: `${chunk.image.width} / ${chunk.image.height}` }}
+                        >
+                          <LightboxImage
+                            image={chunk.image}
+                            index={indexBySrc.get(chunk.image.src) ?? 0}
+                            sizes="(min-width: 1024px) 70vw, 92vw"
+                          />
+                        </div>
+                      ) : (
+                        <div key={ci} className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 sm:gap-6">
+                          {chunk.images.map((image) => (
+                            <div
+                              key={image.src}
+                              className="w-full"
+                              style={{ aspectRatio: `${image.width} / ${image.height}` }}
+                            >
+                              <LightboxImage
+                                image={image}
+                                index={indexBySrc.get(image.src) ?? 0}
+                                sizes="(min-width: 1024px) 35vw, 92vw"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    )}
                   </div>
-                ))}
-              </dl>
+                </section>
+              );
+            })}
+          </div>
+        </div>
 
-              {project.materials && project.materials.length > 0 && (
-                <div className="mt-10">
-                  <p className="mb-3 text-xs uppercase tracking-[0.15em] text-muted">Materials</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.materials.map((m) => (
-                      <span
-                        key={m}
-                        className="border border-hairline px-3 py-1.5 text-xs text-fg/85"
-                      >
-                        {m}
-                      </span>
-                    ))}
+        {project.drawings.length > 0 && (
+          <div className="container-x py-24 sm:py-32">
+            <p className="label mb-10">Drawings</p>
+            <div className="grid gap-6 sm:grid-cols-2">
+              {project.drawings.map((drawing) => (
+                <div key={drawing.src} className="bg-paper-2 p-4 sm:p-6">
+                  <div className="w-full" style={{ aspectRatio: `${drawing.width} / ${drawing.height}` }}>
+                    <LightboxImage
+                      image={{ ...drawing, kind: "photo" }}
+                      index={indexBySrc.get(drawing.src) ?? 0}
+                      sizes="(min-width: 1024px) 45vw, 92vw"
+                    />
                   </div>
                 </div>
-              )}
-            </RevealOnScroll>
-
-            <RevealOnScroll delay={0.1}>
-              <div className="space-y-5">
-                {project.source && <p className="eyebrow">From the studio journal</p>}
-                {project.source && <a href={project.source.url} target="_blank" rel="noopener noreferrer" className="line-link">View original Instagram post <ArrowUpRight size={18} /></a>}
-                {project.description.split("\n\n").map((para, i) => (
-                  <p key={i} className="text-base leading-relaxed text-fg/85 sm:text-lg">
-                    {para}
-                  </p>
-                ))}
-              </div>
-            </RevealOnScroll>
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
+        )}
+      </article>
 
-      {project.gallery.length > 0 && (
-        <div className="border-t border-hairline px-5 py-16 sm:px-8 sm:py-24">
-          <div className="mx-auto max-w-7xl">
-            <RevealOnScroll>
-              <p className="eyebrow mb-10">Gallery</p>
-            </RevealOnScroll>
-            <GalleryLightbox images={project.gallery} alt={project.title} />
-          </div>
-        </div>
-      )}
-
-      {nextProject && (
-        <Link
-          href={`/projects/${nextProject.slug}`}
-          className="group relative block h-[50svh] min-h-[360px] overflow-hidden border-t border-hairline"
-        >
-          <Image
-            src={nextProject.coverImage}
-            alt={`${nextProject.title} — cover image`}
-            fill
-            sizes="100vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-ink/60 transition-colors duration-500 group-hover:bg-ink/70" />
-          <div className="relative flex h-full flex-col items-center justify-center px-5 text-center">
-            <p className="eyebrow mb-4 text-white">Next project</p>
-            <h2 className="font-display text-4xl text-white sm:text-6xl">{nextProject.title}</h2>
-            <span className="mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-[0.15em] text-white/80">
-              View project <ArrowUpRight size={16} />
-            </span>
-          </div>
-        </Link>
-      )}
-    </>
+      <NextProjectBand project={nextProject} />
+    </ProjectLightboxProvider>
   );
 }
-
-

@@ -1,70 +1,33 @@
-import "./services.css";
-import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowUpRight, Plus } from "lucide-react";
+import Link from "next/link";
+import { Plus, ArrowUpRight } from "lucide-react";
 import PageHero from "@/components/PageHero";
+import SectionHeader from "@/components/SectionHeader";
 import RevealOnScroll from "@/components/RevealOnScroll";
-import { categories } from "@/lib/categories";
+import { services } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Services",
-  description:
-    "How Studio Envelope works across architecture, interior design, art and installations, and turnkey execution — from a first conversation through to handover.",
+  description: "How Studio Envelope works, from first consultation to final styling.",
 };
 
-const SERVICES = [
-  {
-    title: "Architecture",
-    promise: "A building that responds to where it stands.",
-    text: "From the first sketch to the final structure, we design homes and places around their surroundings, natural light and the people who use them. Every plan starts with the site and the brief, not a template.",
-    deliverables: [
-      "Site and brief analysis",
-      "Concept design and spatial planning",
-      "Construction and structural drawing sets",
-      "Coordination with structural and MEP consultants",
-      "Site visits through construction",
-    ],
-    tags: "New builds / Renovations / Spatial planning",
-  },
-  {
-    title: "Interior design",
-    promise: "One material language, carried through every room.",
-    text: "A complete interior built around your daily rituals rather than room by room. Materials, bespoke joinery, furniture and light are considered together, so the whole space reads as one idea.",
-    deliverables: [
-      "Space planning and layout",
-      "Material, finish and colour palettes",
-      "Bespoke furniture and joinery design",
-      "Lighting design",
-      "Vendor and craftsperson coordination",
-    ],
-    tags: "Residential / Commercial / Hospitality",
-  },
-  {
-    title: "Art & installations",
-    promise: "One gesture, placed where it matters most.",
-    text: "Site-specific pieces that give a space its own identity — jaali screens, sculptural partitions and material studies developed in collaboration with craftspeople, not picked from a catalogue.",
-    deliverables: [
-      "Concept and material studies",
-      "Collaboration with craftspeople and fabricators",
-      "Screens, sculptural partitions and inlay work",
-      "Scale mock-ups and material samples",
-      "Installation on site",
-    ],
-    tags: "Sculpture / Screens / Material explorations",
-  },
-  {
-    title: "Turnkey & styling",
-    promise: "Design, carried through to move-in day.",
-    text: "We stay involved past the drawings, coordinating the details on site and bringing the final layers together — so the space that gets handed over is the one that was designed.",
-    deliverables: [
-      "Execution and on-site coordination",
-      "Procurement and vendor management",
-      "Furniture, art and accessory styling",
-      "Snagging and quality checks",
-      "Final styling before handover",
-    ],
-    tags: "Execution / Coordination / Finishing touches",
-  },
+const SERVICE_DESCRIPTIONS: Record<string, string> = {
+  "Design Consultation": "An initial walkthrough of your space and brief to set the direction for the project.",
+  "Space Planning": "Working out how each room is used and laid out, before any material or furniture decision.",
+  "Colour Consultation": "A palette for walls, ceilings and trims chosen to suit light, material and mood.",
+  "Lighting Consultation": "A lighting layout — ambient, task and accent — planned alongside the electrical drawings.",
+  "Material Selection": "Flooring, wall finishes, countertops and hardware chosen to work together and wear well.",
+  "Furniture Selection": "Sourcing and specifying furniture that fits the plan, the budget and the material palette.",
+  "Soft Furnishing": "Curtains, upholstery, rugs and linens selected to complete the space.",
+  "Décor Consultation": "Art, accessories and styling details that finish a room once the larger pieces are in place.",
+  "Project Management": "Coordinating vendors, contractors and timelines so the design is executed as drawn.",
+  "Photo & Video Shoot": "Professional documentation of the finished space once the project is complete.",
+};
+
+const GROUPS = [
+  { name: "Design", items: services.design },
+  { name: "Furnish & Style", items: services.furnishAndStyle },
+  { name: "Deliver", items: services.deliver },
 ];
 
 const PROCESS = [
@@ -116,144 +79,102 @@ const FAQS = [
 export default function ServicesPage() {
   return (
     <>
-      <PageHero eyebrow="What we do" title="Considered spaces, carried end to end.">
-        Four ways we work — architecture, interiors, art and turnkey execution — built on the
-        same idea: material, light and the people who&rsquo;ll use the space, considered
-        together from the very first conversation.
+      <PageHero label="Services" title="Everything a home needs, in one studio.">
+        From the first consultation to the final photo shoot, we carry every layer of a project — design, furnishing and delivery — under one roof.
       </PageHero>
 
-      <section className="svc-services page-gutter">
-        <RevealOnScroll className="section-heading">
-          <div>
-            <p className="micro-label">01 / What we offer</p>
-            <h2>
-              Four disciplines.
-              <br />
-              One studio.
-            </h2>
-          </div>
-        </RevealOnScroll>
+      <section className="section-y">
+        <div className="container-x">
+          <SectionHeader seal label="What is included" heading="Ten services, three stages." className="mb-16" />
 
-        <div className="svc-service-list">
-          {SERVICES.map((service, i) => (
-            <RevealOnScroll key={service.title} delay={i * 0.06} className="svc-service">
-              <div className="svc-service-head">
-                <span className="svc-service-number" aria-hidden="true">
-                  0{i + 1}
-                </span>
-                <div>
-                  <h3>{service.title}</h3>
-                  <p className="svc-service-promise">{service.promise}</p>
-                </div>
-              </div>
-              <div className="svc-service-body">
-                <p>{service.text}</p>
-                <ul className="svc-deliverables">
-                  {service.deliverables.map((item) => (
-                    <li key={item}>{item}</li>
+          <div className="grid gap-14 lg:grid-cols-3">
+            {GROUPS.map((group) => (
+              <RevealOnScroll key={group.name}>
+                <h3 className="font-display text-2xl text-ink">{group.name}</h3>
+                <ul className="mt-6">
+                  {group.items.map((item) => (
+                    <li key={item} className="border-t border-hairline py-5 last:border-b">
+                      <p className="text-ink">{item}</p>
+                      <p className="mt-1.5 text-base text-muted">{SERVICE_DESCRIPTIONS[item]}</p>
+                    </li>
                   ))}
                 </ul>
-                <span className="svc-service-tags">{service.tags}</span>
-              </div>
-            </RevealOnScroll>
-          ))}
-        </div>
-      </section>
-
-      <section className="svc-process page-gutter">
-        <RevealOnScroll className="section-heading">
-          <div>
-            <p className="micro-label">02 / How we work</p>
-            <h2>
-              From first conversation
-              <br />
-              to handover.
-            </h2>
-          </div>
-        </RevealOnScroll>
-
-        <ol className="svc-process-list">
-          {PROCESS.map((step, i) => (
-            <li key={step.title}>
-              <RevealOnScroll delay={i * 0.06} className="svc-process-item">
-                <span className="svc-process-step" aria-hidden="true">
-                  0{i + 1}
-                </span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
               </RevealOnScroll>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="svc-areas page-gutter">
-        <RevealOnScroll className="section-heading">
-          <div>
-            <p className="micro-label">03 / Practice areas</p>
-            <h2>
-              Where these services
-              <br />
-              come together.
-            </h2>
+            ))}
           </div>
-          <Link href="/projects" className="line-link">
-            See the work <ArrowUpRight size={20} />
-          </Link>
-        </RevealOnScroll>
-
-        <div className="svc-areas-row">
-          {categories.map((category, i) => (
-            <RevealOnScroll key={category.slug} delay={i * 0.05}>
-              <Link href={`/projects/category/${category.slug}`} className="svc-area-link">
-                <h3 className="svc-area-name">{category.name}</h3>
-                <span className="svc-area-tagline">{category.tagline}</span>
-                <ArrowUpRight size={16} aria-hidden="true" />
-              </Link>
-            </RevealOnScroll>
-          ))}
         </div>
       </section>
 
-      <section className="svc-faq page-gutter">
-        <RevealOnScroll className="section-heading">
-          <div>
-            <p className="micro-label">04 / What to expect</p>
-            <h2>
-              Questions we hear
-              <br />
-              before we start.
-            </h2>
-          </div>
-        </RevealOnScroll>
+      <section className="section-y border-t border-hairline bg-paper-2">
+        <div className="container-x">
+          <SectionHeader label="Scope" heading="Two ways we take on a project." className="mb-16" />
 
-        <div className="svc-faq-list">
-          {FAQS.map((faq, i) => (
-            <RevealOnScroll key={faq.q} delay={i * 0.05}>
-              <details className="svc-faq-item">
-                <summary>
-                  <h3>{faq.q}</h3>
-                  <Plus size={20} className="svc-faq-icon" aria-hidden="true" />
-                </summary>
-                <p>{faq.a}</p>
-              </details>
+          <div className="grid gap-14 md:grid-cols-2">
+            <RevealOnScroll>
+              <h3 className="font-display text-2xl text-ink">Interior design</h3>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
+                Interiors planned and detailed within an existing shell — space planning, material and furniture
+                selection, styling and delivery, without touching the building itself.
+              </p>
             </RevealOnScroll>
-          ))}
+            <RevealOnScroll delay={0.06}>
+              <h3 className="font-display text-2xl text-ink">Architecture & interiors</h3>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
+                Renovations and additions that span both the built form and the interiors within it. Shyamkutir, our
+                Ballari bungalow renovation, is one example.{" "}
+                <Link href="/projects/shyamkutir" className="link-arrow">
+                  View project <ArrowUpRight size={14} />
+                </Link>
+              </p>
+            </RevealOnScroll>
+          </div>
         </div>
       </section>
 
-      <section className="svc-cta page-gutter">
-        <RevealOnScroll className="svc-cta-inner">
-          <p className="micro-label">05 / Start here</p>
-          <h2>
-            Have a space
-            <br />
-            in mind?
-          </h2>
-          <Link href="/contact" className="line-link">
-            Start a conversation <ArrowUpRight size={20} />
+      <section className="section-y">
+        <div className="container-x">
+          <SectionHeader label="How we work" heading="From first conversation to handover." className="mb-16" />
+
+          <ol className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+            {PROCESS.map((step, i) => (
+              <li key={step.title}>
+                <RevealOnScroll delay={i * 0.06}>
+                  <span className="label text-teal">0{i + 1}</span>
+                  <h3 className="mt-3 font-display text-xl text-ink">{step.title}</h3>
+                  <p className="mt-2 text-base leading-relaxed text-muted">{step.text}</p>
+                </RevealOnScroll>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="section-y border-t border-hairline bg-paper-2">
+        <div className="container-x">
+          <SectionHeader label="FAQ" heading="Questions we hear before we start." className="mb-16" />
+
+          <div className="max-w-3xl">
+            {FAQS.map((faq, i) => (
+              <RevealOnScroll key={faq.q} delay={i * 0.05}>
+                <details className="group border-b border-hairline py-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 [&::-webkit-details-marker]:hidden">
+                    <h3 className="font-display text-xl text-ink">{faq.q}</h3>
+                    <Plus size={18} className="shrink-0 text-teal transition-transform duration-300 group-open:rotate-45" aria-hidden="true" />
+                  </summary>
+                  <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">{faq.a}</p>
+                </details>
+              </RevealOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-y border-t border-hairline">
+        <div className="container-x">
+          <Link href="/contact" className="link-arrow text-xl">
+            Have a space in mind? Write to us <ArrowUpRight size={18} />
           </Link>
-        </RevealOnScroll>
+        </div>
       </section>
     </>
   );

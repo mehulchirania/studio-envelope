@@ -24,7 +24,7 @@ service cloud.firestore {
 
     function isValidMessage() {
       let incoming = request.resource.data;
-      let allowedKeys = ['name', 'email', 'message', 'phone', 'projectType', 'budget', 'read', 'createdAt'];
+      let allowedKeys = ['name', 'email', 'message', 'phone', 'projectType', 'city', 'area', 'budget', 'timeline', 'hearAbout', 'read', 'createdAt'];
       let requiredKeys = ['name', 'email', 'message', 'read', 'createdAt'];
       return incoming.keys().hasOnly(allowedKeys)
         && incoming.keys().hasAll(requiredKeys)
@@ -33,7 +33,11 @@ service cloud.firestore {
         && incoming.message is string && incoming.message.size() > 0 && incoming.message.size() <= 3000
         && (!('phone' in incoming) || (incoming.phone is string && incoming.phone.size() <= 30))
         && (!('projectType' in incoming) || (incoming.projectType is string && incoming.projectType.size() <= 60))
+        && (!('city' in incoming) || (incoming.city is string && incoming.city.size() <= 100))
+        && (!('area' in incoming) || (incoming.area is string && incoming.area.size() <= 40))
         && (!('budget' in incoming) || (incoming.budget is string && incoming.budget.size() <= 60))
+        && (!('timeline' in incoming) || (incoming.timeline is string && incoming.timeline.size() <= 60))
+        && (!('hearAbout' in incoming) || (incoming.hearAbout is string && incoming.hearAbout.size() <= 60))
         && incoming.read == false
         && incoming.createdAt == request.time;
     }

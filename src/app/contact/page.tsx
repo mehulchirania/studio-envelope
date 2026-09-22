@@ -1,82 +1,56 @@
 import type { Metadata } from "next";
-import { Phone, MessageCircle, MapPin } from "lucide-react";
-import { site } from "@/lib/site";
 import PageHero from "@/components/PageHero";
 import RevealOnScroll from "@/components/RevealOnScroll";
 import ContactForm from "@/components/ContactForm";
-import { InstagramIcon } from "@/components/icons";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description:
-    "Get in touch with Studio Envelope to discuss your next architecture or interior design project.",
+  description: "Get in touch with Studio Envelope to discuss your next architecture or interior design project.",
 };
 
-const CONTACT_ITEMS = [
-  { icon: Phone, label: "Call", value: site.contact.phone, href: site.contact.phoneHref },
-  { icon: MessageCircle, label: "WhatsApp", value: "Message us", href: site.contact.whatsapp },
-
-  {
-    icon: InstagramIcon,
-    label: "Instagram",
-    value: "@studio__envelope",
-    href: site.socials.instagram,
-  },
+const DETAILS = [
+  { label: "Studio", value: site.contact.location },
+  { label: "Phone", value: site.contact.phone, href: site.contact.phoneHref },
+  { label: "WhatsApp", value: "Message us", href: site.contact.whatsapp, external: true },
+  { label: "Email", value: site.contact.email, href: `mailto:${site.contact.email}` },
+  { label: "Instagram", value: site.socials.instagramHandle, href: site.socials.instagram, external: true },
 ];
 
 export default function ContactPage() {
   return (
     <>
-      <PageHero eyebrow="Get in touch" title="Let's start a conversation">
-        Tell us a little about your project — space, scope and timeline — and
-        we&apos;ll get back to you within a couple of business days.
+      <PageHero label="Contact" title="Write to us.">
+        Tell us about your space, scope and timeline — we&apos;ll reply within a couple of working days.
       </PageHero>
 
-      <section className="px-5 pb-28 sm:px-8 sm:pb-36">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 lg:grid-cols-[1fr_1.3fr]">
+      <section className="section-y">
+        <div className="container-x grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
           <RevealOnScroll>
-            <div className="lg:sticky lg:top-32">
-              <ul className="space-y-8">
-                {CONTACT_ITEMS.map(({ icon: Icon, label, value, href }) => (
-                  <li key={label}>
-                    <a
-                      href={href}
-                      target={href.startsWith("http") ? "_blank" : undefined}
-                      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="group flex items-start gap-4"
-                    >
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-hairline text-brass transition-colors group-hover:border-brass">
-                        <Icon size={18} />
-                      </span>
-                      <span>
-                        <span className="block text-xs uppercase tracking-[0.15em] text-muted">
-                          {label}
-                        </span>
-                        <span className="mt-1 block font-display text-xl text-fg transition-colors group-hover:text-brass">
-                          {value}
-                        </span>
-                      </span>
-                    </a>
-                  </li>
-                ))}
-                <li className="flex items-start gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-hairline text-brass">
-                    <MapPin size={18} />
-                  </span>
-                  <span>
-                    <span className="block text-xs uppercase tracking-[0.15em] text-muted">
-                      Studio
-                    </span>
-                    <span className="mt-1 block font-display text-xl text-fg">
-                      {site.contact.location}
-                    </span>
-                  </span>
-                </li>
-              </ul>
-            </div>
+            <dl className="space-y-8">
+              {DETAILS.map((detail) => (
+                <div key={detail.label} className="border-b border-hairline pb-6">
+                  <dt className="label mb-2">{detail.label}</dt>
+                  <dd>
+                    {detail.href ? (
+                      <a
+                        href={detail.href}
+                        target={detail.external ? "_blank" : undefined}
+                        rel={detail.external ? "noopener noreferrer" : undefined}
+                        className="text-lg text-ink hover:text-teal"
+                      >
+                        {detail.value}
+                      </a>
+                    ) : (
+                      <span className="text-lg text-ink">{detail.value}</span>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={0.1}>
+          <RevealOnScroll delay={0.08}>
             <ContactForm />
           </RevealOnScroll>
         </div>
@@ -84,4 +58,3 @@ export default function ContactPage() {
     </>
   );
 }
-

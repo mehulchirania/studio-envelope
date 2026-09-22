@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Save, Trash2 } from "lucide-react";
-import type { Project, ProjectCategory } from "@/lib/types";
+import type { Project, ProjectScope } from "@/lib/types";
 import {
   createProject,
   deleteProject,
@@ -15,8 +15,8 @@ import {
 } from "@/lib/admin-api";
 import ImageUploader from "./ImageUploader";
 
-const CATEGORIES: ProjectCategory[] = ["Residential", "Commercial", "Hospitality", "Art & Installations"];
-const STATUSES: Project["status"][] = ["Completed", "Ongoing", "Concept"];
+const SCOPES: ProjectScope[] = ["Interior", "Architecture & Interior"];
+const STATUSES: Project["status"][] = ["Completed", "Ongoing"];
 
 const inputClass =
   "w-full bg-[#EDE8E0]/[0.04] border border-[#EDE8E0]/15 rounded-lg px-3 py-2 text-sm text-[#EDE8E0] placeholder:text-[#EDE8E0]/30 focus:outline-none focus:border-[#5E9AA3]/60 transition-colors";
@@ -26,7 +26,7 @@ function emptyProject(order: number): ProjectInput {
   return {
     slug: "",
     title: "",
-    category: "Residential",
+    scope: "Interior",
     location: "",
     year: new Date().getFullYear(),
     area: "",
@@ -34,8 +34,9 @@ function emptyProject(order: number): ProjectInput {
     summary: "",
     description: "",
     coverImage: "",
+    rooms: [],
+    drawings: [],
     gallery: [],
-    materials: [],
     featured: false,
     order,
     published: false,
@@ -46,7 +47,6 @@ export default function ProjectForm({ id, initial }: { id?: string; initial?: Pr
   const router = useRouter();
   const isEdit = Boolean(id);
   const [form, setForm] = useState<ProjectInput>(() => (initial ? { ...initial } : emptyProject(0)));
-  const [materialsInput, setMaterialsInput] = useState(() => (initial?.materials ?? []).join(", "));
   const slugTouched = useRef(isEdit); // in edit mode, don't auto-rewrite an existing slug
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -86,7 +86,7 @@ export default function ProjectForm({ id, initial }: { id?: string; initial?: Pr
     if (!form.summary.trim()) return "Summary is required.";
     if (!form.description.trim()) return "Description is required.";
     if (!form.coverImage) return "A cover image is required.";
-    if (!Number.isFinite(form.year) || form.year < 1900) return "Enter a valid year.";
+    if (form.year !== null && (!Number.isFinite(form.year) || form.year < 1900)) return "Enter a valid year.";
     return null;
   }
 
@@ -100,11 +100,9 @@ export default function ProjectForm({ id, initial }: { id?: string; initial?: Pr
     setError(null);
     setSaving(true);
     try {
-      const materials = materialsInput
-        .split(",")
-        .map((m) => m.trim())
-        .filter(Boolean);
-      const payload: ProjectInput = { ...form, materials };
+      // rooms/drawings editing isn't supported yet — `form` already carries
+      // whatever the initial doc had (spread in useState above), untouched.
+      const payload: ProjectInput = { ...form };
 
       if (isEdit && id) {
         await updateProject(id, payload);
@@ -181,15 +179,15 @@ export default function ProjectForm({ id, initial }: { id?: string; initial?: Pr
         </div>
 
         <div>
-          <label className={labelClass}>Category</label>
+          <label className={labelClass}>Scope</label>
           <select
             className={inputClass}
-            value={form.category}
-            onChange={(e) => update("category", e.target.value as ProjectCategory)}
+            value={form.scope}
+            onChange={(e) => update("scope", e.target.value as ProjectScope)}
           >
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
+            {SCOPES.map((s) => (
+              <option key={s} value={s}>
+                {s}
               </option>
             ))}
           </select>
@@ -205,8 +203,8 @@ export default function ProjectForm({ id, initial }: { id?: string; initial?: Pr
           <input
             type="number"
             className={inputClass}
-            value={form.year}
-            onChange={(e) => update("year", Number(e.target.value))}
+            value={form.year ?? ""}
+            onChange={(e) => update("year", e.target.value === "" ? null : Number(e.target.value))}
           />
         </div>
 
@@ -233,16 +231,6 @@ export default function ProjectForm({ id, initial }: { id?: string; initial?: Pr
               </option>
             ))}
           </select>
-        </div>
-
-        <div className="sm:col-span-2">
-          <label className={labelClass}>Materials (comma separated, optional)</label>
-          <input
-            className={inputClass}
-            placeholder="Concrete, Oak, Brass"
-            value={materialsInput}
-            onChange={(e) => setMaterialsInput(e.target.value)}
-          />
         </div>
 
         <div className="sm:col-span-2">
@@ -273,13 +261,10 @@ export default function ProjectForm({ id, initial }: { id?: string; initial?: Pr
           onChange={(imgs) => update("coverImage", imgs[0] ?? "")}
           label="Cover image"
         />
-        <ImageUploader
-          slug={form.slug}
-          images={form.gallery}
-          onChange={(imgs) => update("gallery", imgs)}
-          multiple
-          label="Gallery"
-        />
+        <p className="text-xs text-[#EDE8E0]/40">
+          Room-by-room photos and drawings aren&rsquo;t editable here yet — they&rsquo;re kept as-is from the
+          existing document.
+        </p>
       </section>
 
       <section className="flex items-center gap-8 border-t border-[#EDE8E0]/10 pt-6">
