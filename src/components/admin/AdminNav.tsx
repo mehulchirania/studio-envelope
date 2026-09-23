@@ -15,8 +15,8 @@ export default function AdminNav({ email }: { email?: string }) {
 
   return (
     <header className="border-b border-[#EDE8E0]/10 sticky top-0 z-10 bg-[#0B0C0C]/95 backdrop-blur">
-      <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
-        <Link href="/admin" className="text-sm tracking-[0.15em] uppercase text-[#EDE8E0]/90">
+      <div className="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
+        <Link href="/admin" className="text-sm tracking-[0.15em] uppercase text-[#EDE8E0]/90 shrink-0">
           Studio Envelope <span className="text-[#5E9AA3]">Admin</span>
         </Link>
 
@@ -27,11 +27,11 @@ export default function AdminNav({ email }: { email?: string }) {
               <Link
                 key={href}
                 href={href}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm transition-colors ${
-                  active ? "bg-[#5E9AA3]/15 text-[#5E9AA3]" : "text-[#EDE8E0]/60 hover:text-[#EDE8E0]"
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm transition-colors ${
+                  active ? "bg-[#5E9AA3]/15 text-[#5E9AA3]" : "text-[#EDE8E0]/60 hover:text-[#EDE8E0] hover:bg-[#EDE8E0]/5"
                 }`}
               >
-                <Icon size={14} />
+                <Icon size={15} />
                 {label}
               </Link>
             );
@@ -42,7 +42,7 @@ export default function AdminNav({ email }: { email?: string }) {
           {email && <span className="hidden sm:inline text-xs text-[#EDE8E0]/40">{email}</span>}
           <button
             onClick={() => signOutAdmin()}
-            className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#EDE8E0]/15 hover:bg-[#EDE8E0]/5 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs px-4 py-2.5 rounded-full border border-[#EDE8E0]/15 hover:bg-[#EDE8E0]/5 transition-colors"
           >
             <LogOut size={13} />
             Sign out

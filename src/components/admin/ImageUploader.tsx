@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ChevronDown, ChevronUp, ImagePlus, Loader2, X } from "lucide-react";
+import { ChevronDown, ChevronUp, ImagePlus, Loader2, Repeat, X } from "lucide-react";
 import { deleteProjectImageByUrl, uploadProjectImage } from "@/lib/admin-api";
 
 interface ImageUploaderProps {
@@ -12,6 +12,7 @@ interface ImageUploaderProps {
   /** When false, exactly one image is kept (a new upload replaces it). */
   multiple?: boolean;
   label: string;
+  hint?: string;
 }
 
 interface PendingUpload {
@@ -22,10 +23,11 @@ interface PendingUpload {
 
 const MAX_BYTES = 10 * 1024 * 1024;
 
-export default function ImageUploader({ slug, images, onChange, multiple = false, label }: ImageUploaderProps) {
+export default function ImageUploader({ slug, images, onChange, multiple = false, label, hint }: ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [pending, setPending] = useState<PendingUpload[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [dragging, setDragging] = useState(false);
 
   async function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
@@ -76,18 +78,32 @@ export default function ImageUploader({ slug, images, onChange, multiple = false
     onChange(next);
   }
 
+  function onDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragging(false);
+    handleFiles(e.dataTransfer.files);
+  }
+
+  const showSingleDropzone = !multiple && images.length === 0;
+  const showMultiDropzone = multiple;
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
-        <span className="text-sm text-[#EDE8E0]/70">{label}</span>
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#5E9AA3]/50 text-[#5E9AA3] hover:bg-[#5E9AA3]/10 transition-colors"
-        >
-          <ImagePlus size={14} />
-          {multiple ? "Add images" : images.length ? "Replace image" : "Upload image"}
-        </button>
+        <div>
+          <span className="text-sm text-[#EDE8E0]">{label}</span>
+          {hint && <span className="block text-xs text-[#EDE8E0]/45 mt-0.5">{hint}</span>}
+        </div>
+        {!showSingleDropzone && (
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#5E9AA3]/50 text-[#5E9AA3] hover:bg-[#5E9AA3]/10 transition-colors shrink-0"
+          >
+            <ImagePlus size={14} />
+            {multiple ? "Add images" : "Replace image"}
+          </button>
+        )}
         <input
           ref={inputRef}
           type="file"
@@ -108,7 +124,77 @@ export default function ImageUploader({ slug, images, onChange, multiple = false
         </div>
       ))}
 
-      {images.length > 0 && (
+      {showSingleDropzone && (
+        <div
+          onClick={() => inputRef.current?.click()}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragging(true);
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={onDrop}
+          role="button"
+          tabIndex={0}
+          className={`flex flex-col items-center justify-center gap-2 aspect-[16/9] rounded-xl border-2 border-dashed cursor-pointer transition-colors ${
+            dragging
+              ? "border-[#5E9AA3] bg-[#5E9AA3]/10"
+              : "border-[#EDE8E0]/15 hover:border-[#EDE8E0]/30 bg-[#EDE8E0]/[0.02]"
+          }`}
+        >
+          <ImagePlus size={22} className="text-[#EDE8E0]/40" />
+          <p className="text-sm text-[#EDE8E0]/60">Drag a photo here, or click to browse</p>
+          <p className="text-xs text-[#EDE8E0]/35">JPG or PNG, up to 10MB</p>
+        </div>
+      )}
+
+      {!multiple && images.length > 0 && (
+        <div className="relative group rounded-xl overflow-hidden border border-[#EDE8E0]/10 aspect-[16/9] bg-black/30">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={images[0]} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/55 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => inputRef.current?.click()}
+              className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-[#0B0C0C]/80 hover:bg-[#5E9AA3]/80 transition-colors"
+            >
+              <Repeat size={13} />
+              Replace
+            </button>
+            <button
+              type="button"
+              onClick={() => remove(0)}
+              className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-[#0B0C0C]/80 hover:bg-red-500/80 transition-colors"
+            >
+              <X size={13} />
+              Remove
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showMultiDropzone && (
+        <div
+          onClick={() => inputRef.current?.click()}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragging(true);
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={onDrop}
+          role="button"
+          tabIndex={0}
+          className={`flex items-center justify-center gap-2 py-6 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${
+            dragging
+              ? "border-[#5E9AA3] bg-[#5E9AA3]/10"
+              : "border-[#EDE8E0]/15 hover:border-[#EDE8E0]/30 bg-[#EDE8E0]/[0.02]"
+          }`}
+        >
+          <ImagePlus size={18} className="text-[#EDE8E0]/40" />
+          <p className="text-sm text-[#EDE8E0]/60">Drag photos here, or click to browse</p>
+        </div>
+      )}
+
+      {multiple && images.length > 0 && (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
           {images.map((url, index) => (
             <div
@@ -126,28 +212,26 @@ export default function ImageUploader({ slug, images, onChange, multiple = false
                 >
                   <X size={14} />
                 </button>
-                {multiple && (
-                  <div className="flex gap-1">
-                    <button
-                      type="button"
-                      onClick={() => move(index, -1)}
-                      disabled={index === 0}
-                      aria-label="Move earlier"
-                      className="p-1 rounded bg-black/70 disabled:opacity-30 hover:bg-white/10 transition-colors"
-                    >
-                      <ChevronUp size={12} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => move(index, 1)}
-                      disabled={index === images.length - 1}
-                      aria-label="Move later"
-                      className="p-1 rounded bg-black/70 disabled:opacity-30 hover:bg-white/10 transition-colors"
-                    >
-                      <ChevronDown size={12} />
-                    </button>
-                  </div>
-                )}
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => move(index, -1)}
+                    disabled={index === 0}
+                    aria-label="Move earlier"
+                    className="p-1 rounded bg-black/70 disabled:opacity-30 hover:bg-white/10 transition-colors"
+                  >
+                    <ChevronUp size={12} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => move(index, 1)}
+                    disabled={index === images.length - 1}
+                    aria-label="Move later"
+                    className="p-1 rounded bg-black/70 disabled:opacity-30 hover:bg-white/10 transition-colors"
+                  >
+                    <ChevronDown size={12} />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
