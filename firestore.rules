@@ -18,7 +18,8 @@ service cloud.firestore {
       return isSignedIn()
         && request.auth.token.email_verified == true
         && request.auth.token.email in [
-          'mehulchirania@gmail.com'
+          'mehulchirania@gmail.com',
+          'studioenvelope.info@gmail.com'
         ];
     }
 
