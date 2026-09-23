@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getProjects } from "@/lib/data";
 
-const SITE_URL = "https://studioenvelope.in";
+const SITE_URL = "https://studioenvelope.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const projects = await getProjects();
