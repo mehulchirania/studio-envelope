@@ -34,8 +34,16 @@ export async function verifyAdminToken(idToken: string | null | undefined): Prom
   const adminEmails = getAdminEmails();
   if (adminEmails.length === 0) return null;
 
+  // Local-dev-only: when the client authenticated against the Auth emulator,
+  // its ID tokens are only valid against the emulator's lookup endpoint, not
+  // Google's real one. Mirrors the flag in src/lib/firebase.ts.
+  const lookupBase =
+    process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS === "true"
+      ? "http://127.0.0.1:9099/identitytoolkit.googleapis.com"
+      : "https://identitytoolkit.googleapis.com";
+
   const res = await fetch(
-    `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${apiKey}`,
+    `${lookupBase}/v1/accounts:lookup?key=${apiKey}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },

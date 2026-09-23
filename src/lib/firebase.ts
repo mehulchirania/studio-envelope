@@ -3,8 +3,13 @@
 // false and the getters below return `undefined` instead of throwing, so
 // callers can fall back to local seed data / no-op behavior.
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
-import { getFirestore as getFirestoreSdk, type Firestore } from "firebase/firestore";
-import { getAuth as getAuthSdk, type Auth } from "firebase/auth";
+import { connectFirestoreEmulator, getFirestore as getFirestoreSdk, type Firestore } from "firebase/firestore";
+import { connectAuthEmulator, getAuth as getAuthSdk, type Auth } from "firebase/auth";
+
+/** Local-dev-only escape hatch: when set, points Firestore/Auth at the
+ * `firebase emulators:start` suite instead of the real project, so local
+ * testing never touches production data. Never set in deployed environments. */
+const USE_EMULATORS = process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS === "true";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -25,6 +30,8 @@ export const isFirebaseConfigured = Boolean(
 let app: FirebaseApp | undefined;
 let dbSingleton: Firestore | undefined;
 let authSingleton: Auth | undefined;
+let dbEmulatorConnected = false;
+let authEmulatorConnected = false;
 
 function getFirebaseApp(): FirebaseApp | undefined {
   if (!isFirebaseConfigured) return undefined;
@@ -39,6 +46,10 @@ export function getDb(): Firestore | undefined {
   const a = getFirebaseApp();
   if (!a) return undefined;
   if (!dbSingleton) dbSingleton = getFirestoreSdk(a);
+  if (USE_EMULATORS && !dbEmulatorConnected) {
+    connectFirestoreEmulator(dbSingleton, "127.0.0.1", 8080);
+    dbEmulatorConnected = true;
+  }
   return dbSingleton;
 }
 
@@ -47,5 +58,9 @@ export function getFirebaseAuth(): Auth | undefined {
   const a = getFirebaseApp();
   if (!a) return undefined;
   if (!authSingleton) authSingleton = getAuthSdk(a);
+  if (USE_EMULATORS && !authEmulatorConnected) {
+    connectAuthEmulator(authSingleton, "http://127.0.0.1:9099", { disableWarnings: true });
+    authEmulatorConnected = true;
+  }
   return authSingleton;
 }

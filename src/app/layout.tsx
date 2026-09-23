@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import HideOnAdmin from "@/components/HideOnAdmin";
 import SmoothScroll from "@/components/SmoothScroll";
 import SiteMotion from "@/components/SiteMotion";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -11,7 +12,7 @@ import CursorFollower from "@/components/motion/CursorFollower";
 
 import { site } from "@/lib/site";
 
-const SITE_URL = "https://studioenvelope.in";
+const SITE_URL = "https://studioenvelope.com";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -77,10 +78,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <ScrollReveal />
             {/* Header is fixed and overlays the page (every page now opens on
                 a dark hero) — do NOT add top padding to <main>; each hero
-                handles its own clearance for the fixed header. */}
-            <Header />
+                handles its own clearance for the fixed header. Hidden on
+                /admin, which renders its own AdminNav chrome instead. */}
+            <HideOnAdmin>
+              <Header />
+            </HideOnAdmin>
             <main className="flex-1">{children}</main>
-            <Footer />
+            <HideOnAdmin>
+              <Footer />
+            </HideOnAdmin>
           </SiteMotion>
         </SmoothScroll>
       </body>
