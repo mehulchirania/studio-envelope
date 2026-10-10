@@ -1,463 +1,300 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, ChevronRight, Loader2, Save, Trash2 } from "lucide-react";
-import type { Project, ProjectScope } from "@/lib/types";
-import {
-  createProject,
-  deleteProject,
-  listAllProjects,
-  slugify,
-  triggerRevalidate,
-  updateProject,
-  type ProjectInput,
-} from "@/lib/admin-api";
-import ImageUploader from "./ImageUploader";
-import FormSection from "./FormSection";
-import Toggle from "./Toggle";
-
-const SCOPES: ProjectScope[] = ["Interior", "Architecture & Interior"];
-const STATUSES: Project["status"][] = ["Completed", "Ongoing"];
+import { Loader2, Save, Trash2 } from "lucide-react";
+import type { Drawing, Project, ProjectScope } from "@/lib/content/types";
+import type { ProjectFields } from "@/lib/admin/types";
+import { createProject, deleteProject, updateProject } from "@/lib/admin/client";
+import { slugify } from "@/lib/admin/slug";
+import { CoverUploader, PhotoGrid } from "@/components/admin/PhotoUploader";
+import RoomsEditor from "@/components/admin/RoomsEditor";
+import FormSection from "@/components/admin/FormSection";
+import Toggle from "@/components/admin/Toggle";
 
 const inputClass =
   "w-full bg-[#EDE8E0]/[0.04] border border-[#EDE8E0]/15 rounded-lg px-3.5 py-2.5 text-[15px] text-[#EDE8E0] placeholder:text-[#EDE8E0]/30 focus:outline-none focus:border-[#5E9AA3]/60 transition-colors";
 const labelClass = "block text-xs uppercase tracking-wider text-[#EDE8E0]/50 mb-1.5";
 
-const WIZARD_STEPS = ["The basics", "The story", "Cover photo", "Publish"] as const;
-
-function emptyProject(order: number): ProjectInput {
+function emptyFields(): ProjectFields {
   return {
-    slug: "",
     title: "",
-    scope: "Interior",
     location: "",
     year: new Date().getFullYear(),
-    area: "",
     status: "Completed",
+    scope: "Interior",
     summary: "",
     description: "",
     coverImage: "",
     rooms: [],
     drawings: [],
-    gallery: [],
     featured: false,
-    order,
     published: false,
   };
 }
 
-export default function ProjectForm({ id, initial }: { id?: string; initial?: Project }) {
+function fieldsOf(project: Project): ProjectFields {
+  return {
+    title: project.title,
+    subtitle: project.subtitle,
+    location: project.location,
+    year: project.year,
+    area: project.area,
+    status: project.status,
+    scope: project.scope,
+    summary: project.summary,
+    description: project.description,
+    credit: project.credit,
+    coverImage: project.coverImage,
+    rooms: project.rooms,
+    drawings: project.drawings,
+    featured: project.featured,
+    published: project.published,
+  };
+}
+
+export default function ProjectForm({ project }: { project?: Project }) {
   const router = useRouter();
-  const isEdit = Boolean(id);
-  const [form, setForm] = useState<ProjectInput>(() => (initial ? { ...initial } : emptyProject(0)));
-  const slugTouched = useRef(isEdit); // in edit mode, don't auto-rewrite an existing slug
-  const [showSlug, setShowSlug] = useState(false);
-  const [step, setStep] = useState(0);
+  const [form, setForm] = useState<ProjectFields>(() => (project ? fieldsOf(project) : emptyFields()));
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isEdit) return;
-    listAllProjects()
-      .then((projects) => setForm((f) => ({ ...f, order: projects.length })))
-      .catch(() => {
-        /* non-fatal: order defaults to 0 */
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const busy = saving || deleting;
+  // Images for a saved project stay under its slug; a new one uses the title typed so far.
+  const folder = project?.slug ?? (slugify(form.title) || "draft");
 
-  function update<K extends keyof ProjectInput>(key: K, value: ProjectInput[K]) {
+  function set<K extends keyof ProjectFields>(key: K, value: ProjectFields[K]) {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
-  function handleTitleChange(title: string) {
-    setForm((f) => ({
-      ...f,
-      title,
-      slug: slugTouched.current ? f.slug : slugify(title),
-    }));
-  }
-
-  function handleSlugChange(slug: string) {
-    slugTouched.current = true;
-    update("slug", slugify(slug));
-  }
-
-  function validateStep(index: number): string | null {
-    if (index === 0) {
-      if (!form.title.trim()) return "Give the project a title.";
-      if (!form.slug.trim()) return "That title needs to produce a URL slug.";
-      if (!form.location.trim()) return "Add a location.";
-      if (form.year !== null && (!Number.isFinite(form.year) || form.year < 1900)) return "Enter a valid year.";
-    }
-    if (index === 1) {
-      if (!form.summary.trim()) return "Add a one-line summary — it's what shows on project cards.";
-      if (!form.description.trim()) return "Add the full description.";
-    }
-    if (index === 2) {
-      if (!form.coverImage) return "Upload a cover photo.";
-    }
-    return null;
-  }
-
-  function validate(): string | null {
-    for (let i = 0; i < 3; i++) {
-      const err = validateStep(i);
-      if (err) return err;
-    }
-    return null;
-  }
-
-  function goNext() {
-    const err = validateStep(step);
-    if (err) {
-      setError(err);
-      return;
-    }
-    setError(null);
-    setStep((s) => Math.min(s + 1, WIZARD_STEPS.length - 1));
-  }
-
-  function goBack() {
-    setError(null);
-    setStep((s) => Math.max(s - 1, 0));
-  }
-
-  async function save() {
-    const validationError = validate();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-    setError(null);
+  async function save(event: FormEvent) {
+    event.preventDefault();
     setSaving(true);
+    setError(null);
     try {
-      // rooms/drawings editing isn't supported yet — `form` already carries
-      // whatever the initial doc had (spread in useState above), untouched.
-      const payload: ProjectInput = { ...form };
-
-      if (isEdit && id) {
-        await updateProject(id, payload);
-      } else {
-        await createProject(payload);
-      }
-      await triggerRevalidate();
+      if (project) await updateProject(project.id, form);
+      else await createProject(form);
       router.push("/admin");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save project.");
-    } finally {
+      setError(err instanceof Error ? err.message : "Couldn't save. Please try again.");
       setSaving(false);
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    await save();
-  }
-
-  async function handleDelete() {
-    if (!id) return;
-    if (!window.confirm(`Delete "${form.title}"? This can't be undone.`)) return;
+  async function remove() {
+    if (!project) return;
+    if (!window.confirm(`Delete "${project.title}"? It disappears from the website straight away and can't be undone.`)) return;
     setDeleting(true);
+    setError(null);
     try {
-      await deleteProject(id);
-      await triggerRevalidate();
+      await deleteProject(project.id);
       router.push("/admin");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete project.");
+      setError(err instanceof Error ? err.message : "Couldn't delete. Please try again.");
       setDeleting(false);
     }
   }
 
-  const basicsSection = (
-    <FormSection title="The basics">
-      <div className="grid sm:grid-cols-2 gap-5">
-        <div className="sm:col-span-2">
-          <label className={labelClass}>Title</label>
-          <input
-            className={inputClass}
-            placeholder="e.g. James Residence"
-            value={form.title}
-            onChange={(e) => handleTitleChange(e.target.value)}
-          />
-          {!showSlug ? (
-            <button
-              type="button"
-              onClick={() => setShowSlug(true)}
-              className="mt-2 inline-flex items-center gap-1 text-xs text-[#EDE8E0]/40 hover:text-[#EDE8E0]/70 transition-colors"
+  return (
+    <form onSubmit={save} className="max-w-3xl mx-auto space-y-12 pb-40">
+      <h1 className="text-xl font-light">{project ? "Edit project" : "New project"}</h1>
+
+      <FormSection title="Details">
+        <div className="grid sm:grid-cols-2 gap-5">
+          <div className="sm:col-span-2">
+            <label htmlFor="title" className={labelClass}>Title</label>
+            <input
+              id="title"
+              className={inputClass}
+              value={form.title}
+              onChange={(e) => set("title", e.target.value)}
+              placeholder="e.g. James Residence"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="location" className={labelClass}>Location</label>
+            <input
+              id="location"
+              className={inputClass}
+              value={form.location}
+              onChange={(e) => set("location", e.target.value)}
+              placeholder="e.g. Hennur, Bangalore"
+            />
+          </div>
+          <div>
+            <label htmlFor="scope" className={labelClass}>Type of work</label>
+            <select
+              id="scope"
+              className={inputClass}
+              value={form.scope}
+              onChange={(e) => set("scope", e.target.value as ProjectScope)}
             >
-              <ChevronRight size={12} />
-              URL: /projects/{form.slug || "…"} — edit
-            </button>
-          ) : (
-            <div className="mt-2">
-              <label className={labelClass}>URL slug</label>
-              <input className={inputClass} value={form.slug} onChange={(e) => handleSlugChange(e.target.value)} />
-            </div>
+              <option value="Interior">Interior</option>
+              <option value="Architecture & Interior">Architecture & Interior</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="status" className={labelClass}>Status</label>
+            <select
+              id="status"
+              className={inputClass}
+              value={form.status}
+              onChange={(e) => set("status", e.target.value as Project["status"])}
+            >
+              <option value="Completed">Completed</option>
+              <option value="Ongoing">Ongoing</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="year" className={labelClass}>Year (blank if ongoing)</label>
+            <input
+              id="year"
+              type="number"
+              className={inputClass}
+              value={form.year ?? ""}
+              onChange={(e) => set("year", e.target.value === "" ? null : Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <label htmlFor="area" className={labelClass}>Area (optional)</label>
+            <input
+              id="area"
+              className={inputClass}
+              value={form.area ?? ""}
+              onChange={(e) => set("area", e.target.value)}
+              placeholder="e.g. 1,600 sq ft"
+            />
+          </div>
+          <div>
+            <label htmlFor="credit" className={labelClass}>Credit (optional)</label>
+            <input
+              id="credit"
+              className={inputClass}
+              value={form.credit ?? ""}
+              onChange={(e) => set("credit", e.target.value)}
+              placeholder="e.g. In association with …"
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label htmlFor="subtitle" className={labelClass}>Tagline (optional)</label>
+            <input
+              id="subtitle"
+              className={inputClass}
+              value={form.subtitle ?? ""}
+              onChange={(e) => set("subtitle", e.target.value)}
+              placeholder="e.g. A three-bedroom home for three generations"
+            />
+          </div>
+        </div>
+      </FormSection>
+
+      <FormSection title="About the project">
+        <div className="space-y-5">
+          <div>
+            <label htmlFor="summary" className={labelClass}>Short summary (one or two sentences, shown on cards)</label>
+            <textarea
+              id="summary"
+              rows={2}
+              className={inputClass}
+              value={form.summary}
+              onChange={(e) => set("summary", e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="description" className={labelClass}>Full description (leave a blank line between paragraphs)</label>
+            <textarea
+              id="description"
+              rows={8}
+              className={inputClass}
+              value={form.description}
+              onChange={(e) => set("description", e.target.value)}
+            />
+          </div>
+        </div>
+      </FormSection>
+
+      <FormSection title="Cover photo" hint="Shown on the project card and at the top of the project page.">
+        <CoverUploader folder={folder} value={form.coverImage} onChange={(src) => set("coverImage", src)} />
+      </FormSection>
+
+      <FormSection title="Rooms and photos" hint="Group photos by room. Use the star on a photo to make it the cover.">
+        <RoomsEditor
+          folder={folder}
+          rooms={form.rooms}
+          onChange={(rooms) => set("rooms", rooms)}
+          coverSrc={form.coverImage}
+          onSetCover={(src) => set("coverImage", src)}
+        />
+      </FormSection>
+
+      <FormSection title="Drawings and plans" hint="Optional. Floor plans, elevations, sketches.">
+        <PhotoGrid<Drawing>
+          folder={folder}
+          items={form.drawings}
+          onItemsChange={(drawings) => set("drawings", drawings)}
+          onAdd={(uploaded) => set("drawings", [...form.drawings, ...uploaded.map((u) => ({ ...u, alt: "" }))])}
+          addLabel="Add drawings"
+        />
+      </FormSection>
+
+      <FormSection title="On the website">
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Toggle
+            checked={form.published}
+            onChange={(v) => set("published", v)}
+            label="Published"
+            hint="Visible on the website. Switch off to keep it as a draft."
+          />
+          <Toggle
+            checked={form.featured}
+            onChange={(v) => set("featured", v)}
+            label="Show on the homepage"
+            hint="Featured projects appear on the home page."
+          />
+        </div>
+      </FormSection>
+
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[#EDE8E0]/10 bg-[#0B0C0C]/95 backdrop-blur">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-3 space-y-2">
+          {error && (
+            <p role="alert" className="text-sm text-red-400">
+              {error}
+            </p>
           )}
-        </div>
-
-        <div>
-          <label className={labelClass}>Location</label>
-          <input
-            className={inputClass}
-            placeholder="e.g. Hennur, Bangalore"
-            value={form.location}
-            onChange={(e) => update("location", e.target.value)}
-          />
-        </div>
-
-        <div>
-          <label className={labelClass}>Scope</label>
-          <select
-            className={inputClass}
-            value={form.scope}
-            onChange={(e) => update("scope", e.target.value as ProjectScope)}
-          >
-            {SCOPES.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className={labelClass}>Status</label>
-          <select
-            className={inputClass}
-            value={form.status}
-            onChange={(e) => update("status", e.target.value as Project["status"])}
-          >
-            {STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className={labelClass}>Year</label>
-          <input
-            type="number"
-            className={inputClass}
-            value={form.year ?? ""}
-            onChange={(e) => update("year", e.target.value === "" ? null : Number(e.target.value))}
-          />
-        </div>
-
-        <div>
-          <label className={labelClass}>Area (optional)</label>
-          <input
-            className={inputClass}
-            placeholder="e.g. 2,400 sq.ft"
-            value={form.area ?? ""}
-            onChange={(e) => update("area", e.target.value)}
-          />
-        </div>
-      </div>
-    </FormSection>
-  );
-
-  const storySection = (
-    <FormSection title="The story">
-      <div className="space-y-5">
-        <div>
-          <label className={labelClass}>Summary (1–2 sentences, shown on cards)</label>
-          <textarea
-            className={inputClass}
-            rows={2}
-            placeholder="A short, plain-English line describing this project."
-            value={form.summary}
-            onChange={(e) => update("summary", e.target.value)}
-          />
-        </div>
-
-        <div>
-          <label className={labelClass}>Description (long-form; separate paragraphs with a blank line)</label>
-          <textarea
-            className={inputClass}
-            rows={8}
-            placeholder="The full write-up that appears on the project page."
-            value={form.description}
-            onChange={(e) => update("description", e.target.value)}
-          />
-        </div>
-      </div>
-    </FormSection>
-  );
-
-  const coverSection = (
-    <FormSection title="Cover photo" hint="The image shown on project cards and at the top of the project page.">
-      <ImageUploader
-        slug={form.slug}
-        images={form.coverImage ? [form.coverImage] : []}
-        onChange={(imgs) => update("coverImage", imgs[0] ?? "")}
-        label="Cover image"
-      />
-      {isEdit && (
-        <p className="text-xs text-[#EDE8E0]/40">
-          Room-by-room photos and drawings aren&rsquo;t editable here yet — they&rsquo;re kept as-is from the
-          existing document.
-        </p>
-      )}
-    </FormSection>
-  );
-
-  const visibilitySection = (
-    <FormSection title="Visibility">
-      <div className="grid sm:grid-cols-2 gap-3">
-        <Toggle
-          checked={form.published}
-          onChange={(v) => update("published", v)}
-          label="Published"
-          hint="Visible on the live site."
-        />
-        <Toggle
-          checked={form.featured}
-          onChange={(v) => update("featured", v)}
-          label="Featured"
-          hint="Highlighted on the homepage."
-        />
-      </div>
-    </FormSection>
-  );
-
-  const headerActions = (
-    <div className="flex items-center gap-2">
-      {isEdit && (
-        <button
-          type="button"
-          onClick={handleDelete}
-          disabled={deleting}
-          className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
-        >
-          {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
-          Delete
-        </button>
-      )}
-    </div>
-  );
-
-  const errorBanner = error && (
-    <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</p>
-  );
-
-  // Edit mode: everything on one page, since a quick tweak shouldn't require
-  // paging through steps.
-  if (isEdit) {
-    return (
-      <form onSubmit={handleSubmit} className="space-y-10 pb-16">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-light">Edit project</h1>
           <div className="flex items-center gap-2">
-            {headerActions}
+            {project && (
+              <button
+                type="button"
+                onClick={remove}
+                disabled={busy}
+                className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+              >
+                {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
+                Delete
+              </button>
+            )}
+            <Link
+              href="/admin"
+              className="ml-auto text-sm px-4 py-2.5 rounded-full text-[#EDE8E0]/70 hover:bg-[#EDE8E0]/5 transition-colors"
+            >
+              Cancel
+            </Link>
             <button
               type="submit"
-              disabled={saving}
-              className="inline-flex items-center gap-1.5 text-sm px-5 py-2.5 rounded-full bg-[#5E9AA3] text-[#0B0C0C] font-medium hover:bg-[#5E9AA3]/90 transition-colors disabled:opacity-50"
+              disabled={busy}
+              className="inline-flex items-center gap-2 text-sm px-6 py-2.5 rounded-full bg-[#5E9AA3] text-[#0B0C0C] font-medium hover:bg-[#5E9AA3]/90 transition-colors disabled:opacity-60"
             >
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-              Save
+              {form.published ? "Save" : "Save as draft"}
             </button>
           </div>
         </div>
-
-        {errorBanner}
-
-        <div className="space-y-10 divide-y divide-[#EDE8E0]/10 [&>*:not(:first-child)]:pt-10">
-          {basicsSection}
-          {storySection}
-          {coverSection}
-          {visibilitySection}
-        </div>
-      </form>
-    );
-  }
-
-  // New project: a short guided flow, one thing at a time.
-  return (
-    <div className="space-y-8 pb-16">
-      <div>
-        <h1 className="text-xl font-light mb-5">New project</h1>
-        <ol className="flex items-center gap-2 flex-wrap">
-          {WIZARD_STEPS.map((label, i) => (
-            <li key={label} className="flex items-center gap-2">
-              <span
-                className={`inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border transition-colors ${
-                  i === step
-                    ? "border-[#5E9AA3]/60 bg-[#5E9AA3]/10 text-[#5E9AA3]"
-                    : i < step
-                      ? "border-[#EDE8E0]/15 text-[#EDE8E0]/50"
-                      : "border-[#EDE8E0]/10 text-[#EDE8E0]/30"
-                }`}
-              >
-                {i < step ? <Check size={12} /> : <span className="tabular-nums">{i + 1}</span>}
-                {label}
-              </span>
-              {i < WIZARD_STEPS.length - 1 && <span className="text-[#EDE8E0]/15">—</span>}
-            </li>
-          ))}
-        </ol>
       </div>
-
-      {errorBanner}
-
-      <div className="min-h-[20rem]">
-        {step === 0 && basicsSection}
-        {step === 1 && storySection}
-        {step === 2 && coverSection}
-        {step === 3 && (
-          <div className="space-y-8">
-            {visibilitySection}
-            <div className="rounded-xl border border-[#EDE8E0]/10 p-4 space-y-1.5 text-sm text-[#EDE8E0]/70">
-              <p className="text-[#EDE8E0]">{form.title || "Untitled"}</p>
-              <p>
-                {form.scope} · {form.location || "—"} · {form.year ?? "Ongoing"}
-              </p>
-              <p className="text-[#EDE8E0]/50">{form.summary}</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-center justify-between pt-4 border-t border-[#EDE8E0]/10">
-        <button
-          type="button"
-          onClick={goBack}
-          disabled={step === 0}
-          className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded-full border border-[#EDE8E0]/15 text-[#EDE8E0]/70 hover:bg-[#EDE8E0]/5 transition-colors disabled:opacity-0 disabled:pointer-events-none"
-        >
-          <ArrowLeft size={14} />
-          Back
-        </button>
-
-        {step < WIZARD_STEPS.length - 1 ? (
-          <button
-            type="button"
-            onClick={goNext}
-            className="inline-flex items-center gap-1.5 text-sm px-5 py-2.5 rounded-full bg-[#5E9AA3] text-[#0B0C0C] font-medium hover:bg-[#5E9AA3]/90 transition-colors"
-          >
-            Next
-            <ArrowRight size={14} />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={save}
-            disabled={saving}
-            className="inline-flex items-center gap-1.5 text-sm px-5 py-2.5 rounded-full bg-[#5E9AA3] text-[#0B0C0C] font-medium hover:bg-[#5E9AA3]/90 transition-colors disabled:opacity-50"
-          >
-            {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-            Save project
-          </button>
-        )}
-      </div>
-    </div>
+    </form>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import ProjectImage from "@/components/ProjectImage";
-import type { RoomImage } from "@/lib/types";
+import ProjectImage from "@/components/ui/ProjectImage";
+import type { RoomImage } from "@/lib/content/types";
 import { useProjectLightbox } from "./ProjectLightboxProvider";
 
 type LightboxImageProps = {
@@ -13,8 +13,8 @@ type LightboxImageProps = {
   priority?: boolean;
 };
 
-/** A ProjectImage that opens the shared project lightbox, at this image's
- * index, when clicked. Must be rendered inside a ProjectLightboxProvider. */
+/** A ProjectImage that opens the shared project lightbox at its index when
+ * activated. Must be rendered inside a ProjectLightboxProvider. */
 export default function LightboxImage({ image, index, sizes, className, priority }: LightboxImageProps) {
   const { open } = useProjectLightbox();
   return (
@@ -22,7 +22,7 @@ export default function LightboxImage({ image, index, sizes, className, priority
       type="button"
       onClick={() => open(index)}
       aria-label={`Open image: ${image.alt}`}
-      className={`block h-full w-full ${className ?? ""}`}
+      className={`block h-full w-full cursor-zoom-in ${className ?? ""}`}
     >
       <ProjectImage image={image} sizes={sizes} priority={priority} className="h-full w-full" />
     </button>

@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import ScrollWords from "@/components/motion/ScrollWords";
 import { getProject, getProjects } from "@/lib/data";
 import ProjectLightboxProvider from "@/components/projects/ProjectLightboxProvider";
 import LightboxImage from "@/components/projects/LightboxImage";
@@ -9,6 +8,9 @@ import RoomIndex from "@/components/projects/RoomIndex";
 import RoomChapter from "@/components/projects/RoomChapter";
 import NextProjectBand from "@/components/projects/NextProjectBand";
 import { findImageMeta, projectImages, slugifyRoom } from "@/components/projects/roomLayout";
+
+import JsonLd from "@/components/seo/JsonLd";
+import { getBreadcrumbSchema, getProjectSchema } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -21,14 +23,33 @@ export async function generateMetadata(props: PageProps<"/projects/[slug]">): Pr
   const { slug } = await props.params;
   const project = await getProject(slug);
   if (!project) return {};
+
+  const title = `${project.title} — ${project.scope} in ${project.location}`;
+  const description = project.summary || project.description.slice(0, 160);
+
   return {
-    title: project.title,
-    description: project.summary,
+    title,
+    description,
+    alternates: {
+      canonical: `/projects/${project.slug}`,
+    },
     openGraph: {
-      title: project.title,
-      description: project.summary,
-      images: [{ url: project.coverImage }],
+      title: `${title} — Studio Envelope`,
+      description,
+      url: `/projects/${project.slug}`,
+      images: [
+        {
+          url: project.coverImage,
+          alt: project.title,
+        },
+      ],
       type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} — Studio Envelope`,
+      description,
+      images: [project.coverImage],
     },
   };
 }
@@ -66,21 +87,31 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
   const roomLinks = project.rooms.map((room) => ({ id: slugifyRoom(room.name), name: room.name }));
   const descriptionParagraphs = project.description.split("\n\n");
 
+  const projectSchema = getProjectSchema(project);
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Projects", url: "/projects" },
+    { name: project.title, url: `/projects/${project.slug}` },
+  ]);
+
   return (
     <ProjectLightboxProvider images={lightboxImages}>
+      <JsonLd schema={projectSchema} />
+      <JsonLd schema={breadcrumbSchema} />
       <article>
         <ProjectHero
           title={project.title}
           subtitle={project.subtitle}
-          scope={project.scope}
           cover={cover}
           datasheetItems={datasheetItems}
         />
 
         <div className="band-dark section-y">
-          <div className="container-x max-w-[68ch] space-y-6">
+          <div className="container-x max-w-[68ch] space-y-5 sm:space-y-6">
             {descriptionParagraphs.map((para, i) => (
-              <ScrollWords key={i} text={para} className="font-display text-2xl italic leading-snug sm:text-3xl" />
+              <p key={i} className="font-display text-2xl italic leading-snug sm:text-3xl">
+                {para}
+              </p>
             ))}
             {hasRenders && <p className="text-sm text-mist">Some images are design visualisations.</p>}
           </div>
@@ -93,8 +124,6 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
             <RoomChapter
               key={room.name}
               room={room}
-              index={i}
-              total={project.rooms.length}
               tone={i % 2 === 0 ? "light" : "dark"}
               indexBySrc={indexBySrc}
             />
@@ -104,7 +133,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
         {project.drawings.length > 0 && (
           <div className="band-bone section-y">
             <div className="container-x">
-              <p className="label mb-10 text-muted">Drawings</p>
+              <h2 className="label mb-8 text-muted sm:mb-10">Drawings</h2>
               <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                 {project.drawings.map((drawing) => (
                   <div key={drawing.src} className="bg-paper-2 p-3 sm:p-4">

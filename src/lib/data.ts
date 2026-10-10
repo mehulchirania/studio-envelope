@@ -4,14 +4,14 @@
 // Firebase client SDK for reads, which works fine server-side against
 // Firestore's public read rules and avoids needing admin credentials).
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import type { Project, Room } from "./types";
-import { seedProjects } from "./seed";
-import { getDb, isFirebaseConfigured } from "./firebase";
+import type { Project, Room } from "@/lib/content/types";
+import { seedProjects } from "@/lib/content/seed";
+import { getDb, isFirebaseConfigured } from "@/lib/firebase/client";
 
 /** Fills in fields that may be missing on older Firestore documents written
  * before the room/drawing model existed, so the rest of the app can assume a
  * complete Project shape. */
-function normalizeProject(data: Record<string, unknown>, id: string): Project {
+export function normalizeProject(data: Record<string, unknown>, id: string): Project {
   const legacyGallery = Array.isArray(data.gallery) ? (data.gallery as string[]) : [];
   const rooms: Room[] = Array.isArray(data.rooms) && data.rooms.length > 0
     ? (data.rooms as Room[])

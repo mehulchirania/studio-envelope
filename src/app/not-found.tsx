@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import Logo from "@/components/Logo";
+import Logo from "@/components/ui/Logo";
 
 export default function NotFound() {
   return (
     <div className="flex min-h-[80svh] flex-col items-center justify-center px-5 py-32 text-center">
-      <Logo variant="teal" showWordmark={false} />
+      <Logo variant="teal" />
       <p className="label mt-10 mb-4">404</p>
       <h1 className="h1 text-ink">This page doesn&apos;t exist</h1>
       <p className="mt-6 max-w-md text-base text-muted">

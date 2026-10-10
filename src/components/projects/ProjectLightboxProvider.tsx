@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
-import type { RoomImage } from "@/lib/types";
-import Lightbox from "@/components/Lightbox";
+import type { RoomImage } from "@/lib/content/types";
+import Lightbox from "@/components/ui/Lightbox";
 
 type LightboxContextValue = {
   open: (index: number) => void;

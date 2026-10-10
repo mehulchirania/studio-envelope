@@ -9,13 +9,13 @@ an admin panel at `/admin`.
 - **Vercel project:** `studio-envelope` (Blob store `studio-envelope-images`)
 
 **The site works with zero configuration.** Without any env vars, the public site reads from local seed
-data (`src/lib/seed.ts`) and the contact form just logs to the console. The backend is entirely opt-in —
+data (`src/lib/content/seed.ts`) and the contact form just logs to the console. The backend is entirely opt-in —
 wire it up whenever you're ready to manage content dynamically and store real contact submissions.
 
 ## Stack
 
 - Next.js 16.3.5 (App Router, `src/` dir, `@/*` alias)
-- TypeScript, Tailwind v4
+- TypeScript, Tailwind v4 (no animation libraries; scrolling is native)
 - Firebase (client SDK v12) — Firestore + Auth only, on the free Spark plan (no Storage, no
   service-account/billing requirement)
 - Vercel Blob — admin image uploads (cover + gallery images)
@@ -29,30 +29,42 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000). No `.env.local` is required for this to work — the
-public site falls back to seed data, and `/admin` shows a "Firebase not configured" screen instead of
-crashing.
+public site falls back to seed data. `/admin` still opens and signs in (see "Admin panel"), but loading or
+saving projects shows "Firebase isn't configured on the server" until the backend below is set up.
 
-## Project structure (backend-relevant parts)
+## Project structure
 
 ```
-src/lib/
-  types.ts        Project / ContactMessage types (source of truth)
-  site.ts         Static site config (name, contact info, socials)
-  seed.ts         Local seed project data (fallback when Firebase isn't configured, or Firestore is empty)
-  firebase.ts     Firebase client SDK bootstrap + isFirebaseConfigured flag
-  server-auth.ts  Server-only helper: verifies a Firebase ID token against ADMIN_EMAILS
-  data.ts         Public read API: getProjects / getFeaturedProjects / getProject
-  contact.ts      Public write API: submitContact (client-side)
-  admin-api.ts    Admin-only API: auth, project CRUD, image upload/delete, messages inbox, revalidation,
-                  seed data import
-
-src/app/admin/    Admin panel (client-side, noindex)
-src/app/api/revalidate/route.ts   Revalidation endpoint, called by the admin panel after writes
-src/app/api/upload/route.ts       Issues Vercel Blob client-upload tokens (admin-only)
-src/app/api/upload/delete/route.ts   Deletes a Blob image by URL (admin-only)
-
-firestore.rules, firestore.indexes.json   Firestore security rules (includes the hardcoded admin allowlist)
+src/
+  app/                    Routes only: pages, layout, API routes, sitemap/robots/manifest/OG image
+    admin/                Admin panel pages (client-side, noindex)
+    api/admin/            Admin API: login/logout/session, projects CRUD + order + import, messages
+    api/upload            Vercel Blob upload token (signed-in admins only)
+  components/
+    layout/               Header, Footer, HideOnAdmin, BackToTop
+    ui/                   Reusable pieces: Button, Logo, Seal, SectionHeader, PageHero,
+                          ProjectImage, Datasheet, Lightbox
+    home/                 Hero, FeaturedProjects
+    projects/             ProjectCard/Grid, ProjectHero, RoomChapter, RoomIndex, lightbox
+                          provider + image, NextProjectBand, roomLayout.ts (layout helpers)
+    services/             ServiceGroup, ProcessStep, FaqItem
+    contact/              ContactForm
+    seo/                  JsonLd
+    admin/                Admin-only components
+  lib/
+    content/              What the site says: site.ts (studio facts), services.ts, seed.ts
+                          (fallback projects), types.ts, images.ts
+    firebase/             client.ts (public reads), admin-server.ts (server-only admin reads/writes),
+                          contact.ts
+    admin/                Admin internals: users.ts (the logins), session.ts (signed cookie), http.ts,
+                          validate.ts (form payload checks), client.ts (browser fetch helpers)
+    data.ts               Public read API: getProjects / getFeaturedProjects / getProject
+    seo.ts                SITE_URL, pageMetadata(), JSON-LD builders
 ```
+
+`firestore.rules` and `firestore.indexes.json` hold the security rules (only the server's private Firebase
+account can write; see "Admin panel"). Brand files and the client brief live in `assets/`; web copies of
+the logo are in `public/brand/`.
 
 ## Setting up the backend
 
@@ -61,7 +73,7 @@ firestore.rules, firestore.indexes.json   Firestore security rules (includes the
 1. **Create a project** at [console.firebase.google.com](https://console.firebase.google.com). The free
    **Spark** plan is enough — this app never uses Storage or any paid Firebase product.
 2. **Enable products**: Build → Firestore Database (production mode), Build → Authentication → Sign-in
-   method → enable **Google**.
+   method → enable **Email/Password** (Google is *not* used any more).
 3. **Register a Web app** (Project settings → General → Your apps → Add app → Web) and copy the config
    values into a new `.env.local` (copy `.env.local.example` as a starting point):
 
@@ -71,26 +83,26 @@ firestore.rules, firestore.indexes.json   Firestore security rules (includes the
    NEXT_PUBLIC_FIREBASE_PROJECT_ID=
    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
    NEXT_PUBLIC_FIREBASE_APP_ID=
-   ADMIN_EMAILS=you@example.com
    ```
 
-4. **Add yourself as an admin.** There's no `config/admins` Firestore doc and no seed script for it (this
-   project has no service account) — the admin allowlist is hardcoded directly in `firestore.rules`. Open
-   `firestore.rules`, find the `isAdmin()` function near the top, and add your Google account's email to
-   the list:
+4. **Create the server's private Firebase account.** The admin logins (below) aren't Firebase users;
+   instead the server signs in to Firebase as one private email/password account to read and write on their
+   behalf, and `firestore.rules` trusts only that account. Pick a long random password, then create the
+   account once (Authentication → Users → Add user, or the one-liner below) and put the same values in
+   `.env.local` **and** in Vercel (Project → Settings → Environment Variables). Never commit them.
 
-   ```js
-   function isAdmin() {
-     return isSignedIn()
-       && request.auth.token.email_verified == true
-       && request.auth.token.email in [
-         'you@example.com'
-       ];
-   }
+   ```
+   FIREBASE_ADMIN_EMAIL=cms@studio-envelope.invalid      # must match the email in firestore.rules
+   FIREBASE_ADMIN_PASSWORD=<long random password>
+   ADMIN_SESSION_SECRET=<32+ random characters>          # signs the admin login cookie
    ```
 
-   Also add the same email to `ADMIN_EMAILS` above — that env var is what `/api/revalidate` and
-   `/api/upload` check server-side, so the two lists must match.
+   ```bash
+   # run once, replacing the placeholders (uses your NEXT_PUBLIC_FIREBASE_API_KEY)
+   curl -X POST "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"email":"cms@studio-envelope.invalid","password":"<same password>","returnSecureToken":false}'
+   ```
 
 5. **Deploy Firestore rules and indexes** using the Firebase CLI (run via `npx`, nothing global to
    install):
@@ -101,8 +113,7 @@ firestore.rules, firestore.indexes.json   Firestore security rules (includes the
    npx firebase-tools deploy --only firestore
    ```
 
-6. Restart `npm run dev`. `/admin` now lets you sign in with Google (an account whose email is in both
-   `firestore.rules` and `ADMIN_EMAILS`).
+6. Restart `npm run dev`. `/admin` now shows the username/password sign-in (see "Admin panel").
 
 ### 2. Vercel Blob (image uploads)
 
@@ -121,33 +132,50 @@ firestore.rules, firestore.indexes.json   Firestore security rules (includes the
 
 ### Data model
 
-- **`projects/{id}`** — matches the `Project` type in `src/lib/types.ts`. Publicly readable only where
-  `published == true`; admins can read/write everything. Doc id is the project's slug when created via the
-  admin panel's "Import sample projects" button, or via `addDoc` (a random id) when created through the
-  regular "New project" form.
+- **`projects/{slug}`** — matches the `Project` type in `src/lib/content/types.ts`; the doc id is the
+  project's slug (its page URL, fixed when the project is created). Publicly readable only where
+  `published == true`; only the server's private account can read drafts or write.
 - **`messages/{id}`** — contact form submissions. Anyone can `create` one (validated server-side by
   `firestore.rules` — allowed fields, size limits, `read: false`, `createdAt` must equal the server time);
-  only admins can read, mark as read, or delete. The admin panel also uses a read attempt on this
-  collection as its client-side "am I an admin?" check.
-- **Vercel Blob** `projects/{slug}/{filename}` (random suffix added) — publicly readable images, uploads
-  and deletes restricted to admins via `/api/upload` and `/api/upload/delete`, images only, 10MB max.
+  only the server's private account can read, mark as read, or delete.
+- **Vercel Blob** `projects/{slug}/{filename}` (random suffix added) — publicly readable images. Upload
+  tokens are only issued to signed-in admins by `/api/upload`; images only, 25MB max. Images dropped from
+  a project (or from a deleted project) are removed from Blob automatically on save.
 
 ## Admin panel
 
-Visit `/admin` and sign in with a Google account listed in both `firestore.rules` and `ADMIN_EMAILS`.
+Visit `/admin` and sign in with one of the two logins. Both are full admins; there's no difference in access.
 
-- **Projects** — list (including unpublished), create/edit/delete, toggle Published and Featured, reorder
-  with the up/down arrows (persists the `order` field), auto-generated slug from the title (editable). When
-  the `projects` collection is empty, an **"Import sample projects"** button writes the site's local seed
-  data (`src/lib/seed.ts`) into Firestore so the panel — and the live site — aren't empty before you've
-  added real content.
-- **Project form** — all `Project` fields; cover image and gallery images upload straight from the browser
-  to Vercel Blob with progress, preview, remove (which also deletes the Blob object), and (for the gallery)
-  reorder.
+| Username | Password   |
+| -------- | ---------- |
+| `admin`  | `admin`    |
+| `prachi` | `password` |
+
+> **Change these before relying on the site.** They are trivially guessable, and anyone who signs in can edit
+> or delete every project. To set different logins without touching code, set the environment variable
+> `ADMIN_USERS` (locally in `.env.local`, in production in Vercel) to a comma-separated `username:password`
+> list, e.g. `ADMIN_USERS="admin:a-long-passphrase,prachi:another-long-passphrase"`, then restart/redeploy.
+> The defaults live in `src/lib/admin/users.ts`. Note the passwords in this README are visible to anyone who
+> can read the repository.
+
+- **Projects** — one ordered list of everything on the website (drafts marked "Draft"). Use the arrows to
+  reorder (this is the order visitors see), the pencil to edit, the arrow-out icon to open the live page, the
+  bin to delete. While the database is empty the site shows its built-in sample projects; the list shows
+  them too, with a button to save them to the database so they become editable.
+- **Add / edit a project** — title, location, year, status, type of work, area, credit, tagline, summary and
+  description, a cover photo, rooms each with their own photos (reorder, describe, mark as photograph or
+  3D visualisation, "use as cover"), and drawings. Images upload straight from the browser to Vercel Blob
+  (drag and drop works). Switch **Published** off to keep a project as a draft; a published project needs a
+  location, summary, description and cover photo.
 - **Messages** — inbox of contact submissions, newest first, mark as read on open, delete.
 
-Every write triggers a call to `/api/revalidate` so the public site (statically rendered/cached pages)
-picks up the change immediately instead of waiting for the next deploy.
+Every save, reorder and delete revalidates the public pages on the server, so the website shows the change
+on the next page load, with no redeploy.
+
+How sign-in works: `/api/admin/login` checks the username/password on the server and sets a signed,
+`httpOnly`, same-site session cookie (7 days; needs `ADMIN_SESSION_SECRET`). Every `/api/admin/*` route
+checks that cookie, then reads/writes Firestore using the server's private Firebase account (see "Setting up
+the backend", step 4). The browser never talks to Firestore for admin work.
 
 ## Deploying to Vercel
 
@@ -155,16 +183,22 @@ picks up the change immediately instead of waiting for the next deploy.
 2. Add a Vercel Blob store (Storage → Create Database → Blob) and connect it to the project — this
    provisions `BLOB_READ_WRITE_TOKEN` automatically.
 3. Add the remaining environment variables in Project Settings → Environment Variables: the
-   `NEXT_PUBLIC_FIREBASE_*` vars and `ADMIN_EMAILS`.
-4. Deploy. No Firebase admin/service-account credentials are needed on Vercel — the app only ever uses the
-   public client SDK at runtime, both for the public site's server-side reads and for the admin panel.
-5. In the Firebase console, add your Vercel domain(s) to Authentication → Settings → Authorized domains so
-   Google sign-in works on the deployed site.
-6. Sign in to `/admin` on the deployed site and click **"Import sample projects"** (shown automatically
-   while `projects` is empty) to populate Firestore, or start adding real projects right away.
+   `NEXT_PUBLIC_FIREBASE_*` vars plus `FIREBASE_ADMIN_EMAIL`, `FIREBASE_ADMIN_PASSWORD` and
+   `ADMIN_SESSION_SECRET` (and optionally `ADMIN_USERS`). A real Firebase service-account JSON is not needed.
+4. Deploy. In production `ADMIN_SESSION_SECRET` is required, otherwise sign-in is disabled.
+5. Sign in to `/admin` on the deployed site. While `projects` is empty the list shows the built-in samples
+   with a **"Save these projects and start editing"** button; or just start adding real projects.
+
+## Testing locally without touching production data
+
+`npx firebase-tools emulators:start --only firestore,auth` runs a local Firestore and Auth. With
+`NEXT_PUBLIC_USE_FIREBASE_EMULATORS="true"` in `.env.local`, both the public site and the admin API use the
+emulator (create the private account in it first with the `signUp` call from step 4 pointed at
+`http://127.0.0.1:9099/identitytoolkit.googleapis.com`). Image uploads still go to the real Blob store.
+Set the flag back to `"false"` (or remove it) to use the real project again.
 
 ## Notes
 
 - If Firestore is configured but a read fails for any reason — or succeeds with zero published projects
-  (e.g. right after step 6 above, before you've imported anything) — `getProjects()` falls back to the
-  local seed data rather than showing an empty site.
+  (e.g. before anything has been saved or published) — `getProjects()` falls back to the local seed data
+  rather than showing an empty site.

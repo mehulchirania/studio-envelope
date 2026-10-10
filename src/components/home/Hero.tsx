@@ -1,103 +1,27 @@
-"use client";
-
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import RevealText from "@/components/motion/RevealText";
-import type { RoomImage } from "@/lib/types";
+import Link from "next/link";
+import { ArrowDownRight } from "lucide-react";
+import type { RoomImage } from "@/lib/content/types";
 
-type Slide = { image: RoomImage; room: string };
-
-const INTERVAL_MS = 6000;
-
-const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
-function subscribeReducedMotion(callback: () => void) {
-  const media = window.matchMedia(REDUCED_MOTION_QUERY);
-  media.addEventListener("change", callback);
-  return () => media.removeEventListener("change", callback);
-}
-
-/**
- * Full-bleed 100svh opening: James Residence photos crossfade under a slow
- * Ken Burns drift, with a night gradient for legibility under the fixed
- * transparent header. The first slide (preloaded) and headline are plain
- * markup, visible without JS; only the autoplay interval and Ken Burns scale
- * are client-only, and never run under prefers-reduced-motion.
- */
-export default function Hero({ slides }: { slides: Slide[] }) {
-  const [index, setIndex] = useState(0);
-  const reducedMotion = useSyncExternalStore(
-    subscribeReducedMotion,
-    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
-    () => false
-  );
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const advance = useCallback(() => {
-    setIndex((i) => (i + 1) % slides.length);
-  }, [slides.length]);
-
-  useEffect(() => {
-    if (reducedMotion) return;
-    if (typeof document !== "undefined" && document.hidden) return;
-    timerRef.current = setInterval(advance, INTERVAL_MS);
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [reducedMotion, advance]);
-
-  const current = slides[index];
-
+/** Still opening image with the studio line. The first thing a visitor sees,
+ * so it stays calm: no slideshow, no motion. */
+export default function Hero({ image }: { image: RoomImage }) {
   return (
-    <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-night">
-      {slides.map((slide, i) => (
-        <div
-          key={slide.image.src}
-          className="absolute inset-0 overflow-hidden transition-opacity duration-[1400ms] ease-in-out"
-          style={{ opacity: i === index ? 1 : 0 }}
-          aria-hidden={i === index ? undefined : true}
-        >
-          <motion.div
-            className="relative h-full w-full"
-            initial={false}
-            animate={reducedMotion ? { scale: 1 } : { scale: i === index ? 1.12 : 1 }}
-            transition={{ duration: i === index ? INTERVAL_MS / 1000 + 1.4 : 0.8, ease: "linear" }}
-          >
-            <Image
-              src={slide.image.src}
-              alt={slide.image.alt}
-              fill
-              sizes="100vw"
-              preload={i === 0}
-              className="object-cover"
-            />
-          </motion.div>
-        </div>
-      ))}
+    <section className="relative h-[86svh] min-h-[520px] overflow-hidden bg-night sm:h-[92svh] sm:min-h-[600px]">
+      <Image src={image.src} alt={image.alt} fill sizes="100vw" priority className="object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-b from-abyss/72 via-abyss/10 to-abyss/82" />
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-abyss/55 via-abyss/10 to-abyss/85" />
+      <div className="container-x relative z-10 flex h-full flex-col justify-between pb-8 pt-24 sm:pb-14 sm:pt-32">
+        <p className="label text-bone">Art · Interiors · Architecture</p>
 
-      <div className="container-x relative z-10 flex h-full flex-col justify-between pb-10 pt-28 sm:pb-14 sm:pt-32">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <p className="label text-mist">Architecture &amp; Interiors — Bangalore</p>
-          <p className="label flex items-center gap-2 text-mist">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-marigold" aria-hidden="true" />
-            Scroll
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-10">
-          <h1 className="display-xl max-w-[18ch] text-bone">
-            <RevealText as="span" text="Spaces, sealed with" />{" "}
-            <RevealText as="span" text="care." delay={0.2} className="italic font-normal" />
+        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+          <h1 className="display-xl max-w-[12ch] text-bone">
+            Spaces, sealed with care.
+            <span className="sr-only"> — Architecture &amp; Interior Design Studio, Bangalore</span>
           </h1>
-
-          <div className="label shrink-0 text-mist">
-            <p className="tabular-nums">
-              {String(index + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
-            </p>
-            <p className="mt-1 text-bone">{current.room}</p>
-          </div>
+          <Link href="#studio" className="label flex min-h-11 items-center gap-2 text-bone">
+            Discover the studio <ArrowDownRight size={16} aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </section>

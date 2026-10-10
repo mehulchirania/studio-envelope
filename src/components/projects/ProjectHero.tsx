@@ -1,49 +1,30 @@
-import ParallaxImage from "@/components/motion/ParallaxImage";
-import RevealText from "@/components/motion/RevealText";
-import Datasheet from "@/components/Datasheet";
+import Image from "next/image";
+import Datasheet from "@/components/ui/Datasheet";
 
 type ProjectHeroProps = {
   title: string;
   subtitle?: string;
-  scope: string;
   cover: { src: string; alt: string; width: number; height: number };
   datasheetItems: { label: string; value: string }[];
 };
 
-/** Full-bleed 100svh parallax cover opening a project detail page: title +
- * subtitle overlaid on a night gradient, with the datasheet pinned as a bar
- * at the very bottom of the hero. Supplies its own top padding since the
- * fixed header is transparent over it. */
-export default function ProjectHero({ title, subtitle, scope, cover, datasheetItems }: ProjectHeroProps) {
+/** Full-bleed opening of a project page: the cover photo under a brown
+ * gradient, the title and subtitle, and the datasheet along the bottom.
+ * Supplies its own top padding since the fixed header overlays it. */
+export default function ProjectHero({ title, subtitle, cover, datasheetItems }: ProjectHeroProps) {
   return (
-    <div className="band-dark relative flex h-[100svh] min-h-[600px] flex-col overflow-hidden">
-      <div className="absolute inset-0">
-        <ParallaxImage
-          src={cover.src}
-          alt={cover.alt}
-          width={cover.width}
-          height={cover.height}
-          sizes="100vw"
-          priority
-          overlay
-          strength={0.08}
-          className="h-full w-full"
-        />
-      </div>
+    <div className="band-dark relative flex min-h-[88svh] flex-col overflow-hidden sm:min-h-[100svh]">
+      <Image src={cover.src} alt={cover.alt} fill priority sizes="100vw" className="object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-t from-night/90 via-night/20 to-abyss/50" aria-hidden="true" />
 
-      <div className="relative z-10 flex flex-1 flex-col justify-end pt-32 sm:pt-40">
-        <div className="container-x pb-10 sm:pb-14">
-          <p className="label mb-5 text-mist">{scope}</p>
-          <h1 className="display-xl max-w-5xl text-bone">
-            <RevealText text={title} />
-          </h1>
-          {subtitle && (
-            <p className="mt-5 max-w-2xl font-display text-2xl italic text-mist sm:text-3xl">{subtitle}</p>
-          )}
+      <div className="relative z-10 flex flex-1 flex-col justify-end pt-28 sm:pt-40">
+        <div className="container-x pb-8 sm:pb-12">
+          <h1 className="display-xl max-w-5xl text-bone">{title}</h1>
+          {subtitle && <p className="mt-4 max-w-2xl font-display text-xl italic text-mist sm:mt-5 sm:text-3xl">{subtitle}</p>}
         </div>
       </div>
 
-      <div className="relative z-10 pb-6 sm:pb-8">
+      <div className="relative z-10 pb-5 sm:pb-8">
         <div className="container-x">
           <Datasheet items={datasheetItems} tone="dark" />
         </div>

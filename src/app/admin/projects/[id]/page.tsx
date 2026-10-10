@@ -1,9 +1,10 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import Link from "next/link";
 import { Loader2 } from "lucide-react";
-import type { Project } from "@/lib/types";
-import { getProjectById } from "@/lib/admin-api";
+import type { Project } from "@/lib/content/types";
+import { getProject } from "@/lib/admin/client";
 import ProjectForm from "@/components/admin/ProjectForm";
 
 export default function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
@@ -12,9 +13,13 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
 
   useEffect(() => {
     let cancelled = false;
-    getProjectById(id).then((p) => {
-      if (!cancelled) setProject(p);
-    });
+    getProject(id)
+      .then((p) => {
+        if (!cancelled) setProject(p);
+      })
+      .catch(() => {
+        if (!cancelled) setProject(null);
+      });
     return () => {
       cancelled = true;
     };
@@ -22,15 +27,22 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
 
   if (project === undefined) {
     return (
-      <div className="flex items-center gap-2 text-sm text-[#EDE8E0]/50 py-10 justify-center">
+      <div className="flex items-center justify-center gap-2 text-sm text-[#EDE8E0]/50 py-16">
         <Loader2 size={16} className="animate-spin" /> Loading…
       </div>
     );
   }
 
   if (project === null) {
-    return <p className="text-sm text-[#EDE8E0]/50 py-10 text-center">Project not found.</p>;
+    return (
+      <div className="text-center py-16 space-y-3">
+        <p className="text-sm text-[#EDE8E0]/60">That project couldn&rsquo;t be found.</p>
+        <Link href="/admin" className="text-sm text-[#5E9AA3] hover:underline">
+          Back to all projects
+        </Link>
+      </div>
+    );
   }
 
-  return <ProjectForm id={id} initial={project} />;
+  return <ProjectForm project={project} />;
 }

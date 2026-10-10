@@ -2,15 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { Loader2, Mail, MailOpen, Trash2 } from "lucide-react";
-import { deleteMessage, listMessages, markMessageRead, type AdminMessage } from "@/lib/admin-api";
+import { deleteMessage, listMessages, setMessageRead } from "@/lib/admin/client";
+import type { AdminMessage } from "@/lib/admin/types";
 
 function formatDate(msg: AdminMessage): string {
   if (!msg.createdAt) return "Just now";
-  try {
-    return msg.createdAt.toDate().toLocaleString();
-  } catch {
-    return "";
-  }
+  return new Date(msg.createdAt).toLocaleString();
 }
 
 export default function MessagesPage() {
@@ -48,7 +45,7 @@ export default function MessagesPage() {
     if (next && !msg.read) {
       setBusyId(msg.id);
       try {
-        await markMessageRead(msg.id, true);
+        await setMessageRead(msg.id, true);
         setMessages((prev) => prev && prev.map((m) => (m.id === msg.id ? { ...m, read: true } : m)));
       } catch {
         /* non-fatal */

@@ -1,92 +1,49 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import Hero from "@/components/home/Hero";
-import StatementBand from "@/components/home/StatementBand";
-import StatsStrip from "@/components/home/StatsStrip";
-import ShowcaseGallery from "@/components/home/ShowcaseGallery";
-import ProjectsIndex from "@/components/home/ProjectsIndex";
-import ServicesSection from "@/components/home/ServicesSection";
-import PrincipalBand from "@/components/home/PrincipalBand";
-import InstagramStrip from "@/components/home/InstagramStrip";
+import FeaturedProjects from "@/components/home/FeaturedProjects";
+import { findImage } from "@/lib/content/images";
 import { getProjects } from "@/lib/data";
-import { site } from "@/lib/site";
-import type { Project, RoomImage } from "@/lib/types";
+import { pageMetadata } from "@/lib/seo";
+import { site } from "@/lib/content/site";
 
 export const metadata: Metadata = {
-  title: { absolute: "Studio Envelope — Architecture & Interior Design, Bangalore" },
-  description: site.description,
+  ...pageMetadata({ title: "Studio Envelope — Architecture & Interior Design Studio, Bangalore", description: site.description, path: "/" }),
+  title: { absolute: "Studio Envelope — Architecture & Interior Design Studio, Bangalore" },
 };
-
-/** Finds a room image by matching the end of its filename, e.g. "kitchen-dining.jpg". */
-function findImage(project: Project, filename: string): RoomImage {
-  const image = project.rooms
-    .flatMap((room) => room.images.map((img) => ({ ...img, room: room.name })))
-    .find((img) => img.src.endsWith(filename));
-  if (!image) throw new Error(`Home page: expected image "${filename}" on ${project.slug}`);
-  return image;
-}
-
-function findRoom(project: Project, filename: string): { image: RoomImage; room: string } {
-  const image = findImage(project, filename);
-  const room = project.rooms.find((r) => r.images.some((img) => img.src.endsWith(filename)));
-  return { image, room: room?.name ?? "" };
-}
-
-function datasheetFor(project: Project) {
-  return [
-    { label: "Location", value: project.location },
-    { label: "Area", value: project.area ?? "—" },
-    { label: "Scope", value: project.scope },
-    { label: "Year", value: project.status === "Ongoing" ? "Ongoing" : String(project.year ?? "—") },
-  ];
-}
 
 export default async function Home() {
   const projects = await getProjects();
-  const james = projects.find((p) => p.slug === "james-residence");
-
-  if (!james) {
-    // Seed data always includes James Residence; guards TypeScript below.
-    return null;
-  }
-
-  const heroFilenames = ["kitchen-dining.jpg", "living.jpg", "master-bedroom-1.jpg", "kids-room.jpg", "tv-dining.jpg"];
-  const heroSlides = heroFilenames.map((filename) => findRoom(james, filename));
-
-  const showcaseFilenames = [
-    "kitchen-dining.jpg",
-    "office-desk.jpg",
-    "living.jpg",
-    "tv-dining.jpg",
-    "crockery-unit.jpg",
-    "parents-bedroom.jpg",
-    "master-bedroom-1.jpg",
-    "master-bath-vanity.jpg",
-  ];
-  const showcaseRooms = showcaseFilenames.map((filename) => findRoom(james, filename));
-
-  const projectRows = projects.map((project) => {
-    const coverRoomImage = project.rooms.flatMap((r) => r.images).find((img) => img.src === project.coverImage);
-    return {
-      project,
-      cover: {
-        src: project.coverImage,
-        alt: coverRoomImage?.alt ?? project.title,
-        width: coverRoomImage?.width ?? 1600,
-        height: coverRoomImage?.height ?? 1100,
-      },
-    };
-  });
+  const heroImage = findImage(projects.find((project) => project.slug === "james-residence"), "kitchen-dining.jpg");
 
   return (
     <>
-      <Hero slides={heroSlides} />
-      <StatementBand />
-      <StatsStrip />
-      <ShowcaseGallery project={james} datasheet={datasheetFor(james)} rooms={showcaseRooms} />
-      <ProjectsIndex rows={projectRows} />
-      <ServicesSection />
-      <PrincipalBand />
-      <InstagramStrip />
+      {heroImage && <Hero image={heroImage} />}
+
+      <section id="studio" className="band-bone scroll-mt-20">
+        <div className="container-x grid gap-8 py-14 sm:py-24 lg:grid-cols-[0.65fr_1.35fr] lg:gap-20">
+          <p className="label pt-2">Studio Envelope</p>
+          <div>
+            <p className="max-w-[24ch] font-display text-[clamp(30px,4.5vw,64px)] font-light leading-[1.08] text-ink">
+              Thoughtful homes, shaped around the people who live in them.
+            </p>
+            <p className="mt-6 max-w-2xl text-base leading-7 text-muted sm:mt-8 sm:text-lg">
+              We bring architecture, interiors and styling together in one considered process—balancing clarity, character and everyday ease.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 sm:mt-10">
+              <Link href="/about" className="link-arrow label py-2">
+                About the studio <ArrowUpRight size={15} aria-hidden="true" />
+              </Link>
+              <Link href="/services" className="link-arrow label py-2">
+                Our services <ArrowUpRight size={15} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <FeaturedProjects projects={projects} />
     </>
   );
 }

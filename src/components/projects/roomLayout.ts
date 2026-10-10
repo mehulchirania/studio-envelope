@@ -1,4 +1,4 @@
-import type { Project, RoomImage } from "@/lib/types";
+import type { Project, RoomImage } from "@/lib/content/types";
 
 /** Turns a room name into an anchor id, e.g. "Kids' Washroom" -> "kids-washroom". */
 export function slugifyRoom(name: string): string {

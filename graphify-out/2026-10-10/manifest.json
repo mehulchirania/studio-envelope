@@ -1,0 +1,582 @@
+{
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\.claude\\launch.json": {
+    "mtime": 1790059100.367731,
+    "ast_hash": "d83b59ba2c841cb3ba8e2cb8991fa89a",
+    "semantic_hash": "d83b59ba2c841cb3ba8e2cb8991fa89a"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\.impeccable\\hook.cache.json": {
+    "mtime": 1790164319.2000809,
+    "ast_hash": "2a0698cea4598e84db0dc652f0963ad8",
+    "semantic_hash": "2a0698cea4598e84db0dc652f0963ad8"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\.vercel\\repo.json": {
+    "mtime": 1790161906.2331674,
+    "ast_hash": "62e0d2bc4eced7cde284c606bd0a2fc1",
+    "semantic_hash": "62e0d2bc4eced7cde284c606bd0a2fc1"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\eslint.config.mjs": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "6c4307ffa009658f5c97f5629094c0c2",
+    "semantic_hash": "6c4307ffa009658f5c97f5629094c0c2"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\firebase.json": {
+    "mtime": 1790162225.6326663,
+    "ast_hash": "503ed0fc81576f32148f4a81b4b2676f",
+    "semantic_hash": "503ed0fc81576f32148f4a81b4b2676f"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\firestore.indexes.json": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "a3b22741aac9f305306d09ee48527622",
+    "semantic_hash": "a3b22741aac9f305306d09ee48527622"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\next-env.d.ts": {
+    "mtime": 1791618383.982781,
+    "ast_hash": "0e4a65e8b2b9aa3ed0f8957b9406bd41",
+    "semantic_hash": "0e4a65e8b2b9aa3ed0f8957b9406bd41"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\next.config.ts": {
+    "mtime": 1790062281.5133798,
+    "ast_hash": "176ac6628b1e4e8a4e7f423c8af8bfd4",
+    "semantic_hash": "176ac6628b1e4e8a4e7f423c8af8bfd4"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\package.json": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "ff2d99251f4f2b226bc5f14fe56c40e8",
+    "semantic_hash": "ff2d99251f4f2b226bc5f14fe56c40e8"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\postcss.config.mjs": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "481fac0fdecd70e1821cc30b86030c1a",
+    "semantic_hash": "481fac0fdecd70e1821cc30b86030c1a"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\about\\page.tsx": {
+    "mtime": 1791618362.2044692,
+    "ast_hash": "a29bb193c2f2bd795c172100cd108425",
+    "semantic_hash": "a29bb193c2f2bd795c172100cd108425"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\admin\\layout.tsx": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "0fe68995e05f5fda6d0bc87c2927ae55",
+    "semantic_hash": "0fe68995e05f5fda6d0bc87c2927ae55"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\admin\\messages\\page.tsx": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "d1b00d0d2f1535cf23a48cfd6a4bf518",
+    "semantic_hash": "d1b00d0d2f1535cf23a48cfd6a4bf518"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\admin\\page.tsx": {
+    "mtime": 1790164307.509153,
+    "ast_hash": "4783885a933adda259ad6985d4bb2b7a",
+    "semantic_hash": "4783885a933adda259ad6985d4bb2b7a"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\admin\\projects\\[id]\\page.tsx": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "8666fe53f175af2b486c493bae347e45",
+    "semantic_hash": "8666fe53f175af2b486c493bae347e45"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\admin\\projects\\new\\page.tsx": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "2006dd2ca2893c6f3c236ef31d4fba26",
+    "semantic_hash": "2006dd2ca2893c6f3c236ef31d4fba26"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\api\\revalidate\\route.ts": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "9d8344554789e0ea0ec835ea0130fd44",
+    "semantic_hash": "9d8344554789e0ea0ec835ea0130fd44"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\api\\upload\\delete\\route.ts": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "c0effdaf1d56add5d703e823221ddf0f",
+    "semantic_hash": "c0effdaf1d56add5d703e823221ddf0f"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\api\\upload\\route.ts": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "c5096b89513143d2832f056e4a09cd3f",
+    "semantic_hash": "c5096b89513143d2832f056e4a09cd3f"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\contact\\page.tsx": {
+    "mtime": 1790064786.3406913,
+    "ast_hash": "cbf123c15df2861ac0263517d61b8f02",
+    "semantic_hash": "cbf123c15df2861ac0263517d61b8f02"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\layout.tsx": {
+    "mtime": 1790162623.9818153,
+    "ast_hash": "6d9ee16053de7ebd947a54773c342983",
+    "semantic_hash": "6d9ee16053de7ebd947a54773c342983"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\not-found.tsx": {
+    "mtime": 1790062413.632102,
+    "ast_hash": "287904a10fc77e7f185e77c071a07366",
+    "semantic_hash": "287904a10fc77e7f185e77c071a07366"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\page.tsx": {
+    "mtime": 1791617780.852874,
+    "ast_hash": "6eef4dc07c3c250bcfb81c47c9efdfab",
+    "semantic_hash": "6eef4dc07c3c250bcfb81c47c9efdfab"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\projects\\[slug]\\page.tsx": {
+    "mtime": 1790064916.8283803,
+    "ast_hash": "34c50ff4712765d904e34ab260a20b8a",
+    "semantic_hash": "34c50ff4712765d904e34ab260a20b8a"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\projects\\page.tsx": {
+    "mtime": 1791617790.0945282,
+    "ast_hash": "090d9ea5a083ad56f6eb1cf52ab613d8",
+    "semantic_hash": "090d9ea5a083ad56f6eb1cf52ab613d8"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\robots.ts": {
+    "mtime": 1790161085.6285412,
+    "ast_hash": "3651a700f878668821733d060ea94acb",
+    "semantic_hash": "3651a700f878668821733d060ea94acb"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\services\\page.tsx": {
+    "mtime": 1790064907.480697,
+    "ast_hash": "0ff76ade0ee81dd006de8594efefef92",
+    "semantic_hash": "0ff76ade0ee81dd006de8594efefef92"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\sitemap.ts": {
+    "mtime": 1790161082.0150723,
+    "ast_hash": "6adb340f7024b01dbcd054f6b98b6b42",
+    "semantic_hash": "6adb340f7024b01dbcd054f6b98b6b42"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\template.tsx": {
+    "mtime": 1790064052.1327395,
+    "ast_hash": "e89ca7e1930c1a04be1f2071775fac50",
+    "semantic_hash": "e89ca7e1930c1a04be1f2071775fac50"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\ContactForm.tsx": {
+    "mtime": 1790064849.3517795,
+    "ast_hash": "b6cf646fdc2cc1f6e19e46c35352b0e3",
+    "semantic_hash": "b6cf646fdc2cc1f6e19e46c35352b0e3"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\Datasheet.tsx": {
+    "mtime": 1790064115.9672203,
+    "ast_hash": "a9ec78aa26047c787d525704f5f0adcd",
+    "semantic_hash": "a9ec78aa26047c787d525704f5f0adcd"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\Footer.tsx": {
+    "mtime": 1791618351.6650856,
+    "ast_hash": "a85500ecaaf168ef1eb01c140de22df3",
+    "semantic_hash": "a85500ecaaf168ef1eb01c140de22df3"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\Header.tsx": {
+    "mtime": 1791618351.6625588,
+    "ast_hash": "ab2ad93662ffd43906a251d97553478c",
+    "semantic_hash": "ab2ad93662ffd43906a251d97553478c"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\HideOnAdmin.tsx": {
+    "mtime": 1790162617.3816617,
+    "ast_hash": "3a1893ce7cc938f67f3617ed4c2bc129",
+    "semantic_hash": "3a1893ce7cc938f67f3617ed4c2bc129"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\Lightbox.tsx": {
+    "mtime": 1790064130.8502712,
+    "ast_hash": "1f596cba00a64f0c4519b08ede396684",
+    "semantic_hash": "1f596cba00a64f0c4519b08ede396684"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\Logo.tsx": {
+    "mtime": 1790062200.1843848,
+    "ast_hash": "83da52ae7e5b485beaf7200ad455703b",
+    "semantic_hash": "83da52ae7e5b485beaf7200ad455703b"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\PageHero.tsx": {
+    "mtime": 1791618362.2064176,
+    "ast_hash": "1f8384502af5fb67dfbe19221415dc1e",
+    "semantic_hash": "1f8384502af5fb67dfbe19221415dc1e"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\ProjectImage.tsx": {
+    "mtime": 1790064111.0532007,
+    "ast_hash": "e9d350e23dd58ffa65c74b165590f05a",
+    "semantic_hash": "e9d350e23dd58ffa65c74b165590f05a"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\RevealOnScroll.tsx": {
+    "mtime": 1790059100.3931637,
+    "ast_hash": "96f64f0c83dce65cba56dba99d907422",
+    "semantic_hash": "96f64f0c83dce65cba56dba99d907422"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\ScrollReveal.tsx": {
+    "mtime": 1790059100.3931637,
+    "ast_hash": "ab35ad298c74fa7903f4d240fbb95548",
+    "semantic_hash": "ab35ad298c74fa7903f4d240fbb95548"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\Seal.tsx": {
+    "mtime": 1790064127.9042356,
+    "ast_hash": "426708a2fdbe9d52bcbd6a7acf3ee7ec",
+    "semantic_hash": "426708a2fdbe9d52bcbd6a7acf3ee7ec"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\SectionHeader.tsx": {
+    "mtime": 1790064121.9877355,
+    "ast_hash": "cf34b28be5f4c6ee2049f7a039c755a3",
+    "semantic_hash": "cf34b28be5f4c6ee2049f7a039c755a3"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\SiteMotion.tsx": {
+    "mtime": 1790062159.6473615,
+    "ast_hash": "ff8202bcf7a25f1bb757a13a798865fe",
+    "semantic_hash": "ff8202bcf7a25f1bb757a13a798865fe"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\SmoothScroll.tsx": {
+    "mtime": 1791618351.660571,
+    "ast_hash": "92388969a5840d32ff346c4f823fb976",
+    "semantic_hash": "92388969a5840d32ff346c4f823fb976"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\admin\\AdminNav.tsx": {
+    "mtime": 1790164318.8822653,
+    "ast_hash": "dcb7447f431867c289672eabb78659e4",
+    "semantic_hash": "dcb7447f431867c289672eabb78659e4"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\admin\\AuthGuard.tsx": {
+    "mtime": 1790059100.3955305,
+    "ast_hash": "a5baeddfbc7417d056a65298a39a21f4",
+    "semantic_hash": "a5baeddfbc7417d056a65298a39a21f4"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\admin\\FormSection.tsx": {
+    "mtime": 1790164196.3871348,
+    "ast_hash": "51b0700125fe569a1111123036f2e44d",
+    "semantic_hash": "51b0700125fe569a1111123036f2e44d"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\admin\\ImageUploader.tsx": {
+    "mtime": 1790164223.1010172,
+    "ast_hash": "18c3f3194e9a2c438c006c5cde5447c6",
+    "semantic_hash": "18c3f3194e9a2c438c006c5cde5447c6"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\admin\\ProjectForm.tsx": {
+    "mtime": 1790164272.5203512,
+    "ast_hash": "fe97e3cfeb1535d5cbfd7bd7c1ba257e",
+    "semantic_hash": "fe97e3cfeb1535d5cbfd7bd7c1ba257e"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\admin\\Toggle.tsx": {
+    "mtime": 1790164192.927226,
+    "ast_hash": "d9101342e76716e5780b9154f78d4ce5",
+    "semantic_hash": "d9101342e76716e5780b9154f78d4ce5"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\Hero.tsx": {
+    "mtime": 1791618351.6625588,
+    "ast_hash": "8459308fdd0221b0670cd0dd06de59e1",
+    "semantic_hash": "8459308fdd0221b0670cd0dd06de59e1"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\HeroSlideshow.tsx": {
+    "mtime": 1790062873.6275887,
+    "ast_hash": "49b10a26266b78216f970b43562de958",
+    "semantic_hash": "49b10a26266b78216f970b43562de958"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\InstagramStrip.tsx": {
+    "mtime": 1790064823.632866,
+    "ast_hash": "b8b22e8d6ae630f331d04e623e036536",
+    "semantic_hash": "b8b22e8d6ae630f331d04e623e036536"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\PrincipalBand.tsx": {
+    "mtime": 1790064815.514446,
+    "ast_hash": "febef5f0a8fbbfe934190b57a4cdb692",
+    "semantic_hash": "febef5f0a8fbbfe934190b57a4cdb692"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\ProjectCarousel.tsx": {
+    "mtime": 1791617770.6813405,
+    "ast_hash": "56520da2492d97696ddfd302d18c5390",
+    "semantic_hash": "56520da2492d97696ddfd302d18c5390"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\ProjectsIndex.tsx": {
+    "mtime": 1790064807.1545928,
+    "ast_hash": "072aa221fbdf10fcd2818e086d90db3f",
+    "semantic_hash": "072aa221fbdf10fcd2818e086d90db3f"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\ServicesSection.tsx": {
+    "mtime": 1790064812.2276688,
+    "ast_hash": "3b7539ac9c97da3c55d0f7be82125fc7",
+    "semantic_hash": "3b7539ac9c97da3c55d0f7be82125fc7"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\ShowcaseGallery.tsx": {
+    "mtime": 1790064800.0620134,
+    "ast_hash": "986173440045a960aaabb128730fe042",
+    "semantic_hash": "986173440045a960aaabb128730fe042"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\StatementBand.tsx": {
+    "mtime": 1790064790.46825,
+    "ast_hash": "6ed1ef392496784b903dce37fd7c857c",
+    "semantic_hash": "6ed1ef392496784b903dce37fd7c857c"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\home\\StatsStrip.tsx": {
+    "mtime": 1790064793.7003322,
+    "ast_hash": "c62b894c40df00f4a9280dfc2e4ac115",
+    "semantic_hash": "c62b894c40df00f4a9280dfc2e4ac115"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\icons.tsx": {
+    "mtime": 1790059100.3965075,
+    "ast_hash": "0fe49b273ecefb37fa1936efba067a44",
+    "semantic_hash": "0fe49b273ecefb37fa1936efba067a44"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\Counter.tsx": {
+    "mtime": 1790063982.2008338,
+    "ast_hash": "f40cd8c399b0c39663a005caffdb1f30",
+    "semantic_hash": "f40cd8c399b0c39663a005caffdb1f30"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\CursorFollower.tsx": {
+    "mtime": 1790064160.9211133,
+    "ast_hash": "a3b4b0d330cce347c5e798e3982768cb",
+    "semantic_hash": "a3b4b0d330cce347c5e798e3982768cb"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\HorizontalGallery.tsx": {
+    "mtime": 1790063976.6224623,
+    "ast_hash": "ca86bb3de204791801088f64b45fc2d0",
+    "semantic_hash": "ca86bb3de204791801088f64b45fc2d0"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\HoverPreview.tsx": {
+    "mtime": 1790065360.3750515,
+    "ast_hash": "33cd2f92b5cbb5d4f1dc6aa9d9eed442",
+    "semantic_hash": "33cd2f92b5cbb5d4f1dc6aa9d9eed442"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\MagneticButton.tsx": {
+    "mtime": 1790064136.368574,
+    "ast_hash": "14e5e9423500f15d4cd6d15045930e76",
+    "semantic_hash": "14e5e9423500f15d4cd6d15045930e76"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\Marquee.tsx": {
+    "mtime": 1790065055.7224634,
+    "ast_hash": "960fbc2cfee213dbaee18c7975b559ab",
+    "semantic_hash": "960fbc2cfee213dbaee18c7975b559ab"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\PageTransition.tsx": {
+    "mtime": 1790064235.2667904,
+    "ast_hash": "f6695b39c8084cbc68f8a5644e8b4b2a",
+    "semantic_hash": "f6695b39c8084cbc68f8a5644e8b4b2a"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\ParallaxImage.tsx": {
+    "mtime": 1790063950.5744598,
+    "ast_hash": "c12acbc16e13b8a42564c0a842e04a4f",
+    "semantic_hash": "c12acbc16e13b8a42564c0a842e04a4f"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\Preloader.tsx": {
+    "mtime": 1790064191.880391,
+    "ast_hash": "2809ac2d9cc7654c63faed4ea395a133",
+    "semantic_hash": "2809ac2d9cc7654c63faed4ea395a133"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\RevealImage.tsx": {
+    "mtime": 1790064459.3158164,
+    "ast_hash": "15738e29de1b70acaafbb47daf0e6624",
+    "semantic_hash": "15738e29de1b70acaafbb47daf0e6624"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\RevealText.tsx": {
+    "mtime": 1790065223.6482627,
+    "ast_hash": "e9b0a4dd9528269c121cf858ddc583a8",
+    "semantic_hash": "e9b0a4dd9528269c121cf858ddc583a8"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\motion\\ScrollWords.tsx": {
+    "mtime": 1790065210.5717807,
+    "ast_hash": "b4899581feb957f25c8489af52dcb4a4",
+    "semantic_hash": "b4899581feb957f25c8489af52dcb4a4"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\LightboxImage.tsx": {
+    "mtime": 1790062956.063534,
+    "ast_hash": "5aba1f96b3751211e4e497d6910ac82e",
+    "semantic_hash": "5aba1f96b3751211e4e497d6910ac82e"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\NextProjectBand.tsx": {
+    "mtime": 1790064878.1259718,
+    "ast_hash": "5f3a0d68a0af51e81c2c6c50e4220641",
+    "semantic_hash": "5f3a0d68a0af51e81c2c6c50e4220641"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\ProjectBlocks.tsx": {
+    "mtime": 1790064825.707179,
+    "ast_hash": "1e023000eb3be0d186f50b1983f89c2f",
+    "semantic_hash": "1e023000eb3be0d186f50b1983f89c2f"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\ProjectCoverSection.tsx": {
+    "mtime": 1790064820.4847488,
+    "ast_hash": "01d5d5748a6c3002cf0f48110833a568",
+    "semantic_hash": "01d5d5748a6c3002cf0f48110833a568"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\ProjectHero.tsx": {
+    "mtime": 1790064848.69398,
+    "ast_hash": "4ce722808becbd51cf7967b19ad4a1cb",
+    "semantic_hash": "4ce722808becbd51cf7967b19ad4a1cb"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\ProjectLightboxProvider.tsx": {
+    "mtime": 1790062952.8414679,
+    "ast_hash": "baf6ab01d62317913e1383c8993d3002",
+    "semantic_hash": "baf6ab01d62317913e1383c8993d3002"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\ProjectsBento.tsx": {
+    "mtime": 1791618351.6670957,
+    "ast_hash": "3eb19ddd70e5eecd690f44f1aaeb9056",
+    "semantic_hash": "3eb19ddd70e5eecd690f44f1aaeb9056"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\ProjectsFilter.tsx": {
+    "mtime": 1790064832.053331,
+    "ast_hash": "75223e7d126a316758da355bdf0c6af1",
+    "semantic_hash": "75223e7d126a316758da355bdf0c6af1"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\ProjectsHero.tsx": {
+    "mtime": 1790064811.4027264,
+    "ast_hash": "fda619365494b50bb345de2b652b28d9",
+    "semantic_hash": "fda619365494b50bb345de2b652b28d9"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\RoomChapter.tsx": {
+    "mtime": 1790064862.5832896,
+    "ast_hash": "b7edcc475cf8751b7ff9df60e8eabe68",
+    "semantic_hash": "b7edcc475cf8751b7ff9df60e8eabe68"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\RoomImageFrame.tsx": {
+    "mtime": 1790064854.265673,
+    "ast_hash": "92585591a00ecea32f241351ff55ec9b",
+    "semantic_hash": "92585591a00ecea32f241351ff55ec9b"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\RoomIndex.tsx": {
+    "mtime": 1790064873.8619173,
+    "ast_hash": "1a505d540ff680816f18f6bb40fabfd3",
+    "semantic_hash": "1a505d540ff680816f18f6bb40fabfd3"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\projects\\roomLayout.ts": {
+    "mtime": 1790064806.112049,
+    "ast_hash": "0d5d886d08f6ea04f8b18a82e951f1a0",
+    "semantic_hash": "0d5d886d08f6ea04f8b18a82e951f1a0"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\studio\\FaqItem.tsx": {
+    "mtime": 1790064725.4857433,
+    "ast_hash": "de383bfd7a51f8a85970e7ab0ea41395",
+    "semantic_hash": "de383bfd7a51f8a85970e7ab0ea41395"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\studio\\ProcessCard.tsx": {
+    "mtime": 1790064729.7934103,
+    "ast_hash": "572320ea3ffdc059c1f203266ba5c897",
+    "semantic_hash": "572320ea3ffdc059c1f203266ba5c897"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\components\\studio\\ServiceGroup.tsx": {
+    "mtime": 1790064717.525601,
+    "ast_hash": "68f70dcfd62f1148a3115159a703e253",
+    "semantic_hash": "68f70dcfd62f1148a3115159a703e253"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\admin-api.ts": {
+    "mtime": 1790059100.397629,
+    "ast_hash": "4ff9ec9fb59574adcbf85bf414680b08",
+    "semantic_hash": "4ff9ec9fb59574adcbf85bf414680b08"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\categories.ts": {
+    "mtime": 1790062219.4272408,
+    "ast_hash": "bad57d3ab855ffcf475182cbdb093fa6",
+    "semantic_hash": "bad57d3ab855ffcf475182cbdb093fa6"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\contact.ts": {
+    "mtime": 1790062787.4942815,
+    "ast_hash": "4c9b3be8f8ebb6f67dc134e0c6e2530f",
+    "semantic_hash": "4c9b3be8f8ebb6f67dc134e0c6e2530f"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\data.ts": {
+    "mtime": 1790062274.875772,
+    "ast_hash": "e07e5897a388cc9228b35ac78e5d7551",
+    "semantic_hash": "e07e5897a388cc9228b35ac78e5d7551"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\firebase.ts": {
+    "mtime": 1790162216.273993,
+    "ast_hash": "e80c4d5c71747149f5376fe7fe50dfaa",
+    "semantic_hash": "e80c4d5c71747149f5376fe7fe50dfaa"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\instagram.ts": {
+    "mtime": 1790059100.3986347,
+    "ast_hash": "78fa06c4db659ff911b182a74277a997",
+    "semantic_hash": "78fa06c4db659ff911b182a74277a997"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\seed.ts": {
+    "mtime": 1790062263.5011797,
+    "ast_hash": "4b032967be5f5ad239992c55dc623889",
+    "semantic_hash": "4b032967be5f5ad239992c55dc623889"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\server-auth.ts": {
+    "mtime": 1790162221.2990067,
+    "ast_hash": "9790430df32c5c721363c5b519e35423",
+    "semantic_hash": "9790430df32c5c721363c5b519e35423"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\site.ts": {
+    "mtime": 1790062211.4769454,
+    "ast_hash": "f3858ea74a29c8c0994d2728152cfcc6",
+    "semantic_hash": "f3858ea74a29c8c0994d2728152cfcc6"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\lib\\types.ts": {
+    "mtime": 1790062217.0959156,
+    "ast_hash": "94711afe8a5d006310b97a62b392c5c6",
+    "semantic_hash": "94711afe8a5d006310b97a62b392c5c6"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\tsconfig.json": {
+    "mtime": 1790059100.3986347,
+    "ast_hash": "0a2f4ed9289b65cd3feb4fb4ab3a4fcd",
+    "semantic_hash": "0a2f4ed9289b65cd3feb4fb4ab3a4fcd"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\.vercel\\README.txt": {
+    "mtime": 1790161906.2331674,
+    "ast_hash": "2b13c79d37d6ed82a3255b83b6815034",
+    "semantic_hash": "2b13c79d37d6ed82a3255b83b6815034"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\AGENTS.md": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "3ad29ed1c7e1970f724e872fcffc4909",
+    "semantic_hash": "3ad29ed1c7e1970f724e872fcffc4909"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\CLAUDE.md": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "771faa62feb60b7de901a397aebb29b0",
+    "semantic_hash": "771faa62feb60b7de901a397aebb29b0"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\README.md": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "f61748fbac8ad7f7e3b2489e0cd8f695",
+    "semantic_hash": "f61748fbac8ad7f7e3b2489e0cd8f695"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\scripts\\instagram-sources.md": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "2cf82b73b526503de8aa223aaadcbe51",
+    "semantic_hash": "2cf82b73b526503de8aa223aaadcbe51"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\Studio Evnelope_Portfolio.pdf": {
+    "mtime": 1790059411.771272,
+    "ast_hash": "2a23552b7484e3f084239d1e3e1fff0a",
+    "semantic_hash": "2a23552b7484e3f084239d1e3e1fff0a"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\assets\\StudioEnvelope Logo-28.png": {
+    "mtime": 1791618062.9664495,
+    "ast_hash": "d909463bca2f050916e81f924e9f100c",
+    "semantic_hash": "d909463bca2f050916e81f924e9f100c"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\assets\\StudioEnvelope Logo-29.png": {
+    "mtime": 1791618079.9385095,
+    "ast_hash": "56c4a602a8506c5e2b8f8f0d9722e6b8",
+    "semantic_hash": "56c4a602a8506c5e2b8f8f0d9722e6b8"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\assets\\StudioEnvelope Logo-30-37.png": {
+    "mtime": 1791618075.4987304,
+    "ast_hash": "06e2475c330d2aac94b8c3545d270d69",
+    "semantic_hash": "06e2475c330d2aac94b8c3545d270d69"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\assets\\StudioEnvelope Logo-30.png": {
+    "mtime": 1791618077.9312482,
+    "ast_hash": "7b97939aa280127311b8df6965009d3a",
+    "semantic_hash": "7b97939aa280127311b8df6965009d3a"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\public\\file.svg": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "d09f95206c3fa0bb9bd9fefabfd0ea71",
+    "semantic_hash": "d09f95206c3fa0bb9bd9fefabfd0ea71"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\public\\globe.svg": {
+    "mtime": 1790059100.36888,
+    "ast_hash": "2aaafa6a49b6563925fe440891e32717",
+    "semantic_hash": "2aaafa6a49b6563925fe440891e32717"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\public\\next.svg": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "8e061864f388b47f33a1c3780831193e",
+    "semantic_hash": "8e061864f388b47f33a1c3780831193e"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\public\\vercel.svg": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "c0af2f507b369b085b35ef4bbe3bcf1e",
+    "semantic_hash": "c0af2f507b369b085b35ef4bbe3bcf1e"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\public\\window.svg": {
+    "mtime": 1790059100.3766613,
+    "ast_hash": "a2760511c65806022ad20adf74370ff3",
+    "semantic_hash": "a2760511c65806022ad20adf74370ff3"
+  },
+  "C:\\Users\\mehul\\Documents\\Projects\\studio-envelope\\src\\app\\icon.svg": {
+    "mtime": 1790062203.697888,
+    "ast_hash": "f1372ee3b3a4fea58a320a871e2bc2f4",
+    "semantic_hash": "f1372ee3b3a4fea58a320a871e2bc2f4"
+  }
+}

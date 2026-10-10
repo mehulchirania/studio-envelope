@@ -1,71 +1,68 @@
 import clsx from "clsx";
-import type { Room } from "@/lib/types";
+import type { Room, RoomImage } from "@/lib/content/types";
+import LightboxImage from "./LightboxImage";
 import { layoutRoom, slugifyRoom } from "./roomLayout";
-import RoomImageFrame from "./RoomImageFrame";
 
 type RoomChapterProps = {
   room: Room;
-  index: number;
-  total: number;
   /** Rooms alternate bone/night bands down the page. */
   tone: "dark" | "light";
   indexBySrc: Map<string, number>;
 };
 
-/** One room as a full-width band "chapter": label + room name, then a mixed
- * layout of its images — a lone landscape goes full-bleed, portraits pair up,
- * a landscape+portrait pair splits 2/3 + 1/3. */
-export default function RoomChapter({ room, index, total, tone, indexBySrc }: RoomChapterProps) {
+function Frame({ image, indexBySrc, sizes }: { image: RoomImage; indexBySrc: Map<string, number>; sizes: string }) {
+  return (
+    <div style={{ aspectRatio: `${image.width} / ${image.height}` }}>
+      <LightboxImage image={image} index={indexBySrc.get(image.src) ?? 0} sizes={sizes} />
+    </div>
+  );
+}
+
+/** One room as a full-width band: its name, then its images laid out by
+ * orientation. A lone landscape runs full-bleed, portraits pair up, a
+ * landscape beside a portrait splits 2/3 + 1/3, and a lone portrait stays
+ * at a comfortable width instead of filling a whole phone screen. */
+export default function RoomChapter({ room, tone, indexBySrc }: RoomChapterProps) {
   const chunks = layoutRoom(room.images);
   const isDark = tone === "dark";
 
   return (
-    <section id={slugifyRoom(room.name)} className={clsx(isDark ? "band-dark" : "band-bone", "section-y scroll-mt-28")}>
+    <section id={slugifyRoom(room.name)} className={clsx(isDark ? "band-dark" : "band-bone", "section-y scroll-mt-20")}>
       <div className="container-x">
-        <p className="label mb-3 text-marigold">
-          Room {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </p>
-        <h2 className={clsx("font-display text-3xl italic sm:text-4xl", isDark ? "text-bone" : "text-ink")}>
-          {room.name}
-        </h2>
+        <h2 className={clsx("font-display text-3xl italic sm:text-4xl", isDark ? "text-bone" : "text-ink")}>{room.name}</h2>
       </div>
 
-      <div className="mt-10 space-y-2 sm:space-y-3">
-        {chunks.map((chunk, ci) => {
+      <div className="mt-8 space-y-2 sm:mt-10 sm:space-y-3">
+        {chunks.map((chunk, i) => {
           if (chunk.type === "single") {
-            return (
-              <div key={ci} className="w-full" style={{ aspectRatio: `${chunk.image.width} / ${chunk.image.height}` }}>
-                <RoomImageFrame
-                  image={chunk.image}
-                  index={indexBySrc.get(chunk.image.src) ?? 0}
-                  sizes="100vw"
-                  variant="parallax"
-                  priority={index === 0 && ci === 0}
-                />
+            const portrait = chunk.image.height > chunk.image.width;
+            return portrait ? (
+              <div key={i} className="container-x">
+                <div className="mx-auto max-w-md">
+                  <Frame image={chunk.image} indexBySrc={indexBySrc} sizes="(min-width: 768px) 28rem, 92vw" />
+                </div>
               </div>
+            ) : (
+              <Frame key={i} image={chunk.image} indexBySrc={indexBySrc} sizes="100vw" />
             );
           }
 
           if (chunk.type === "pair") {
             return (
-              <div key={ci} className="container-x grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
+              <div key={i} className="container-x grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
                 {chunk.images.map((image) => (
-                  <div key={image.src} style={{ aspectRatio: `${image.width} / ${image.height}` }}>
-                    <RoomImageFrame image={image} index={indexBySrc.get(image.src) ?? 0} sizes="(min-width: 1024px) 45vw, 92vw" />
-                  </div>
+                  <Frame key={image.src} image={image} indexBySrc={indexBySrc} sizes="(min-width: 1024px) 45vw, 92vw" />
                 ))}
               </div>
             );
           }
 
           return (
-            <div key={ci} className="container-x grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3">
-              <div className="sm:col-span-2" style={{ aspectRatio: `${chunk.wide.width} / ${chunk.wide.height}` }}>
-                <RoomImageFrame image={chunk.wide} index={indexBySrc.get(chunk.wide.src) ?? 0} sizes="(min-width: 1024px) 60vw, 92vw" />
+            <div key={i} className="container-x grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3">
+              <div className="sm:col-span-2">
+                <Frame image={chunk.wide} indexBySrc={indexBySrc} sizes="(min-width: 1024px) 60vw, 92vw" />
               </div>
-              <div style={{ aspectRatio: `${chunk.narrow.width} / ${chunk.narrow.height}` }}>
-                <RoomImageFrame image={chunk.narrow} index={indexBySrc.get(chunk.narrow.src) ?? 0} sizes="(min-width: 1024px) 30vw, 92vw" />
-              </div>
+              <Frame image={chunk.narrow} indexBySrc={indexBySrc} sizes="(min-width: 1024px) 30vw, 92vw" />
             </div>
           );
         })}
