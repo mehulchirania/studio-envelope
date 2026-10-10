@@ -1,7 +1,6 @@
-// Server-only: the two admin logins. Both are full admins, there is no
-// per-user access difference. Defaults are documented in README.md; set
-// ADMIN_USERS="name:password,name2:password2" in the environment to override
-// them without touching code.
+// Server-only: admin logins. Both are full admins, there is no
+// per-user access difference. Set ADMIN_USERS="name:password,name2:password2"
+// in the environment to override default local accounts.
 import { createHash, timingSafeEqual } from "node:crypto";
 
 interface AdminUser {

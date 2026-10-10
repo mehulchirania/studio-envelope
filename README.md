@@ -144,19 +144,15 @@ the logo are in `public/brand/`.
 
 ## Admin panel
 
-Visit `/admin` and sign in with one of the two logins. Both are full admins; there's no difference in access.
+Visit `/admin` to access the studio CMS. Configured accounts have full admin permissions.
 
-| Username | Password   |
-| -------- | ---------- |
-| `admin`  | `admin`    |
-| `prachi` | `password` |
+Configure admin logins by setting the `ADMIN_USERS` environment variable (locally in `.env.local`, and in production under Vercel Project Settings → Environment Variables) to a comma-separated `username:password` list:
 
-> **Change these before relying on the site.** They are trivially guessable, and anyone who signs in can edit
-> or delete every project. To set different logins without touching code, set the environment variable
-> `ADMIN_USERS` (locally in `.env.local`, in production in Vercel) to a comma-separated `username:password`
-> list, e.g. `ADMIN_USERS="admin:a-long-passphrase,prachi:another-long-passphrase"`, then restart/redeploy.
-> The defaults live in `src/lib/admin/users.ts`. Note the passwords in this README are visible to anyone who
-> can read the repository.
+```bash
+ADMIN_USERS="username:your-secure-password,username2:another-secure-password"
+```
+
+> **Security Note:** Always configure strong, unique passwords in your environment variables before deploying to production. Never commit real credentials to source control.
 
 - **Projects** — one ordered list of everything on the website (drafts marked "Draft"). Use the arrows to
   reorder (this is the order visitors see), the pencil to edit, the arrow-out icon to open the live page, the
