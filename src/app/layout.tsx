@@ -8,6 +8,7 @@ import BackToTop from "@/components/layout/BackToTop";
 import JsonLd from "@/components/seo/JsonLd";
 import { getLocalBusinessSchema, getWebSiteSchema, SITE_URL } from "@/lib/seo";
 import { site } from "@/lib/content/site";
+import { Analytics } from "@vercel/analytics/next";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -88,6 +89,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <HideOnAdmin>
           <BackToTop />
         </HideOnAdmin>
+        <Analytics />
       </body>
     </html>
   );
