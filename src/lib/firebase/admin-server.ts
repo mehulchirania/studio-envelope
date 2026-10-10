@@ -5,7 +5,7 @@
 // FIREBASE_ADMIN_EMAIL / FIREBASE_ADMIN_PASSWORD, never sent to the browser)
 // and signs in as it; firestore.rules only trusts that account for writes and
 // for reading drafts and messages. No service-account JSON is needed.
-import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
+import { initializeApp, type FirebaseApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, signInWithEmailAndPassword, type Auth } from "firebase/auth";
 import {
   collection,
@@ -42,24 +42,27 @@ interface Service {
   signingIn: Promise<void> | null;
 }
 
-// Kept on globalThis so dev hot-reloads reuse the same app instead of re-initialising it.
-const globalState = globalThis as unknown as { __studioEnvelopeAdmin?: Service };
+// Cached per module instance, not on globalThis: after a dev hot reload the Firebase SDK is
+// re-evaluated, and a Firestore object made by the old copy is rejected by the new copy's
+// collection()/doc(). A fresh app name per module load avoids reusing such a stale app.
+let cachedService: Service | undefined;
+const appName = `${APP_NAME}-${Date.now()}`;
 
 async function getDb(): Promise<Firestore> {
   if (!isFirebaseConfigured) throw new HttpError(503, "Firebase isn't configured on the server.");
 
-  if (!globalState.__studioEnvelopeAdmin) {
-    const app = getApps().find((a) => a.name === APP_NAME) ?? initializeApp(firebaseConfig, APP_NAME);
+  if (!cachedService) {
+    const app = initializeApp(firebaseConfig, appName);
     const auth = getAuth(app);
     const db = getFirestore(app);
     if (USE_EMULATORS) {
       connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
       connectFirestoreEmulator(db, "127.0.0.1", 8080);
     }
-    globalState.__studioEnvelopeAdmin = { app, auth, db, signingIn: null };
+    cachedService = { app, auth, db, signingIn: null };
   }
 
-  const service = globalState.__studioEnvelopeAdmin;
+  const service = cachedService;
   if (!service.auth.currentUser) {
     const email = process.env.FIREBASE_ADMIN_EMAIL;
     const password = process.env.FIREBASE_ADMIN_PASSWORD;
