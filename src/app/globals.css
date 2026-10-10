@@ -118,6 +118,56 @@
       transform: none !important;
     }
   }
+
+  /* Page transitions (see components/layout/PageTransition.tsx): the old page fades out
+     quickly, then the new one fades in. The header is held still so only the content moves.
+     Browsers without View Transitions just navigate normally. */
+  ::view-transition-old(.page-out) {
+    animation: 180ms ease-in both page-fade-out;
+  }
+
+  ::view-transition-new(.page-in) {
+    animation: 340ms ease-out 140ms both page-fade-in;
+  }
+
+  @keyframes page-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes page-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  ::view-transition-group(site-header) {
+    animation: none;
+    z-index: 100;
+  }
+
+  ::view-transition-old(site-header) {
+    display: none;
+  }
+
+  ::view-transition-new(site-header) {
+    animation: none;
+  }
+
+  /* Let clicks through to the live page while a transition plays. */
+  ::view-transition {
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(*),
+    ::view-transition-new(*),
+    ::view-transition-group(*) {
+      animation-duration: 0s !important;
+      animation-delay: 0s !important;
+    }
+  }
 }
 
 @layer components {

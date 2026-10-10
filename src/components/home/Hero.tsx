@@ -3,19 +3,30 @@ import Link from "next/link";
 import { ArrowDownRight } from "lucide-react";
 import type { RoomImage } from "@/lib/content/types";
 
-/** Still opening image with the studio line. The first thing a visitor sees,
- * so it stays calm: no slideshow, no motion. */
+/** Opening of the home page: the studio line on a solid panel beside a single
+ * photograph, so the headline never sits on top of the picture. Side by side
+ * on desktop; on a phone the photo comes first, then the line. Still and calm:
+ * no slideshow, no motion. */
 export default function Hero({ image }: { image: RoomImage }) {
   return (
-    <section className="relative h-[86svh] min-h-[520px] overflow-hidden bg-night sm:h-[92svh] sm:min-h-[600px]">
-      <Image src={image.src} alt={image.alt} fill sizes="100vw" priority className="object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-b from-abyss/72 via-abyss/10 to-abyss/82" />
+    <section className="band-dark lg:grid lg:min-h-[92svh] lg:grid-cols-[5fr_6fr]">
+      {/* The fixed header overlays the top edge, so on a phone the photo starts below it. */}
+      <div className="relative mt-16 h-[46svh] min-h-[280px] lg:order-2 lg:mt-0 lg:h-auto">
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          sizes="(min-width: 1024px) 55vw, 100vw"
+          priority
+          className="object-cover object-[50%_60%]"
+        />
+      </div>
 
-      <div className="container-x relative z-10 flex h-full flex-col justify-between pb-8 pt-24 sm:pb-14 sm:pt-32">
-        <p className="label text-bone">Art · Interiors · Architecture</p>
+      <div className="container-x flex flex-col justify-between gap-14 py-10 sm:py-14 lg:order-1 lg:gap-0 lg:pb-16 lg:pt-40">
+        <p className="label">Art · Interiors · Architecture</p>
 
-        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-          <h1 className="display-xl max-w-[12ch] text-bone">
+        <div className="flex flex-col items-start gap-8">
+          <h1 className="display-xl max-w-[10ch] text-bone">
             Spaces, sealed with care.
             <span className="sr-only"> — Architecture &amp; Interior Design Studio, Bangalore</span>
           </h1>

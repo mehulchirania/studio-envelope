@@ -7,10 +7,11 @@ import ServiceGroup from "@/components/services/ServiceGroup";
 import FaqItem from "@/components/services/FaqItem";
 import ProcessStep from "@/components/services/ProcessStep";
 import JsonLd from "@/components/seo/JsonLd";
-import { faqs, processSteps, serviceDescriptions, serviceGroups } from "@/lib/content/services";
+import { faqs, processSteps, serviceDescriptions, serviceGroups, serviceImages } from "@/lib/content/services";
 import { findImage } from "@/lib/content/images";
 import { getProjects } from "@/lib/data";
 import { getBreadcrumbSchema, getFaqSchema, pageMetadata } from "@/lib/seo";
+import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = pageMetadata({
   title: "Architecture & Interior Design Services in Bangalore",
@@ -24,10 +25,10 @@ export default async function ServicesPage() {
   const bySlug = (slug: string) => projects.find((p) => p.slug === slug);
   const doshi = bySlug("doshi-residence");
 
-  const heroImage = findImage(doshi, "living-dining-1.jpg");
+  const heroImage = findImage(doshi, "living-dining-1.jpg") ?? projects[0]?.rooms[0]?.images[0];
 
   return (
-    <>
+    <PageTransition>
       <JsonLd schema={getFaqSchema(faqs)} />
       <JsonLd
         schema={getBreadcrumbSchema([
@@ -42,15 +43,43 @@ export default async function ServicesPage() {
 
       <section className="band-bone section-y">
         <div className="container-x">
-          <SectionHeader seal heading="Ten services, three stages." className="mb-10 sm:mb-14" />
-          <div className="flex flex-col gap-10 sm:gap-14">
-            {serviceGroups.map((group) => (
-              <ServiceGroup
-                key={group.name}
-                name={group.name}
-                rows={group.items.map((item) => ({ name: item, description: serviceDescriptions[item] }))}
-              />
+          <SectionHeader seal heading="Ten services, three stages." className="mb-8 sm:mb-10" />
+
+          {/* Jump links: the three stages and how many services each holds. */}
+          <nav aria-label="Service stages" className="mb-12 flex flex-wrap gap-3 sm:mb-16">
+            {serviceGroups.map((group, i) => (
+              <a
+                key={group.id}
+                href={`#${group.id}`}
+                className="label inline-flex min-h-11 items-center gap-3 border border-hairline px-4 py-3 text-ink transition-colors hover:bg-ink hover:text-bone"
+              >
+                <span className="opacity-60">{String(i + 1).padStart(2, "0")}</span>
+                {group.name}
+                <span className="opacity-60">{group.items.length} services</span>
+              </a>
             ))}
+          </nav>
+
+          <div className="flex flex-col gap-14 sm:gap-20">
+            {serviceGroups.map((group, groupIndex) => {
+              // Services are numbered 01-10 straight through, across the stages.
+              const before = serviceGroups.slice(0, groupIndex).reduce((total, g) => total + g.items.length, 0);
+              return (
+                <ServiceGroup
+                  key={group.id}
+                  id={group.id}
+                  number={String(groupIndex + 1).padStart(2, "0")}
+                  name={group.name}
+                  blurb={group.blurb}
+                  services={group.items.map((item, i) => ({
+                    number: String(before + i + 1).padStart(2, "0"),
+                    name: item,
+                    description: serviceDescriptions[item],
+                    image: serviceImages[item],
+                  }))}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
@@ -107,6 +136,6 @@ export default async function ServicesPage() {
           </Link>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 }

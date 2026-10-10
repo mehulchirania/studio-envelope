@@ -3,6 +3,7 @@ import ProjectGrid from "@/components/projects/ProjectGrid";
 import JsonLd from "@/components/seo/JsonLd";
 import { getProjects } from "@/lib/data";
 import { getBreadcrumbSchema, pageMetadata } from "@/lib/seo";
+import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = pageMetadata({
   title: "Selected Architecture & Interior Design Projects",
@@ -14,7 +15,7 @@ export default async function ProjectsPage() {
   const projects = await getProjects();
 
   return (
-    <>
+    <PageTransition>
       <JsonLd
         schema={getBreadcrumbSchema([
           { name: "Home", url: "/" },
@@ -30,6 +31,6 @@ export default async function ProjectsPage() {
         </div>
       </section>
       <ProjectGrid projects={projects} />
-    </>
+    </PageTransition>
   );
 }

@@ -11,6 +11,7 @@ import { findImageMeta, projectImages, slugifyRoom } from "@/components/projects
 
 import JsonLd from "@/components/seo/JsonLd";
 import { getBreadcrumbSchema, getProjectSchema } from "@/lib/seo";
+import PageTransition from "@/components/layout/PageTransition";
 
 export const revalidate = 60;
 
@@ -82,9 +83,23 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
   ];
 
   const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
-  const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
+  const otherProjects = allProjects.filter((p) => p.slug !== project.slug);
+  const nextCandidate = allProjects[(currentIndex + 1) % allProjects.length];
+  const nextProject =
+    otherProjects.length > 0
+      ? nextCandidate && nextCandidate.slug !== project.slug
+        ? nextCandidate
+        : otherProjects[0]
+      : null;
 
-  const roomLinks = project.rooms.map((room) => ({ id: slugifyRoom(room.name), name: room.name }));
+  const seenRoomIds = new Map<string, number>();
+  const roomLinks = project.rooms.map((room) => {
+    const base = slugifyRoom(room.name) || "room";
+    const count = (seenRoomIds.get(base) ?? 0) + 1;
+    seenRoomIds.set(base, count);
+    const id = count > 1 ? `${base}-${count}` : base;
+    return { id, name: room.name };
+  });
   const descriptionParagraphs = project.description.split("\n\n");
 
   const projectSchema = getProjectSchema(project);
@@ -95,6 +110,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
   ]);
 
   return (
+    <PageTransition key={project.slug}>
     <ProjectLightboxProvider images={lightboxImages}>
       <JsonLd schema={projectSchema} />
       <JsonLd schema={breadcrumbSchema} />
@@ -146,6 +162,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
           {project.rooms.map((room, i) => (
             <RoomChapter
               key={room.name}
+              id={roomLinks[i]?.id}
               room={room}
               // Rooms alternate bands; when drawings (a bone band) come first, start on the dark one.
               tone={(i + (project.drawings.length > 0 ? 1 : 0)) % 2 === 0 ? "light" : "dark"}
@@ -155,7 +172,8 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
         </div>
       </article>
 
-      <NextProjectBand project={nextProject} />
+      {nextProject && <NextProjectBand project={nextProject} />}
     </ProjectLightboxProvider>
+    </PageTransition>
   );
 }

@@ -8,6 +8,7 @@ type RoomChapterProps = {
   /** Rooms alternate bone/night bands down the page. */
   tone: "dark" | "light";
   indexBySrc: Map<string, number>;
+  id?: string;
 };
 
 function Frame({ image, indexBySrc, sizes }: { image: RoomImage; indexBySrc: Map<string, number>; sizes: string }) {
@@ -23,12 +24,12 @@ function Frame({ image, indexBySrc, sizes }: { image: RoomImage; indexBySrc: Map
  * instead of running edge to edge). A lone landscape fills the column,
  * portraits pair up, a landscape beside a portrait splits 2/3 + 1/3, and a
  * lone portrait stays narrow instead of filling a whole phone screen. */
-export default function RoomChapter({ room, tone, indexBySrc }: RoomChapterProps) {
+export default function RoomChapter({ room, tone, indexBySrc, id }: RoomChapterProps) {
   const chunks = layoutRoom(room.images);
   const isDark = tone === "dark";
 
   return (
-    <section id={slugifyRoom(room.name)} className={clsx(isDark ? "band-dark" : "band-bone", "scroll-mt-20 py-10 sm:py-14")}>
+    <section id={id ?? slugifyRoom(room.name)} className={clsx(isDark ? "band-dark" : "band-bone", "scroll-mt-20 py-10 sm:py-14")}>
       <div className="container-x">
         <div className="mx-auto max-w-5xl">
           <h2 className={clsx("font-display text-3xl italic sm:text-4xl", isDark ? "text-bone" : "text-ink")}>{room.name}</h2>

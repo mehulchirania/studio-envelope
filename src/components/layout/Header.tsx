@@ -62,7 +62,10 @@ export default function Header() {
 
   return (
     <>
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-bone/10 bg-abyss/90 backdrop-blur-md">
+    <header
+      className="fixed inset-x-0 top-0 z-50 border-b border-bone/10 bg-abyss/90 backdrop-blur-md"
+      style={{ viewTransitionName: "site-header" }}
+    >
       <div className="container-x flex h-16 items-center justify-between gap-6 sm:h-20">
         <Link href="/" aria-label="Studio Envelope home" className="shrink-0">
           <Logo variant="light" />

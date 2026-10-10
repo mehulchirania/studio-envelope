@@ -15,27 +15,39 @@ function isCandidate(el: Element): boolean {
   return !IGNORED_TAGS.has(el.tagName) && !isOutOfFlow(el);
 }
 
-/** `<article>`, or a plain div that only wraps <section>s: look inside it for the real bands. */
+/** Full-width colour bands (`band-dark`, `band-bone`, ...) must never fade themselves, or the page background would flash through. */
+function isBand(el: Element): boolean {
+  return /(^|\s)band-/.test(el.getAttribute("class") ?? "");
+}
+
+/** Something to look inside for the real bands: an `<article>`, or an element that wraps sections or bands. */
 function isWrapper(el: Element): boolean {
   if (el.tagName === "ARTICLE") return true;
-  return el.tagName === "DIV" && el.children.length > 0 && Array.from(el.children).every((c) => c.tagName === "SECTION");
+  const children = Array.from(el.children).filter((c) => !IGNORED_TAGS.has(c.tagName));
+  return el.tagName === "DIV" && children.length > 0 && children.some((c) => c.tagName === "SECTION" || isBand(c));
+}
+
+const MAX_SPLIT_DEPTH = 3;
+
+/** A block taller than the screen (a long list of cards, a room with many photos) fades piece by piece instead of all at once. */
+function addBlock(block: Element, out: Element[], depth = 0) {
+  const parts = Array.from(block.children).filter(isCandidate);
+  if (depth < MAX_SPLIT_DEPTH && parts.length >= 2 && block.getBoundingClientRect().height > window.innerHeight * 0.9) {
+    for (const part of parts) addBlock(part, out, depth + 1);
+  } else {
+    out.push(block);
+  }
 }
 
 /**
  * Finds the blocks to fade. Pages are stacks of full-width colour bands, so the
- * bands themselves must stay put (fading them would flash the page background);
- * instead each band's content blocks are the targets.
+ * bands themselves stay put; each band's content blocks are the targets.
  */
 function collectTargets(root: Element, out: Element[]) {
-  for (const band of Array.from(root.children)) {
-    if (!isCandidate(band)) continue;
-    if (isWrapper(band)) {
-      collectTargets(band, out);
-      continue;
-    }
-    for (const block of Array.from(band.children)) {
-      if (isCandidate(block)) out.push(block);
-    }
+  for (const el of Array.from(root.children)) {
+    if (!isCandidate(el)) continue;
+    if (isBand(el) || isWrapper(el)) collectTargets(el, out);
+    else addBlock(el, out);
   }
 }
 
@@ -69,9 +81,7 @@ export default function ScrollFade() {
       const main = document.querySelector("main");
       if (main) collectTargets(main, targets);
       const footer = document.querySelector("body > footer");
-      if (footer) {
-        for (const block of Array.from(footer.children)) if (isCandidate(block)) targets.push(block);
-      }
+      if (footer) collectTargets(footer, targets);
 
       for (const el of targets) {
         if (tracked.has(el)) continue;

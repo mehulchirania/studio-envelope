@@ -6,6 +6,7 @@ import { findImage } from "@/lib/content/images";
 import { site } from "@/lib/content/site";
 import { getProjects } from "@/lib/data";
 import { getBreadcrumbSchema, pageMetadata } from "@/lib/seo";
+import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact — Architecture & Interior Design Studio, Bangalore",
@@ -24,9 +25,18 @@ const DETAILS = [
 
 export default async function ContactPage() {
   const projects = await getProjects();
-  const bg = findImage(projects.find((p) => p.slug === "james-residence"), "living.jpg");
+  const bg =
+    findImage(projects.find((p) => p.slug === "james-residence"), "living.jpg") ??
+    projects[0]?.rooms[0]?.images[0] ?? {
+      src: "/images/projects/james-residence/living.jpg",
+      alt: "",
+      width: 1650,
+      height: 1795,
+      kind: "photo" as const,
+    };
 
   return (
+    <PageTransition>
     <div className="grid lg:min-h-screen lg:grid-cols-2">
       <JsonLd
         schema={getBreadcrumbSchema([
@@ -79,5 +89,6 @@ export default async function ContactPage() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }

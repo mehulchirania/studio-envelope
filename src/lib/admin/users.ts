@@ -22,7 +22,7 @@ function configuredUsers(): AdminUser[] {
     .map((pair) => {
       const index = pair.indexOf(":");
       if (index < 1) return null;
-      return { username: pair.slice(0, index).trim().toLowerCase(), password: pair.slice(index + 1) };
+      return { username: pair.slice(0, index).trim().toLowerCase(), password: pair.slice(index + 1).trim() };
     })
     .filter((user): user is AdminUser => Boolean(user && user.username && user.password));
   return users.length > 0 ? users : DEFAULT_USERS;

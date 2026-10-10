@@ -14,11 +14,79 @@ export const serviceDescriptions: Record<string, string> = {
   "Photo & Video Shoot": "Professional documentation of the finished space once the project is complete.",
 };
 
+/**
+ * One photo per service, in /public/images/services. These are generic stock
+ * photographs (not Studio Envelope projects), all CC0 / public domain from
+ * StockSnap.io, cropped to 4:3. Photographers, for the record:
+ * design-consultation: Brodie Vissers; space-planning: energepic.com;
+ * colour-consultation: Martin Vorel; lighting-consultation: Adrianna Calvo;
+ * material-selection: Travel Photographer; furniture-selection: Nathan Fertig;
+ * soft-furnishing: Kari Shea; decor-consultation: Chimene Gaspar;
+ * project-management: Burst; photo-video-shoot: Alejandro Escamilla.
+ */
+export const serviceImages: Record<string, { src: string; alt: string }> = {
+  "Design Consultation": {
+    src: "/images/services/design-consultation.jpg",
+    alt: "Several people sketching a layout in pencil and marker over large sheets of paper",
+  },
+  "Space Planning": {
+    src: "/images/services/space-planning.jpg",
+    alt: "Hands on a laptop keyboard beside a printed floor plan with blue-shaded rooms",
+  },
+  "Colour Consultation": {
+    src: "/images/services/colour-consultation.jpg",
+    alt: "A fan of paint colour swatches in warm oranges, pinks and blues",
+  },
+  "Lighting Consultation": {
+    src: "/images/services/lighting-consultation.jpg",
+    alt: "A black pendant lamp with a warm filament bulb hanging beside a timber post",
+  },
+  "Material Selection": {
+    src: "/images/services/material-selection.jpg",
+    alt: "Close-up of a hand-painted blue and white ceramic tile",
+  },
+  "Furniture Selection": {
+    src: "/images/services/furniture-selection.jpg",
+    alt: "A grey tufted sofa with teal and patterned cushions in front of a bright window",
+  },
+  "Soft Furnishing": {
+    src: "/images/services/soft-furnishing.jpg",
+    alt: "A cushioned armchair beside sheer white curtains",
+  },
+  "Décor Consultation": {
+    src: "/images/services/decor-consultation.jpg",
+    alt: "A blush ceramic vase holding dried pampas grass on a pale fleece rug",
+  },
+  "Project Management": {
+    src: "/images/services/project-management.jpg",
+    alt: "Two people in high-visibility vests pointing at construction plans",
+  },
+  "Photo & Video Shoot": {
+    src: "/images/services/photo-video-shoot.jpg",
+    alt: "A vintage film camera and lens on a wooden desk beside a pot of pencils",
+  },
+};
+
 /** The three stages the ten services are grouped into. */
 export const serviceGroups = [
-  { name: "Design", items: services.design },
-  { name: "Furnish & Style", items: services.furnishAndStyle },
-  { name: "Deliver", items: services.deliver },
+  {
+    id: "design",
+    name: "Design",
+    blurb: "Setting the direction: how the space works, how it looks and how it is lit.",
+    items: services.design,
+  },
+  {
+    id: "furnish-and-style",
+    name: "Furnish & Style",
+    blurb: "Choosing the pieces and details that make the plan feel like a home.",
+    items: services.furnishAndStyle,
+  },
+  {
+    id: "deliver",
+    name: "Deliver",
+    blurb: "Seeing the design through on site, and documenting the finished space.",
+    items: services.deliver,
+  },
 ];
 
 export const processSteps = [
