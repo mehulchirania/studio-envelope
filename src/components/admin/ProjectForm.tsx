@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2, Save, Trash2 } from "lucide-react";
-import type { Drawing, Project, ProjectScope } from "@/lib/content/types";
+import { SCOPE_PRESETS, type Drawing, type Project } from "@/lib/content/types";
 import type { ProjectFields } from "@/lib/admin/types";
 import { createProject, deleteProject, updateProject } from "@/lib/admin/client";
 import { slugify } from "@/lib/admin/slug";
@@ -14,8 +14,9 @@ import FormSection from "@/components/admin/FormSection";
 import Toggle from "@/components/admin/Toggle";
 
 const inputClass =
-  "w-full bg-[#EDE8E0]/[0.04] border border-[#EDE8E0]/15 rounded-lg px-3.5 py-2.5 text-[15px] text-[#EDE8E0] placeholder:text-[#EDE8E0]/30 focus:outline-none focus:border-[#5E9AA3]/60 transition-colors";
-const labelClass = "block text-xs uppercase tracking-wider text-[#EDE8E0]/50 mb-1.5";
+  "w-full bg-ink/[0.05] border border-ink/25 rounded-lg px-3.5 py-2.5 text-[15px] text-ink placeholder:text-muted/60 focus:outline-none focus:border-teal transition-colors";
+const labelClass = "block text-xs uppercase tracking-wider text-muted mb-1.5";
+const CUSTOM_SCOPE = "__custom";
 
 function emptyFields(): ProjectFields {
   return {
@@ -60,6 +61,10 @@ export default function ProjectForm({ project }: { project?: Project }) {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // "Other" is on when the saved value isn't one of the presets (or the user picked it).
+  const [customScope, setCustomScope] = useState(
+    () => Boolean(project) && !(SCOPE_PRESETS as readonly string[]).includes(project?.scope ?? "")
+  );
 
   const busy = saving || deleting;
   // Images for a saved project stay under its slug; a new one uses the title typed so far.
@@ -71,8 +76,12 @@ export default function ProjectForm({ project }: { project?: Project }) {
 
   async function save(event: FormEvent) {
     event.preventDefault();
-    setSaving(true);
     setError(null);
+    if (customScope && !form.scope.trim()) {
+      setError("Type the type of work, or choose one from the list.");
+      return;
+    }
+    setSaving(true);
     try {
       if (project) await updateProject(project.id, form);
       else await createProject(form);
@@ -131,12 +140,35 @@ export default function ProjectForm({ project }: { project?: Project }) {
             <select
               id="scope"
               className={inputClass}
-              value={form.scope}
-              onChange={(e) => set("scope", e.target.value as ProjectScope)}
+              value={customScope ? CUSTOM_SCOPE : form.scope}
+              onChange={(e) => {
+                if (e.target.value === CUSTOM_SCOPE) {
+                  setCustomScope(true);
+                  set("scope", "");
+                } else {
+                  setCustomScope(false);
+                  set("scope", e.target.value);
+                }
+              }}
             >
-              <option value="Interior">Interior</option>
-              <option value="Architecture & Interior">Architecture & Interior</option>
+              {SCOPE_PRESETS.map((preset) => (
+                <option key={preset} value={preset}>
+                  {preset}
+                </option>
+              ))}
+              <option value={CUSTOM_SCOPE}>Other (type your own)…</option>
             </select>
+            {customScope && (
+              <input
+                aria-label="Custom type of work"
+                className={`${inputClass} mt-2`}
+                value={form.scope}
+                onChange={(e) => set("scope", e.target.value)}
+                placeholder="e.g. Landscape & Interior"
+                maxLength={60}
+                autoFocus
+              />
+            )}
           </div>
           <div>
             <label htmlFor="status" className={labelClass}>Status</label>
@@ -222,6 +254,16 @@ export default function ProjectForm({ project }: { project?: Project }) {
         <CoverUploader folder={folder} value={form.coverImage} onChange={(src) => set("coverImage", src)} />
       </FormSection>
 
+      <FormSection title="Drawings and plans" hint="Optional. Floor plans, elevations, sketches. They appear first on the project page, above the rooms.">
+        <PhotoGrid<Drawing>
+          folder={folder}
+          items={form.drawings}
+          onItemsChange={(drawings) => set("drawings", drawings)}
+          onAdd={(uploaded) => set("drawings", [...form.drawings, ...uploaded.map((u) => ({ ...u, alt: "" }))])}
+          addLabel="Add drawings"
+        />
+      </FormSection>
+
       <FormSection title="Rooms and photos" hint="Group photos by room. Use the star on a photo to make it the cover.">
         <RoomsEditor
           folder={folder}
@@ -229,16 +271,6 @@ export default function ProjectForm({ project }: { project?: Project }) {
           onChange={(rooms) => set("rooms", rooms)}
           coverSrc={form.coverImage}
           onSetCover={(src) => set("coverImage", src)}
-        />
-      </FormSection>
-
-      <FormSection title="Drawings and plans" hint="Optional. Floor plans, elevations, sketches.">
-        <PhotoGrid<Drawing>
-          folder={folder}
-          items={form.drawings}
-          onItemsChange={(drawings) => set("drawings", drawings)}
-          onAdd={(uploaded) => set("drawings", [...form.drawings, ...uploaded.map((u) => ({ ...u, alt: "" }))])}
-          addLabel="Add drawings"
         />
       </FormSection>
 
@@ -254,15 +286,15 @@ export default function ProjectForm({ project }: { project?: Project }) {
             checked={form.featured}
             onChange={(v) => set("featured", v)}
             label="Show on the homepage"
-            hint="Featured projects appear on the home page."
+            hint="Shown in the “A glimpse of our work” strip on the home page."
           />
         </div>
       </FormSection>
 
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[#EDE8E0]/10 bg-[#0B0C0C]/95 backdrop-blur">
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-hairline bg-bone/95 backdrop-blur">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-3 space-y-2">
           {error && (
-            <p role="alert" className="text-sm text-red-400">
+            <p role="alert" className="text-sm text-red-700">
               {error}
             </p>
           )}
@@ -272,7 +304,7 @@ export default function ProjectForm({ project }: { project?: Project }) {
                 type="button"
                 onClick={remove}
                 disabled={busy}
-                className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded-full border border-red-500/30 text-red-700 hover:bg-red-500/10 transition-colors disabled:opacity-50"
               >
                 {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
                 Delete
@@ -280,14 +312,14 @@ export default function ProjectForm({ project }: { project?: Project }) {
             )}
             <Link
               href="/admin"
-              className="ml-auto text-sm px-4 py-2.5 rounded-full text-[#EDE8E0]/70 hover:bg-[#EDE8E0]/5 transition-colors"
+              className="ml-auto text-sm px-4 py-2.5 rounded-full text-ink hover:bg-ink/10 transition-colors"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={busy}
-              className="inline-flex items-center gap-2 text-sm px-6 py-2.5 rounded-full bg-[#5E9AA3] text-[#0B0C0C] font-medium hover:bg-[#5E9AA3]/90 transition-colors disabled:opacity-60"
+              className="inline-flex items-center gap-2 text-sm px-6 py-2.5 rounded-full bg-night text-bone font-medium hover:bg-abyss transition-colors disabled:opacity-60"
             >
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
               {form.published ? "Save" : "Save as draft"}

@@ -74,28 +74,28 @@ export default function MessagesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-light">
-          Messages {unreadCount > 0 && <span className="text-sm text-[#5E9AA3]">({unreadCount} unread)</span>}
+          Messages {unreadCount > 0 && <span className="text-sm text-teal-deep">({unreadCount} unread)</span>}
         </h1>
       </div>
 
       {error && (
-        <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+        <p className="text-sm text-red-700 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
           {error}
         </p>
       )}
 
       {!messages && !error && (
-        <div className="flex items-center gap-2 text-sm text-[#EDE8E0]/50 py-10 justify-center">
+        <div className="flex items-center gap-2 text-sm text-muted py-10 justify-center">
           <Loader2 size={16} className="animate-spin" /> Loading…
         </div>
       )}
 
       {messages && messages.length === 0 && (
-        <p className="text-sm text-[#EDE8E0]/50 py-10 text-center">No messages yet.</p>
+        <p className="text-sm text-muted py-10 text-center">No messages yet.</p>
       )}
 
       {messages && messages.length > 0 && (
-        <div className="border border-[#EDE8E0]/10 rounded-xl overflow-hidden divide-y divide-[#EDE8E0]/10">
+        <div className="border border-hairline rounded-xl overflow-hidden divide-y divide-hairline">
           {messages.map((m) => {
             const isOpen = openId === m.id;
             return (
@@ -106,21 +106,21 @@ export default function MessagesPage() {
                   className="w-full flex items-center gap-3 text-left"
                 >
                   {m.read ? (
-                    <MailOpen size={15} className="text-[#EDE8E0]/30 shrink-0" />
+                    <MailOpen size={15} className="text-muted/60 shrink-0" />
                   ) : (
-                    <Mail size={15} className="text-[#5E9AA3] shrink-0" />
+                    <Mail size={15} className="text-teal-deep shrink-0" />
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className={`text-sm truncate ${m.read ? "text-[#EDE8E0]/70" : "text-[#EDE8E0]"}`}>
-                      {m.name} <span className="text-[#EDE8E0]/40">— {m.email}</span>
+                    <p className={`text-sm truncate ${m.read ? "text-ink" : "text-ink"}`}>
+                      {m.name} <span className="text-muted">— {m.email}</span>
                     </p>
-                    {!isOpen && <p className="text-xs text-[#EDE8E0]/40 truncate">{m.message}</p>}
+                    {!isOpen && <p className="text-xs text-muted truncate">{m.message}</p>}
                   </div>
-                  <span className="text-xs text-[#EDE8E0]/30 shrink-0">{formatDate(m)}</span>
+                  <span className="text-xs text-muted/60 shrink-0">{formatDate(m)}</span>
                 </button>
 
                 {isOpen && (
-                  <div className="mt-3 ml-[27px] space-y-2 text-sm text-[#EDE8E0]/80">
+                  <div className="mt-3 ml-[27px] space-y-2 text-sm text-ink">
                     {m.phone && <p>Phone: {m.phone}</p>}
                     {m.projectType && <p>Project type: {m.projectType}</p>}
                     {m.budget && <p>Budget: {m.budget}</p>}
@@ -128,7 +128,7 @@ export default function MessagesPage() {
                     <div className="pt-2 flex gap-3">
                       <a
                         href={`mailto:${m.email}`}
-                        className="text-xs px-3 py-1.5 rounded-full border border-[#5E9AA3]/50 text-[#5E9AA3] hover:bg-[#5E9AA3]/10 transition-colors"
+                        className="text-xs px-3 py-1.5 rounded-full border border-teal/60 text-teal-deep hover:bg-teal/10 transition-colors"
                       >
                         Reply by email
                       </a>
@@ -136,7 +136,7 @@ export default function MessagesPage() {
                         type="button"
                         onClick={() => remove(m)}
                         disabled={busyId === m.id}
-                        className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors"
+                        className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-red-500/30 text-red-700 hover:bg-red-500/10 transition-colors"
                       >
                         <Trash2 size={12} /> Delete
                       </button>

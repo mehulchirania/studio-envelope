@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import Hero from "@/components/home/Hero";
 import FeaturedProjects from "@/components/home/FeaturedProjects";
 import { findImage } from "@/lib/content/images";
-import { getProjects } from "@/lib/data";
+import { getFeaturedProjects, getProjects } from "@/lib/data";
 import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/content/site";
 
@@ -15,6 +15,8 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const projects = await getProjects();
+  // Only projects ticked "show on the homepage" in the admin appear in the strip below.
+  const featured = await getFeaturedProjects();
   const heroImage = findImage(projects.find((project) => project.slug === "james-residence"), "kitchen-dining.jpg");
 
   return (
@@ -43,7 +45,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <FeaturedProjects projects={projects} />
+      <FeaturedProjects projects={featured} />
     </>
   );
 }

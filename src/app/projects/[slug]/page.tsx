@@ -117,6 +117,29 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
           </div>
         </div>
 
+        {project.drawings.length > 0 && (
+          <div className="band-bone py-10 sm:py-14">
+            <div className="container-x">
+              <div className="mx-auto max-w-5xl">
+                <h2 className="label mb-6 text-muted sm:mb-8">Drawings</h2>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+                  {project.drawings.map((drawing) => (
+                    <div key={drawing.src} className="bg-paper-2 p-3">
+                      <div className="w-full" style={{ aspectRatio: `${drawing.width} / ${drawing.height}` }}>
+                        <LightboxImage
+                          image={{ ...drawing, kind: "photo" }}
+                          index={indexBySrc.get(drawing.src) ?? 0}
+                          sizes="(min-width: 1024px) 32rem, 92vw"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <RoomIndex rooms={roomLinks} />
 
         <div>
@@ -124,32 +147,12 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
             <RoomChapter
               key={room.name}
               room={room}
-              tone={i % 2 === 0 ? "light" : "dark"}
+              // Rooms alternate bands; when drawings (a bone band) come first, start on the dark one.
+              tone={(i + (project.drawings.length > 0 ? 1 : 0)) % 2 === 0 ? "light" : "dark"}
               indexBySrc={indexBySrc}
             />
           ))}
         </div>
-
-        {project.drawings.length > 0 && (
-          <div className="band-bone section-y">
-            <div className="container-x">
-              <h2 className="label mb-8 text-muted sm:mb-10">Drawings</h2>
-              <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-                {project.drawings.map((drawing) => (
-                  <div key={drawing.src} className="bg-paper-2 p-3 sm:p-4">
-                    <div className="w-full" style={{ aspectRatio: `${drawing.width} / ${drawing.height}` }}>
-                      <LightboxImage
-                        image={{ ...drawing, kind: "photo" }}
-                        index={indexBySrc.get(drawing.src) ?? 0}
-                        sizes="(min-width: 1024px) 45vw, 92vw"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </article>
 
       <NextProjectBand project={nextProject} />

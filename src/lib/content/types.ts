@@ -1,4 +1,7 @@
-export type ProjectScope = "Interior" | "Architecture & Interior";
+/** Type of work shown on cards and project pages. Usually one of SCOPE_PRESETS, but the admin can enter any text. */
+export type ProjectScope = string;
+
+export const SCOPE_PRESETS = ["Interior", "Architecture & Interior", "Architecture", "Renovation"] as const;
 
 export type ProjectImageKind = "photo" | "render";
 

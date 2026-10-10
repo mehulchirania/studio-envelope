@@ -13,7 +13,7 @@ type ProjectHeroProps = {
  * Supplies its own top padding since the fixed header overlays it. */
 export default function ProjectHero({ title, subtitle, cover, datasheetItems }: ProjectHeroProps) {
   return (
-    <div className="band-dark relative flex min-h-[88svh] flex-col overflow-hidden sm:min-h-[100svh]">
+    <div className="band-dark relative flex min-h-[64svh] flex-col overflow-hidden sm:min-h-[72svh]">
       <Image src={cover.src} alt={cover.alt} fill priority sizes="100vw" className="object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-night/90 via-night/20 to-abyss/50" aria-hidden="true" />
 

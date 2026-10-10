@@ -17,6 +17,8 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
     track.scrollBy({ left: direction * track.clientWidth * 0.78, behavior: "smooth" });
   }
 
+  if (projects.length === 0) return null;
+
   const arrowButton =
     "grid h-11 w-11 place-items-center border border-hairline text-ink transition-colors hover:bg-ink hover:text-bone";
 

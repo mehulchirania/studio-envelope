@@ -27,7 +27,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
 
   if (project === undefined) {
     return (
-      <div className="flex items-center justify-center gap-2 text-sm text-[#EDE8E0]/50 py-16">
+      <div className="flex items-center justify-center gap-2 text-sm text-muted py-16">
         <Loader2 size={16} className="animate-spin" /> Loading…
       </div>
     );
@@ -36,8 +36,8 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
   if (project === null) {
     return (
       <div className="text-center py-16 space-y-3">
-        <p className="text-sm text-[#EDE8E0]/60">That project couldn&rsquo;t be found.</p>
-        <Link href="/admin" className="text-sm text-[#5E9AA3] hover:underline">
+        <p className="text-sm text-muted">That project couldn&rsquo;t be found.</p>
+        <Link href="/admin" className="text-sm text-teal-deep hover:underline">
           Back to all projects
         </Link>
       </div>

@@ -97,7 +97,7 @@ export function parseProjectFields(body: unknown): ProjectFields {
     if (!coverImage) throw new HttpError(400, "Add a cover image before publishing.");
   }
 
-  const scope: ProjectScope = b.scope === "Architecture & Interior" ? "Architecture & Interior" : "Interior";
+  const scope: ProjectScope = text(b.scope, "Type of work", 60) || "Interior";
 
   const fields: ProjectFields = {
     title,

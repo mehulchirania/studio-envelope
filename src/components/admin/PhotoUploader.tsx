@@ -55,9 +55,9 @@ function useImageUploads(folder: string) {
 function UploadStatus({ pending, error }: { pending: Pending[]; error: string | null }) {
   return (
     <>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-red-700">{error}</p>}
       {pending.map((p) => (
-        <div key={p.id} className="flex items-center gap-2 text-xs text-[#EDE8E0]/60">
+        <div key={p.id} className="flex items-center gap-2 text-xs text-muted">
           <Loader2 size={14} className="animate-spin" />
           <span className="truncate max-w-[14rem]">{p.name}</span>
           <span className="ml-auto tabular-nums">{Math.round(p.progress)}%</span>
@@ -109,7 +109,7 @@ export function CoverUploader({
   const { dragging, handlers } = useDropzone(handleFiles);
 
   return (
-    <div className="space-y-3">
+    <div className="max-w-md space-y-3">
       <input
         ref={inputRef}
         type="file"
@@ -119,21 +119,21 @@ export function CoverUploader({
       />
 
       {value ? (
-        <div className="relative overflow-hidden rounded-xl border border-[#EDE8E0]/10 bg-black/30 aspect-[16/9]" {...handlers}>
+        <div className="relative overflow-hidden rounded-xl border border-hairline bg-ink/10 aspect-[16/9]" {...handlers}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={value} alt="Cover" className="w-full h-full object-cover" />
           <div className="absolute bottom-3 right-3 flex gap-2">
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
-              className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-[#0B0C0C]/80 hover:bg-[#5E9AA3]/80 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-night/80 text-bone hover:bg-teal/90 transition-colors"
             >
               <Repeat size={13} /> Replace
             </button>
             <button
               type="button"
               onClick={() => onChange("")}
-              className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-[#0B0C0C]/80 hover:bg-red-500/80 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-night/80 text-bone hover:bg-red-700/90 transition-colors"
             >
               <X size={13} /> Remove
             </button>
@@ -145,11 +145,11 @@ export function CoverUploader({
           onClick={() => inputRef.current?.click()}
           {...handlers}
           className={`w-full flex flex-col items-center justify-center gap-2 aspect-[16/9] rounded-xl border-2 border-dashed transition-colors ${
-            dragging ? "border-[#5E9AA3] bg-[#5E9AA3]/10" : "border-[#EDE8E0]/15 hover:border-[#EDE8E0]/30 bg-[#EDE8E0]/[0.02]"
+            dragging ? "border-teal bg-teal/15" : "border-ink/25 hover:border-ink/50 bg-ink/[0.05]"
           }`}
         >
-          <ImagePlus size={22} className="text-[#EDE8E0]/40" />
-          <span className="text-sm text-[#EDE8E0]/70">Drag a photo here, or click to choose one</span>
+          <ImagePlus size={22} className="text-muted" />
+          <span className="text-sm text-ink">Drag a photo here, or click to choose one</span>
         </button>
       )}
 
@@ -212,19 +212,19 @@ export function PhotoGrid<T extends PhotoItem>({
   }
 
   const iconButton =
-    "p-2 rounded-full text-[#EDE8E0]/60 hover:text-[#EDE8E0] hover:bg-[#EDE8E0]/10 transition-colors disabled:opacity-25 disabled:pointer-events-none";
+    "p-2 rounded-full text-muted hover:text-ink hover:bg-ink/10 transition-colors disabled:opacity-25 disabled:pointer-events-none";
 
   return (
     <div className="space-y-3">
       {items.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
           {items.map((item, index) => (
-            <div key={item.src} className="rounded-xl border border-[#EDE8E0]/10 bg-[#EDE8E0]/[0.02] overflow-hidden">
-              <div className="relative aspect-[4/3] bg-black/30">
+            <div key={item.src} className="rounded-xl border border-hairline bg-ink/[0.05] overflow-hidden">
+              <div className="relative aspect-[4/3] bg-ink/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={item.src} alt={item.alt} className="w-full h-full object-cover" />
                 {coverSrc === item.src && (
-                  <span className="absolute top-2 left-2 text-[11px] px-2 py-0.5 rounded-full bg-[#5E9AA3] text-[#0B0C0C]">
+                  <span className="absolute top-2 left-2 text-[11px] px-2 py-0.5 rounded-full bg-night text-bone">
                     Cover
                   </span>
                 )}
@@ -235,14 +235,14 @@ export function PhotoGrid<T extends PhotoItem>({
                   onChange={(e) => patch(index, { alt: e.target.value })}
                   placeholder="Describe this photo"
                   aria-label="Photo description"
-                  className="w-full bg-transparent border-b border-[#EDE8E0]/10 px-1 py-1.5 text-xs text-[#EDE8E0] placeholder:text-[#EDE8E0]/30 focus:outline-none focus:border-[#5E9AA3]/60"
+                  className="w-full bg-transparent border-b border-hairline px-1 py-1.5 text-xs text-ink placeholder:text-muted/60 focus:outline-none focus:border-teal"
                 />
                 {showKind && (
                   <select
                     value={item.kind ?? "photo"}
                     onChange={(e) => patch(index, { kind: e.target.value === "render" ? "render" : "photo" })}
                     aria-label="Photo type"
-                    className="w-full bg-[#0B0C0C] border border-[#EDE8E0]/10 rounded px-1.5 py-1 text-xs text-[#EDE8E0]/80"
+                    className="w-full bg-bone border border-hairline rounded px-1.5 py-1 text-xs text-ink"
                   >
                     <option value="photo">Photograph</option>
                     <option value="render">Visualisation (3D render)</option>
@@ -278,7 +278,7 @@ export function PhotoGrid<T extends PhotoItem>({
                     )}
                     <button
                       type="button"
-                      className={`${iconButton} hover:!text-red-400`}
+                      className={`${iconButton} hover:!text-red-700`}
                       onClick={() => onItemsChange(items.filter((_, i) => i !== index))}
                       aria-label="Remove photo"
                     >
@@ -306,12 +306,12 @@ export function PhotoGrid<T extends PhotoItem>({
         {...handlers}
         className={`w-full flex items-center justify-center gap-2 py-5 rounded-xl border-2 border-dashed text-sm transition-colors ${
           dragging
-            ? "border-[#5E9AA3] bg-[#5E9AA3]/10 text-[#EDE8E0]"
-            : "border-[#EDE8E0]/15 hover:border-[#EDE8E0]/30 text-[#EDE8E0]/70 bg-[#EDE8E0]/[0.02]"
+            ? "border-teal bg-teal/15 text-ink"
+            : "border-ink/25 hover:border-ink/50 text-ink bg-ink/[0.05]"
         }`}
       >
         <ImagePlus size={16} />
-        {addLabel} <span className="text-[#EDE8E0]/40">— drag here or click</span>
+        {addLabel} <span className="text-muted">— drag here or click</span>
       </button>
 
       <UploadStatus pending={pending} error={error} />

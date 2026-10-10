@@ -5,7 +5,7 @@ import type { Room, RoomImage } from "@/lib/content/types";
 import { PhotoGrid } from "@/components/admin/PhotoUploader";
 
 const iconButton =
-  "p-2.5 rounded-full text-[#EDE8E0]/50 hover:text-[#EDE8E0] hover:bg-[#EDE8E0]/10 transition-colors disabled:opacity-25 disabled:pointer-events-none";
+  "p-2.5 rounded-full text-muted hover:text-ink hover:bg-ink/10 transition-colors disabled:opacity-25 disabled:pointer-events-none";
 
 export default function RoomsEditor({
   folder,
@@ -41,14 +41,14 @@ export default function RoomsEditor({
   return (
     <div className="space-y-5">
       {rooms.map((room, index) => (
-        <div key={index} className="rounded-2xl border border-[#EDE8E0]/10 p-4 space-y-4">
+        <div key={index} className="rounded-2xl border border-hairline p-4 space-y-4">
           <div className="flex items-center gap-2">
             <input
               value={room.name}
               onChange={(e) => patchRoom(index, { name: e.target.value })}
               placeholder="Room name, e.g. Kitchen & Dining"
               aria-label="Room name"
-              className="flex-1 min-w-0 bg-[#EDE8E0]/[0.04] border border-[#EDE8E0]/15 rounded-lg px-3.5 py-2.5 text-[15px] text-[#EDE8E0] placeholder:text-[#EDE8E0]/30 focus:outline-none focus:border-[#5E9AA3]/60"
+              className="flex-1 min-w-0 bg-ink/[0.05] border border-ink/25 rounded-lg px-3.5 py-2.5 text-[15px] text-ink placeholder:text-muted/60 focus:outline-none focus:border-teal"
             />
             <button type="button" className={iconButton} onClick={() => moveRoom(index, -1)} disabled={index === 0} aria-label="Move room up">
               <ArrowUp size={16} />
@@ -62,7 +62,7 @@ export default function RoomsEditor({
             >
               <ArrowDown size={16} />
             </button>
-            <button type="button" className={`${iconButton} hover:!text-red-400`} onClick={() => removeRoom(index)} aria-label="Remove room">
+            <button type="button" className={`${iconButton} hover:!text-red-700`} onClick={() => removeRoom(index)} aria-label="Remove room">
               <Trash2 size={16} />
             </button>
           </div>
@@ -85,7 +85,7 @@ export default function RoomsEditor({
       <button
         type="button"
         onClick={() => onChange([...rooms, { name: "", images: [] }])}
-        className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border border-[#5E9AA3]/50 text-[#5E9AA3] hover:bg-[#5E9AA3]/10 transition-colors"
+        className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border border-teal/60 text-teal-deep hover:bg-teal/10 transition-colors"
       >
         <Plus size={15} />
         Add a room
