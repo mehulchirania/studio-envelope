@@ -73,7 +73,7 @@ export default function RoomIndex({ rooms }: { rooms: RoomLink[] }) {
                 href={`#${room.id}`}
                 aria-current={active === room.id ? "true" : undefined}
                 className={clsx(
-                  "label inline-block whitespace-nowrap border px-3 py-2 transition-colors",
+                  "label inline-block whitespace-nowrap border px-3 py-3 transition-colors",
                   active === room.id ? "border-teal text-teal" : "border-hairline text-muted"
                 )}
               >

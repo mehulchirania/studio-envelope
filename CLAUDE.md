@@ -5,7 +5,7 @@
 Website for Studio Envelope, an architect-led residential interior studio in Bangalore (principal: Ar. Prachi Chirania Bhalotia). Product truth is in `PRODUCT.md`, the visual system in `DESIGN.md`. Read both before UI work.
 
 ## Direction
-Simple, quiet, photograph-led. **No interactive flourishes**: no preloader, cursor follower, parallax, scroll-linked text, pinned/hijacked scrolling, marquees, page-transition overlays or animation libraries (framer-motion and lenis were removed). Scroll stays native. Do not describe the studio as "luxury" in copy or SEO.
+Simple, quiet, photograph-led. **No interactive flourishes**: no preloader, cursor follower, parallax, scroll-linked text, pinned/hijacked scrolling, marquees, page-transition overlays or animation libraries (framer-motion and lenis were removed). Scroll stays native. One owner-requested exception: a subtle fade in/out of content blocks as they scroll into and out of view (`src/components/layout/ScrollFade.tsx` + `[data-fade]` rules in `globals.css`; IntersectionObserver, no library, off for reduced motion and on /admin). Keep it that restrained. Do not describe the studio as "luxury" in copy or SEO.
 
 ## Commands
 - `npm run dev` (port 3000), `npm run build`, `npm run lint`, `npx tsc --noEmit`

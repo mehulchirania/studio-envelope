@@ -42,7 +42,7 @@ export default function Footer() {
                 href={item.href}
                 target={item.external ? "_blank" : undefined}
                 rel={item.external ? "noopener noreferrer" : undefined}
-                className="link-underline mt-2 inline-block break-all py-1 text-lg text-bone"
+                className="link-underline mt-1 inline-block break-all py-3 text-lg text-bone sm:mt-2 sm:py-1"
               >
                 {item.value}
               </a>

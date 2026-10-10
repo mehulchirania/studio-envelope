@@ -61,6 +61,7 @@ export default function Header() {
   }, [pathname]);
 
   return (
+    <>
     <header className="fixed inset-x-0 top-0 z-50 border-b border-bone/10 bg-abyss/90 backdrop-blur-md">
       <div className="container-x flex h-16 items-center justify-between gap-6 sm:h-20">
         <Link href="/" aria-label="Studio Envelope home" className="shrink-0">
@@ -98,50 +99,53 @@ export default function Header() {
           {menuOpen ? <X /> : <Menu />}
         </button>
       </div>
-
-      {menuOpen && (
-        <div
-          id="mobile-menu"
-          ref={overlayRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site menu"
-          className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-abyss px-6 py-4"
-        >
-          <div className="flex h-12 items-center justify-between">
-            <Logo variant="light" />
-            <button
-              type="button"
-              aria-label="Close menu"
-              className="-mr-2 grid h-11 w-11 place-items-center text-bone"
-              onClick={() => setMenuOpen(false)}
-            >
-              <X />
-            </button>
-          </div>
-          <nav className="flex flex-col" aria-label="Mobile">
-            {links.map((link, i) => (
-              <Link
-                key={link.href}
-                ref={i === 0 ? firstLinkRef : undefined}
-                href={link.href}
-                aria-current={pathname.startsWith(link.href) ? "page" : undefined}
-                className="border-b border-hairline-light py-4 font-display text-5xl font-light text-bone hover:text-marigold aria-[current=page]:text-marigold"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="flex flex-col pt-8">
-            <Link href="/contact" className="label py-3 text-marigold">
-              Enquire
-            </Link>
-            <a href={site.contact.phoneHref} className="label py-3 text-mist">
-              {site.contact.phone}
-            </a>
-          </div>
-        </div>
-      )}
     </header>
+
+    {/* Rendered outside <header>: the header's backdrop-filter would otherwise become the
+        containing block for this fixed overlay and squash it to header height. */}
+    {menuOpen && (
+      <div
+        id="mobile-menu"
+        ref={overlayRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site menu"
+        className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-abyss px-6 py-4 text-bone"
+      >
+        <div className="flex h-12 shrink-0 items-center justify-between">
+          <Logo variant="light" />
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="-mr-2 grid h-11 w-11 place-items-center text-bone"
+            onClick={() => setMenuOpen(false)}
+          >
+            <X />
+          </button>
+        </div>
+        <nav className="mt-6 flex flex-col" aria-label="Mobile">
+          {links.map((link, i) => (
+            <Link
+              key={link.href}
+              ref={i === 0 ? firstLinkRef : undefined}
+              href={link.href}
+              aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined}
+              className="border-b border-hairline-light py-4 font-display text-4xl font-light text-bone hover:text-marigold aria-[current=page]:text-marigold"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="mt-auto flex flex-col pt-8">
+          <Link href="/contact" className="label py-3 text-marigold">
+            Enquire
+          </Link>
+          <a href={site.contact.phoneHref} className="label py-3 text-mist">
+            {site.contact.phone}
+          </a>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

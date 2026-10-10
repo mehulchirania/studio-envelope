@@ -95,6 +95,29 @@
       scroll-behavior: auto !important;
     }
   }
+
+  /* Scroll fade (see components/layout/ScrollFade.tsx): content blocks fade and rise slightly as
+     they enter the viewport and fade out as they leave. The attributes are only added by JS, so
+     without it (or with reduced motion) everything simply stays visible. */
+  [data-fade] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s ease-out,
+      transform 0.7s ease-out;
+  }
+
+  [data-fade][data-in] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-fade] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 }
 
 @layer components {
@@ -253,6 +276,11 @@
 
     .section-y {
       padding-block: 56px;
+    }
+
+    /* Keep text links a comfortable finger size. */
+    .link-arrow {
+      min-height: 44px;
     }
 
     .back-to-top {

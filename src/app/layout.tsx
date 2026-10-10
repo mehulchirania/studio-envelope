@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HideOnAdmin from "@/components/layout/HideOnAdmin";
 import BackToTop from "@/components/layout/BackToTop";
+import ScrollFade from "@/components/layout/ScrollFade";
 import JsonLd from "@/components/seo/JsonLd";
 import { getLocalBusinessSchema, getWebSiteSchema, SITE_URL } from "@/lib/seo";
 import { site } from "@/lib/content/site";
@@ -88,6 +89,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </HideOnAdmin>
         <HideOnAdmin>
           <BackToTop />
+          <ScrollFade />
         </HideOnAdmin>
         <Analytics />
       </body>
