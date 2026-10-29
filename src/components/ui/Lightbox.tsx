@@ -65,7 +65,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
       role="dialog"
       aria-modal="true"
       aria-label={`${current.alt} — image ${index + 1} of ${images.length}`}
-      className="fixed inset-0 z-[80] flex items-center justify-center bg-abyss/95 p-3 sm:p-10"
+      className="fixed inset-0 z-[80] flex items-center justify-center bg-black/95 p-3 sm:p-10"
       onClick={onClose}
       onTouchStart={(e) => {
         touchStartX.current = e.touches[0].clientX;

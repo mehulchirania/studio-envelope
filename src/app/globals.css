@@ -3,8 +3,16 @@
 /* Design tokens — see BRIEF "the letter". Everything else in this file lives
    inside @layer so Tailwind's own utilities always win over these rules. */
 @theme {
-  /* v2 palette — "cinematic, dense, dark-led". Token NAMES kept where
-     possible so existing v1 code keeps compiling; values remapped. */
+  /* Palette: black + beige. Brand blue (--color-brand, the logo triangle) is the primary
+     accent on beige: text links, hover lines, focus outlines, selection, buttons (solid and
+     round Enquire; --color-brand-deep on hover), form focus, scrollbar, seal. On black it is
+     only used for non-text (button fills, header active underline, 3.5:1); text on black that
+     needs the blue uses --color-brand-light (7.5:1). Gold (--color-marigold, the logo's bars)
+     is for small accents on dark bands only: labels, hover underlines, focus rings. Public
+     dark bands use --color-black / --color-coal; the browns (night, abyss, teal, ink, muted)
+     remain for the admin UI and legacy code, and ink/muted for text on beige. */
+  --color-black: #000000;
+  --color-coal: #0e0e0e;
   --color-night: #433a31;
   --color-abyss: #26211c;
   --color-teal: #756451;
@@ -13,6 +21,10 @@
   --color-ink: #332c26;
   --color-mist: #c9baa6;
   --color-marigold: #c7a97a;
+  /* Turquoise-blue of the triangle in the logo. */
+  --color-brand: #176b8a;
+  --color-brand-deep: #10546d;
+  --color-brand-light: #5fa3bd;
 
   --color-paper: #ebe1d2;
   --color-paper-2: #d9ccba;
@@ -57,17 +69,17 @@
 
   html {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-teal) var(--color-bone);
+    scrollbar-color: var(--color-brand) var(--color-bone);
     -webkit-tap-highlight-color: transparent;
   }
 
   ::selection {
-    background: var(--color-marigold);
-    color: var(--color-ink);
+    background: var(--color-brand);
+    color: var(--color-bone);
   }
 
   :focus-visible {
-    outline: 1.5px solid var(--color-teal);
+    outline: 1.5px solid var(--color-brand);
     outline-offset: 3px;
   }
 
@@ -186,7 +198,9 @@
 
   /* Band utilities — pages alternate dark and bone sections. Applied to a
      full-width section wrapper; sets background, default text and link
-     colors, and the ambient .label color for that band. */
+     colors, and the ambient .label color for that band. .band-dark is a
+     near-black (coal) that sits beside the pure-black header; .band-darkest
+     is the same black as the header and is used by the footer. */
   .band-dark,
   .band-darkest,
   .band-teal {
@@ -194,15 +208,16 @@
   }
 
   .band-dark {
-    background: var(--color-night);
+    background: var(--color-coal);
   }
 
   .band-darkest {
-    background: var(--color-abyss);
+    background: var(--color-black);
   }
 
+  /* Brand band: the logo's teal-blue as a full surface. Bone text on it is ~4.6:1. */
   .band-teal {
-    background: var(--color-teal);
+    background: var(--color-brand);
   }
 
   .band-bone {
@@ -211,9 +226,12 @@
   }
 
   .band-dark .label,
-  .band-darkest .label,
-  .band-teal .label {
+  .band-darkest .label {
     color: var(--color-mist);
+  }
+
+  .band-teal .label {
+    color: var(--color-bone);
   }
 
   .band-dark a,
@@ -254,8 +272,8 @@
     line-height: 1.02;
   }
 
-  /* Animated underline that grows from the left on hover, in marigold.
-     Works on either band since it doesn't touch text color. */
+  /* Animated underline that grows from the left on hover: brand on beige, marigold on
+     dark bands and the header. Doesn't touch text color. */
   .link-underline {
     position: relative;
     display: inline-block;
@@ -268,10 +286,17 @@
     bottom: -0.2em;
     width: 100%;
     height: 1px;
-    background: var(--color-marigold);
+    background: var(--color-brand);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .band-dark .link-underline::after,
+  .band-darkest .link-underline::after,
+  .band-teal .link-underline::after,
+  header .link-underline::after {
+    background: var(--color-marigold);
   }
 
   .link-underline:hover::after,
@@ -279,12 +304,12 @@
     transform: scaleX(1);
   }
 
-  /* Text link with an arrow that nudges on hover; teal underline. */
+  /* Text link with an arrow that nudges on hover; brand colour and underline. */
   .link-arrow {
     display: inline-flex;
     align-items: center;
     gap: 0.5em;
-    color: var(--color-teal);
+    color: var(--color-brand);
     border-bottom: 1px solid var(--color-hairline);
     padding-bottom: 0.15em;
     transition: border-color 0.25s ease, color 0.25s ease;
@@ -295,7 +320,13 @@
   }
 
   .link-arrow:hover {
-    border-color: var(--color-teal);
+    border-color: var(--color-brand);
+  }
+
+  .band-dark .link-arrow:hover,
+  .band-darkest .link-arrow:hover,
+  .band-teal .link-arrow:hover {
+    border-color: var(--color-marigold);
   }
 
   .link-arrow:hover svg {
@@ -311,12 +342,12 @@
     height: 44px;
     display: grid;
     place-items: center;
-    background: var(--color-teal);
+    background: var(--color-brand);
     color: var(--color-paper);
   }
 
   .back-to-top:hover {
-    background: var(--color-teal-deep);
+    background: var(--color-brand-deep);
   }
 
   @media (max-width: 639px) {

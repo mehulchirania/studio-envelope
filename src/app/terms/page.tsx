@@ -33,7 +33,7 @@ export default function TermsPage() {
           <div>
             <p className="label mb-2 text-muted">Effective Date: {lastUpdated}</p>
             <p className="text-lg leading-relaxed text-ink">
-              Welcome to Studio Envelope (<span className="text-teal font-medium">studioenvelope.com</span>). By accessing or
+              Welcome to Studio Envelope (<span className="text-brand font-medium">studioenvelope.com</span>). By accessing or
               browsing this website, you agree to comply with and be bound by the following terms and conditions of use.
             </p>
           </div>
@@ -43,7 +43,7 @@ export default function TermsPage() {
             <p className="text-base leading-relaxed text-muted">
               All materials published on this website—including architectural plans, drawings, 3D visualisations, interior concepts,
               photographs, styling layouts, editorial copy, logos, and graphics—are the exclusive intellectual property of Studio
-              Envelope and Ar. Prachi Chirania Bhalotia, unless otherwise credited.
+              Envelope and Ar. Prachi Chirania, unless otherwise credited.
             </p>
             <p className="text-base leading-relaxed text-muted">
               You may not reproduce, distribute, modify, republish, or commercially exploit any content, design drawings, or
@@ -95,11 +95,11 @@ export default function TermsPage() {
             </p>
             <div className="rounded-xl border border-hairline bg-paper p-6 text-sm text-ink space-y-2">
               <p className="font-medium text-base">{site.name}</p>
-              <p>Email: <a href={`mailto:${site.contact.email}`} className="text-teal hover:underline">{site.contact.email}</a></p>
+              <p>Email: <a href={`mailto:${site.contact.email}`} className="text-brand hover:underline">{site.contact.email}</a></p>
               <p>Location: {site.contact.location}</p>
             </div>
             <p className="pt-4 text-sm text-muted">
-              Please also review our <Link href="/privacy" className="text-teal hover:underline">Privacy Policy</Link>.
+              Please also review our <Link href="/privacy" className="text-brand hover:underline">Privacy Policy</Link>.
             </p>
           </section>
         </div>

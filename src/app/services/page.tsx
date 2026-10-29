@@ -16,7 +16,7 @@ import PageTransition from "@/components/layout/PageTransition";
 export const metadata: Metadata = pageMetadata({
   title: "Architecture & Interior Design Services in Bangalore",
   description:
-    "Space planning, design consultation, material selection, furnishing, styling and project management for homes in Bangalore, Ballari and Pune by Studio Envelope.",
+    "Space planning, design consultation, material selection, furnishing, styling and project management for residential and commercial projects by Studio Envelope, Bangalore. Design consultations across India.",
   path: "/services",
 });
 
@@ -38,29 +38,14 @@ export default async function ServicesPage() {
       />
 
       <PageHero title="Everything a home needs, in one studio." background={heroImage ? { src: heroImage.src, alt: heroImage.alt } : undefined}>
-        From the first consultation to the final photo shoot, we carry every layer of a project — design, furnishing and delivery — under one roof.
+        From the first consultation to the final photo shoot, we carry every layer of a project, design, furnishing and delivery, under one roof.
       </PageHero>
 
       <section className="band-bone section-y">
         <div className="container-x">
-          <SectionHeader seal heading="Ten services, three stages." className="mb-8 sm:mb-10" />
+          <SectionHeader seal heading="Ten services, three stages." className="mb-10 sm:mb-14" />
 
-          {/* Jump links: the three stages and how many services each holds. */}
-          <nav aria-label="Service stages" className="mb-12 flex flex-wrap gap-3 sm:mb-16">
-            {serviceGroups.map((group, i) => (
-              <a
-                key={group.id}
-                href={`#${group.id}`}
-                className="label inline-flex min-h-11 items-center gap-3 border border-hairline px-4 py-3 text-ink transition-colors hover:bg-ink hover:text-bone"
-              >
-                <span className="opacity-60">{String(i + 1).padStart(2, "0")}</span>
-                {group.name}
-                <span className="opacity-60">{group.items.length} services</span>
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex flex-col gap-14 sm:gap-20">
+          <div className="grid gap-12 lg:grid-cols-3 lg:gap-10 xl:gap-14">
             {serviceGroups.map((group, groupIndex) => {
               // Services are numbered 01-10 straight through, across the stages.
               const before = serviceGroups.slice(0, groupIndex).reduce((total, g) => total + g.items.length, 0);
@@ -91,14 +76,14 @@ export default async function ServicesPage() {
             <div>
               <h3 className="font-display text-2xl text-bone">Interior design</h3>
               <p className="mt-4 max-w-md text-base leading-relaxed text-bone/90">
-                Interiors planned and detailed within an existing shell — space planning, material and furniture selection, styling and delivery, without touching the building itself.
+                Interiors planned and detailed within an existing shell: space planning, material and furniture selection, styling and delivery, without touching the building itself.
               </p>
             </div>
             <div>
               <h3 className="font-display text-2xl text-bone">Architecture &amp; interiors</h3>
               <p className="mt-4 max-w-md text-base leading-relaxed text-bone/90">
                 Renovations and additions that span both the built form and the interiors within it. Shyamkutir, our Ballari bungalow renovation, is one example.{" "}
-                <Link href="/projects/shyamkutir" className="link-underline text-bone">
+                <Link href="/projects/shyamkutir" className="link-underline py-2 text-bone">
                   View project <ArrowUpRight size={14} className="inline" aria-hidden="true" />
                 </Link>
               </p>
@@ -120,7 +105,7 @@ export default async function ServicesPage() {
 
       <section className="band-bone section-y">
         <div className="container-x">
-          <SectionHeader heading="Questions we hear before we start." className="mb-8 sm:mb-14" />
+          <SectionHeader heading="Questions we hear before we start." className="mb-10 sm:mb-14" />
           <div className="max-w-3xl border-t border-hairline">
             {faqs.map((faq) => (
               <FaqItem key={faq.q} q={faq.q} a={faq.a} />

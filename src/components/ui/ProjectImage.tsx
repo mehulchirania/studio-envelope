@@ -21,7 +21,7 @@ type ProjectImageProps = {
 export default function ProjectImage({ image, sizes, className, priority, tone = "light", cursor }: ProjectImageProps) {
   return (
     <div
-      className={clsx("relative overflow-hidden", tone === "dark" ? "bg-teal/30" : "bg-paper-2", className)}
+      className={clsx("relative overflow-hidden", tone === "dark" ? "bg-white/10" : "bg-paper-2", className)}
       data-cursor={cursor}
     >
       <Image
@@ -37,7 +37,7 @@ export default function ProjectImage({ image, sizes, className, priority, tone =
         <span
           className={clsx(
             "label absolute bottom-3 left-3 px-2.5 py-1",
-            tone === "dark" ? "bg-abyss/80 text-bone" : "bg-bone/80 text-ink"
+            tone === "dark" ? "bg-black/80 text-bone" : "bg-bone/80 text-ink"
           )}
         >
           Visualisation

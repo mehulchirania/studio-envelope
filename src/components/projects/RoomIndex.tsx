@@ -5,9 +5,9 @@ import clsx from "clsx";
 
 type RoomLink = { id: string; name: string };
 
-/** Room navigation for a project detail page. Desktop: a small fixed abyss/80
+/** Room navigation for a project detail page. Desktop: a small fixed black/80
  * pill of dots floating on the right edge, always legible since it sits above
- * whichever band (bone or night) is currently scrolled past — no inline
+ * whichever band (bone or dark) is currently scrolled past — no inline
  * column needed now that each room is its own full-width band. Mobile: a
  * horizontal chip list placed once, above the first room. Both read from the
  * same `active` state (via IntersectionObserver) so they stay in sync. */
@@ -40,7 +40,7 @@ export default function RoomIndex({ rooms }: { rooms: RoomLink[] }) {
     <>
       <nav
         aria-label="Rooms in this project"
-        className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 rounded-full bg-abyss/80 px-2.5 py-4 backdrop-blur-sm lg:block"
+        className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 rounded-full bg-black/80 px-2.5 py-4 backdrop-blur-sm lg:block"
       >
         <ul className="flex flex-col items-center gap-4">
           {rooms.map((room) => (
@@ -55,7 +55,7 @@ export default function RoomIndex({ rooms }: { rooms: RoomLink[] }) {
                 )}
               />
               <span
-                className="label pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap bg-abyss/90 px-2.5 py-1 text-bone opacity-0 transition-opacity group-hover:opacity-100"
+                className="label pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap bg-black/90 px-2.5 py-1 text-bone opacity-0 transition-opacity group-hover:opacity-100"
                 aria-hidden="true"
               >
                 {room.name}
@@ -74,7 +74,7 @@ export default function RoomIndex({ rooms }: { rooms: RoomLink[] }) {
                 aria-current={active === room.id ? "true" : undefined}
                 className={clsx(
                   "label inline-block whitespace-nowrap border px-3 py-3 transition-colors",
-                  active === room.id ? "border-teal text-teal" : "border-hairline text-muted"
+                  active === room.id ? "border-brand text-brand" : "border-hairline text-muted"
                 )}
               >
                 {room.name}

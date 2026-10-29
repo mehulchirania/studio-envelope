@@ -11,7 +11,7 @@ import PageTransition from "@/components/layout/PageTransition";
 export const metadata: Metadata = pageMetadata({
   title: "Contact — Architecture & Interior Design Studio, Bangalore",
   description:
-    "Get in touch with Studio Envelope to discuss a residential architecture or interior design project in Bangalore, Ballari or Pune.",
+    "Get in touch with Studio Envelope to discuss a residential architecture or interior design project in Bangalore, or a design consultation anywhere in India.",
   path: "/contact",
 });
 
@@ -49,18 +49,18 @@ export default async function ContactPage() {
         {bg && (
           <>
             <Image src={bg.src} alt="" fill sizes="(max-width: 1024px) 100vw, 50vw" priority className="absolute inset-0 -z-20 object-cover opacity-25" />
-            <div className="absolute inset-0 -z-10 bg-gradient-to-t from-night via-night/85 to-night/70" />
+            <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black via-black/85 to-black/70" />
           </>
         )}
         <div className="container-x lg:px-[clamp(16px,4vw,48px)]">
-          <h1 className="display-xl text-bone">Write to us.</h1>
+          <h1 className="h1 text-[clamp(44px,5vw,72px)] text-bone">Write to us.</h1>
           <p className="mt-5 max-w-sm text-base leading-relaxed text-mist sm:mt-6">
             Tell us about your space, scope and timeline — we&apos;ll reply within a couple of working days.
           </p>
 
           <dl className="mt-10 flex flex-col sm:mt-14">
             {DETAILS.map((detail) => (
-              <div key={detail.label} className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-hairline-light py-4">
+              <div key={detail.label} className="flex flex-col gap-1 border-t border-hairline-light py-4 sm:flex-row sm:items-baseline sm:gap-x-4">
                 <dt className="label w-24 shrink-0 text-mist">{detail.label}</dt>
                 <dd className="min-w-0">
                   {detail.href ? (
@@ -68,7 +68,7 @@ export default async function ContactPage() {
                       href={detail.href}
                       target={detail.external ? "_blank" : undefined}
                       rel={detail.external ? "noopener noreferrer" : undefined}
-                      className="link-underline break-all text-lg text-bone sm:text-2xl"
+                      className="link-underline break-words py-1 text-lg text-bone sm:text-2xl"
                     >
                       {detail.value}
                     </a>

@@ -15,7 +15,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 const inputClasses =
-  "min-h-12 w-full rounded-none border-0 border-b border-hairline bg-transparent py-3 text-base text-ink placeholder:text-muted/70 transition-colors focus:border-teal focus-visible:outline-none";
+  "min-h-12 w-full rounded-none border-0 border-b border-hairline bg-transparent py-3 text-base text-ink placeholder:text-muted/70 transition-colors focus:border-brand focus-visible:outline-none";
 const errorTextClass = "mt-2 text-sm text-[#9B2C1F]";
 
 /** Label + control with an underline that grows in on focus (via :focus-within). */
@@ -27,7 +27,7 @@ function Field({ id, label, className, error, children }: { id: string; label: s
       </label>
       <div className="group relative">
         {children}
-        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-marigold transition-transform duration-300 group-focus-within:scale-x-100" />
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-brand transition-transform duration-300 group-focus-within:scale-x-100" />
       </div>
       {error && (
         <p id={`${id}-error`} className={errorTextClass}>
@@ -112,12 +112,12 @@ export default function ContactForm() {
   if (status === "success") {
     return (
       <div className="flex flex-col items-start gap-4 border border-hairline bg-paper-2 p-6 sm:p-8" role="status">
-        <CircleCheckBig className="text-teal" size={32} aria-hidden="true" />
+        <CircleCheckBig className="text-brand" size={32} aria-hidden="true" />
         <div>
           <p className="font-display text-2xl text-ink">Message sent</p>
           <p className="mt-2 text-base text-muted">Thank you for reaching out. We&apos;ll reply within a couple of working days.</p>
         </div>
-        <button type="button" onClick={() => setStatus("idle")} className="label min-h-11 text-teal hover:text-teal-deep">
+        <button type="button" onClick={() => setStatus("idle")} className="label min-h-11 text-brand hover:text-brand-deep">
           Send another message
         </button>
       </div>

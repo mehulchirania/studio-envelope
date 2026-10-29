@@ -4,9 +4,9 @@ export const site = {
   name: "Studio Envelope",
   tagline: "Architecture & Interior Design, Bangalore",
   description:
-    "Studio Envelope is an architecture and interior design studio based in Bangalore, led by Ar. Prachi Chirania Bhalotia.",
+    "Studio Envelope is an architecture and interior design studio based in Bangalore, led by Ar. Prachi Chirania.",
   principal: {
-    name: "Ar. Prachi Chirania Bhalotia",
+    name: "Ar. Prachi Chirania",
     role: "Principal Architect",
     instagram: "https://www.instagram.com/prachichirania/",
     instagramHandle: "@prachichirania",

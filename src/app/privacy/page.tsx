@@ -33,9 +33,9 @@ export default function PrivacyPolicyPage() {
           <div>
             <p className="label mb-2 text-muted">Effective Date: {lastUpdated}</p>
             <p className="text-lg leading-relaxed text-ink">
-              Studio Envelope (&quot;we,&quot; &quot;our,&quot; or &quot;the studio&quot;), led by Ar. Prachi Chirania Bhalotia in
+              Studio Envelope (&quot;we,&quot; &quot;our,&quot; or &quot;the studio&quot;), led by Ar. Prachi Chirania in
               Bangalore, India, is committed to safeguarding the personal privacy of clients, collaborators, and visitors to our
-              website (<span className="text-teal font-medium">studioenvelope.com</span>).
+              website (<span className="text-brand font-medium">studioenvelope.com</span>).
             </p>
           </div>
 
@@ -101,12 +101,12 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="rounded-xl border border-hairline bg-paper p-6 text-sm text-ink space-y-2">
               <p className="font-medium text-base">{site.name}</p>
-              <p>Email: <a href={`mailto:${site.contact.email}`} className="text-teal hover:underline">{site.contact.email}</a></p>
-              <p>Phone: <a href={site.contact.phoneHref} className="text-teal hover:underline">{site.contact.phone}</a></p>
+              <p>Email: <a href={`mailto:${site.contact.email}`} className="text-brand hover:underline">{site.contact.email}</a></p>
+              <p>Phone: <a href={site.contact.phoneHref} className="text-brand hover:underline">{site.contact.phone}</a></p>
               <p>Location: {site.contact.location}</p>
             </div>
             <p className="pt-4 text-sm text-muted">
-              Looking for our terms? Read our <Link href="/terms" className="text-teal hover:underline">Terms of Use</Link>.
+              Looking for our terms? Read our <Link href="/terms" className="text-brand hover:underline">Terms of Use</Link>.
             </p>
           </section>
         </div>

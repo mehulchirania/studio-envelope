@@ -15,10 +15,10 @@ const base =
   "inline-flex items-center justify-center transition-colors focus-visible:outline-offset-4 disabled:pointer-events-none disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
-  /** Round marigold call to action (footer "Enquire"). */
-  round: "flex-col gap-1 rounded-full bg-marigold px-2 text-center text-abyss hover:bg-bone",
-  /** Square brown action used for form submission. */
-  solid: "min-h-12 gap-3 bg-teal px-8 py-3.5 text-sm uppercase tracking-[0.16em] text-bone hover:bg-teal-deep",
+  /** Round brand-blue call to action (footer "Enquire"). */
+  round: "flex-col gap-1 rounded-full bg-brand px-2 text-center text-bone hover:bg-brand-deep",
+  /** Square brand-blue action used for form submission. */
+  solid: "min-h-12 gap-3 bg-brand px-8 py-3.5 text-sm uppercase tracking-[0.16em] text-bone hover:bg-brand-deep",
 };
 
 /** The site's one button: a link when `href` is given, otherwise a button

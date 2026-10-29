@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import PageHero from "@/components/ui/PageHero";
-import Seal from "@/components/ui/Seal";
 import JsonLd from "@/components/seo/JsonLd";
 import { findImage } from "@/lib/content/images";
 import { site } from "@/lib/content/site";
@@ -10,16 +9,16 @@ import { getBreadcrumbSchema, pageMetadata } from "@/lib/seo";
 import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = pageMetadata({
-  title: "The Studio — Ar. Prachi Chirania Bhalotia",
+  title: "About — Ar. Prachi Chirania",
   description:
-    "Studio Envelope is an architecture and interior design practice in Bangalore, led by Principal Architect Ar. Prachi Chirania Bhalotia. Thoughtful homes across Bangalore, Ballari and Pune.",
+    "Studio Envelope is an architecture and interior design practice in Bangalore, led by Principal Architect Ar. Prachi Chirania. Residential and commercial projects across India.",
   path: "/about",
 });
 
 const NOTE_PARAGRAPHS = [
-  'The name "Studio Envelope" evokes warmth, authenticity and intentionality. Our studio delivers spaces that are thoughtful and personal, much like the cherished messages enclosed in an envelope.',
-  "We create cohesive spaces with design solutions that blend creativity, precision and purpose—wrapped with care and shaped around each client's personality and needs.",
-  "Innovative thinking and meticulous planning bring function and aesthetics into harmony, creating spaces that feel considered, personal and easy to live in.",
+  'The name "Studio Envelope" evokes warmth, authenticity and intentionality. Our studio delivers spaces that are thoughtful and personal, much like the cherished messages enclosed in an envelope. We create cohesive spaces with design solutions that blend creativity, precision and purpose—wrapped with care and shaped around each client\'s personality and needs. Innovative thinking and meticulous planning bring function and aesthetics into harmony, creating spaces that feel considered, personal and easy to live in.',
+  "We get involved in the demolition & construction, electricals, plumbing, false ceiling, flooring, fixed carpentry, loose furniture & styling. We do not follow any specific style and are open to take up new challenges in terms of design direction. We like to create spaces along the preferred design language of the client, unless they are open to giving us a free hand.",
+  "To maintain a specific quality we take on a limited number of projects in a year. We take up projects pan-India.",
 ];
 
 export default async function AboutPage() {
@@ -31,7 +30,7 @@ export default async function AboutPage() {
     findImage(james, "master-bedroom-1.jpg") ??
     projects[0]?.rooms[0]?.images[0] ?? {
       src: "/images/projects/james-residence/master-bedroom-1.jpg",
-      alt: "Ar. Prachi Chirania Bhalotia — Principal Architect",
+      alt: "Ar. Prachi Chirania — Principal Architect",
       width: 1071,
       height: 1499,
       kind: "photo" as const,
@@ -42,23 +41,21 @@ export default async function AboutPage() {
       <JsonLd
         schema={getBreadcrumbSchema([
           { name: "Home", url: "/" },
-          { name: "The Studio", url: "/about" },
+          { name: "About", url: "/about" },
         ])}
       />
-      <PageHero title="Why an envelope?" background={heroImage ? { src: heroImage.src, alt: heroImage.alt } : undefined}>
-        A note on what the name means, and how it shapes the way we design.
-      </PageHero>
+      <PageHero title="Why an envelope?" background={heroImage ? { src: heroImage.src, alt: heroImage.alt } : undefined} />
 
       <section className="band-bone">
-        <div className="container-x grid gap-8 py-14 sm:py-24 lg:grid-cols-[0.65fr_1.35fr] lg:gap-20">
-          <div>
-            <Seal />
-            <p className="label mt-5">Our name</p>
-          </div>
-          <div className="max-w-3xl">
-            <p className="font-display text-[clamp(26px,3.5vw,48px)] font-light leading-[1.2] text-ink">{NOTE_PARAGRAPHS[0]}</p>
-            <p className="mt-8 max-w-2xl text-base leading-7 text-muted">{NOTE_PARAGRAPHS[1]}</p>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-muted">{NOTE_PARAGRAPHS[2]}</p>
+        <div className="container-x py-14 sm:py-24">
+          <h2 className="font-display text-[clamp(36px,4vw,52px)] font-light leading-none text-ink">Our name</h2>
+          {/* Newspaper columns, so the three paragraphs flow and the columns end level. */}
+          <div className="mt-8 text-left text-base leading-7 text-muted sm:mt-12 md:columns-2 md:gap-12 lg:columns-3">
+            {NOTE_PARAGRAPHS.map((paragraph) => (
+              <p key={paragraph} className="mb-6">
+                {paragraph}
+              </p>
+            ))}
           </div>
         </div>
       </section>
@@ -73,11 +70,11 @@ export default async function AboutPage() {
 
           <div>
             <p className="label text-mist">{site.principal.role}</p>
-            <h2 className="mt-4 max-w-[10ch] font-display text-[clamp(44px,6.5vw,96px)] font-light leading-[0.98] text-bone">{site.principal.name}</h2>
-            <p className="mt-6 max-w-xl text-base leading-7 text-mist sm:mt-8">
-              Ar. Prachi Chirania Bhalotia leads Studio Envelope across residential interiors and architecture. The studio works across Bangalore, Ballari and Pune, bringing close attention to everyday use, material detail and each client&apos;s way of living.
+            <h2 className="mt-4 font-display text-[clamp(28px,2.7vw,44px)] font-light leading-tight text-bone lg:whitespace-nowrap">{site.principal.name}</h2>
+            <p className="mt-6 max-w-xl text-base leading-7 text-mist">
+              leads Studio Envelope across residential &amp; commercial interiors and architecture. The studio is based out of Bangalore &amp; provides services pan India, bringing close attention to everyday use, material detail and each client&apos;s taste. Every project is treated as its own, never a repeat of the last.
             </p>
-            <a href={site.principal.instagram} target="_blank" rel="noopener noreferrer" className="link-underline mt-6 inline-flex py-2 text-lg text-bone sm:mt-8">
+            <a href={site.principal.instagram} target="_blank" rel="noopener noreferrer" className="link-underline mt-8 inline-flex py-2 text-lg text-bone">
               {site.principal.instagramHandle}
             </a>
           </div>

@@ -48,23 +48,14 @@ export function getLocalBusinessSchema() {
         name: "Bangalore",
         containedInPlace: { "@type": "State", name: "Karnataka" },
       },
-      {
-        "@type": "City",
-        name: "Ballari",
-        containedInPlace: { "@type": "State", name: "Karnataka" },
-      },
-      {
-        "@type": "City",
-        name: "Pune",
-        containedInPlace: { "@type": "State", name: "Maharashtra" },
-      },
+      { "@type": "Country", name: "India" },
     ],
     sameAs: [
       site.socials.instagram,
       site.principal.instagram,
     ],
     knowsAbout: [
-      "Residential Architecture",
+      "Architecture Design",
       "Interior Design",
       "Space Planning",
       "Furniture and Lighting Selection",

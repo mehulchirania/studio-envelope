@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
+import HomeOnly from "@/components/layout/HomeOnly";
 import { site } from "@/lib/content/site";
 
 const legalLinks = [
@@ -10,17 +11,11 @@ const legalLinks = [
 ];
 
 const expertiseList = [
-  "Residential Architecture",
+  "Architecture Design",
   "Turnkey Interior Design",
   "Space Planning & Renovation",
   "Custom Furniture & Styling",
   "Material & Lighting Design",
-];
-
-const studioLocations = [
-  { city: "Bangalore", note: "Head Studio & Practice" },
-  { city: "Ballari", note: "Residential Projects" },
-  { city: "Pune", note: "Design Consultations" },
 ];
 
 /** Closing band on every public page: an invitation to connect, studio scope, locations, legal links, and copyright. */
@@ -28,22 +23,24 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="band-darkest border-t border-hairline-light/50">
+    <footer className="band-darkest">
       <div className="container-x section-y">
-        {/* Top invitation row */}
-        <div className="flex flex-col items-start gap-10 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="label text-marigold">Have a space in mind?</p>
-            <h2 className="display-xl mt-4 max-w-3xl text-bone">Write to us.</h2>
+        {/* Top invitation row: home page only */}
+        <HomeOnly>
+          <div className="mb-16 flex flex-col items-start gap-10 border-b border-hairline-light pb-12 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="label text-marigold">Have a space in mind?</p>
+              <h2 className="h2 mt-4 max-w-3xl text-[clamp(40px,4.5vw,64px)] text-bone">Write to us.</h2>
+            </div>
+            <Button variant="round" href="/contact" className="label h-28 w-28 shrink-0">
+              Enquire
+              <ArrowUpRight size={18} />
+            </Button>
           </div>
-          <Button variant="round" href="/contact" className="label h-32 w-32 shrink-0">
-            Enquire
-            <ArrowUpRight size={18} />
-          </Button>
-        </div>
+        </HomeOnly>
 
         {/* Structured studio info columns */}
-        <div className="mt-16 grid gap-10 border-t border-hairline-light pt-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10">
           {/* Col 1: Studio Identity */}
           <div className="space-y-4">
             <p className="label text-marigold">The Practice</p>
@@ -73,12 +70,11 @@ export default function Footer() {
           <div className="space-y-4">
             <p className="label text-marigold">Studio &amp; Presence</p>
             <div className="space-y-3 text-sm">
-              {studioLocations.map((loc) => (
-                <div key={loc.city}>
-                  <p className="font-medium text-bone">{loc.city}</p>
-                  <p className="text-xs text-mist">{loc.note}</p>
-                </div>
-              ))}
+              <div>
+                <p className="font-medium text-bone">Bangalore</p>
+                <p className="text-xs text-mist">Head Studio &amp; Practice</p>
+              </div>
+              <p className="text-xs text-mist">Design consultations pan India</p>
             </div>
             <p className="pt-2 text-xs text-mist/80">
               Hours: Mon – Sat, 10:00 AM – 7:00 PM IST
@@ -145,12 +141,6 @@ export default function Footer() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/contact"
-            className="link-underline text-mist transition-colors hover:text-marigold"
-          >
-            Direct Contact
-          </Link>
         </nav>
       </div>
     </footer>

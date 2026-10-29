@@ -26,7 +26,7 @@ const jost = Jost({
   display: "swap",
 });
 
-const SHARE_TITLE = "Studio Envelope — Architecture & Interior Design, Bangalore";
+const SHARE_TITLE = "Architects & Interior Designers in Bangalore — Studio Envelope";
 const SHARE_IMAGE = "/images/projects/james-residence/living.jpg";
 
 export const metadata: Metadata = {
@@ -38,11 +38,10 @@ export const metadata: Metadata = {
     "Studio Envelope",
     "architecture studio Bangalore",
     "interior design Bangalore",
-    "Prachi Chirania Bhalotia",
+    "Prachi Chirania",
     "residential architecture Bangalore",
     "architects in Bengaluru",
-    "interior designer Ballari",
-    "architecture Pune",
+    "commercial interior design Bangalore",
   ],
   authors: [{ name: site.principal.name }],
   creator: site.principal.name,
@@ -62,6 +61,8 @@ export const metadata: Metadata = {
     description: site.description,
     images: [SHARE_IMAGE],
   },
+  // Set GOOGLE_SITE_VERIFICATION to the token from Search Console (HTML tag method).
+  verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
   robots: {
     index: true,
     follow: true,
