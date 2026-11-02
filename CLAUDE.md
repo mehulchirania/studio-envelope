@@ -8,7 +8,7 @@ Website for Studio Envelope, an architect-led residential interior studio in Ban
 Simple, quiet, photograph-led. **No interactive flourishes**: no preloader, cursor follower, parallax, scroll-linked text, pinned/hijacked scrolling, marquees, page-transition overlays or animation libraries (framer-motion and lenis were removed). Scroll stays native. Owner-requested exceptions, both fades only: (1) content blocks fade in/out as they scroll into and out of view (`src/components/layout/ScrollFade.tsx` + `[data-fade]` rules in `globals.css`; IntersectionObserver, no library, off for reduced motion and on /admin); (2) pages crossfade on navigation (`PageTransition` wraps each public page.tsx, using React `<ViewTransition>`/the View Transitions API, `.page-in`/`.page-out` rules in `globals.css`; header held still; browsers without support just navigate). New public pages should wrap their output in `PageTransition`. Keep it that restrained: no slides, curtains or overlays. Do not describe the studio as "luxury" in copy or SEO.
 
 ## Commands
-- `npm run dev` (port 3000), `npm run build`, `npm run lint`, `npx tsc --noEmit`
+- `npm run dev` (port 3000), `npm run build` (webpack: the Turbopack build fails resolving the Jost `next/font` files), `npm run lint`, `npx tsc --noEmit`
 - Next.js is v16 with breaking changes: check `node_modules/next/dist/docs/` before using APIs.
 
 ## Data and backend
@@ -18,7 +18,7 @@ Simple, quiet, photograph-led. **No interactive flourishes**: no preloader, curs
 - Contact form writes to Firestore `messages`; `firestore.rules` validates the shape.
 
 ## Code layout
-`src/components/{layout,ui,home,projects,services,contact,seo,admin}` by feature; `src/lib/content` (copy and data), `src/lib/firebase` (backend access). Import with the `@/` alias. Page metadata goes through `pageMetadata()` in `src/lib/seo.ts`; structured data only states confirmed facts (no hours, prices or coordinates). Reuse `ui/Button`, `ui/PageHero`, `ui/SectionHeader`, `projects/ProjectCard` before adding new pieces. After moving or deleting files, run `npx tsc --noEmit`, `npx eslint src` and `npx next build`.
+`src/components/{layout,ui,home,projects,services,contact,seo,admin}` by feature; `src/lib/content` (copy and data), `src/lib/firebase` (backend access). Import with the `@/` alias. Page metadata goes through `pageMetadata()` in `src/lib/seo.ts`; structured data only states confirmed facts (no hours, prices or coordinates). Reuse `ui/Button`, `ui/PageHero`, `ui/SectionHeader`, `projects/ProjectCard` before adding new pieces. After moving or deleting files, run `npx tsc --noEmit`, `npx eslint src` and `npm run build`.
 
 ## Conventions
 - Tailwind v4 tokens are in `src/app/globals.css` (`@theme`). Token name `teal` is a brown, kept for compatibility.
