@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { site } from "@/lib/content/site";
 
-export const alt = "Studio Envelope — Architecture & Interior Design, Bangalore";
+export const alt = "Studio Envelope | Architecture & Interior Design, Bangalore";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

@@ -26,13 +26,13 @@ const jost = Jost({
   display: "swap",
 });
 
-const SHARE_TITLE = "Architects & Interior Designers in Bangalore — Studio Envelope";
-const SHARE_IMAGE = "/images/projects/james-residence/living.jpg";
+const SHARE_TITLE = "Architects & Interior Designers in Bangalore | Studio Envelope";
+const SHARE_IMAGE = "/images/site/dining-mural.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   icons: { icon: "/icon.svg", apple: "/icon.svg" },
-  title: { default: SHARE_TITLE, template: "%s — Studio Envelope" },
+  title: { default: SHARE_TITLE, template: "%s | Studio Envelope" },
   description: site.description,
   keywords: [
     "Studio Envelope",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     description: site.description,
     url: SITE_URL,
     locale: "en_IN",
-    images: [{ url: SHARE_IMAGE, width: 1650, height: 1795, alt: SHARE_TITLE }],
+    images: [{ url: SHARE_IMAGE, width: 2400, height: 1600, alt: SHARE_TITLE }],
   },
   twitter: {
     card: "summary_large_image",

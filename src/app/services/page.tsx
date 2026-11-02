@@ -8,8 +8,6 @@ import FaqItem from "@/components/services/FaqItem";
 import ProcessStep from "@/components/services/ProcessStep";
 import JsonLd from "@/components/seo/JsonLd";
 import { faqs, processSteps, serviceDescriptions, serviceGroups, serviceImages } from "@/lib/content/services";
-import { findImage } from "@/lib/content/images";
-import { getProjects } from "@/lib/data";
 import { getBreadcrumbSchema, getFaqSchema, pageMetadata } from "@/lib/seo";
 import PageTransition from "@/components/layout/PageTransition";
 
@@ -20,13 +18,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/services",
 });
 
-export default async function ServicesPage() {
-  const projects = await getProjects();
-  const bySlug = (slug: string) => projects.find((p) => p.slug === slug);
-  const doshi = bySlug("doshi-residence");
-
-  const heroImage = findImage(doshi, "living-dining-1.jpg") ?? projects[0]?.rooms[0]?.images[0];
-
+export default function ServicesPage() {
   return (
     <PageTransition>
       <JsonLd schema={getFaqSchema(faqs)} />
@@ -37,7 +29,7 @@ export default async function ServicesPage() {
         ])}
       />
 
-      <PageHero title="Everything a home needs, in one studio." background={heroImage ? { src: heroImage.src, alt: heroImage.alt } : undefined}>
+      <PageHero title="Everything a home needs, in one studio." background={{ src: "/images/site/bedroom-study.jpg", alt: "Bedroom with a pale blue wardrobe wall, a study desk and a window seat" }}>
         From the first consultation to the final photo shoot, we carry every layer of a project, design, furnishing and delivery, under one roof.
       </PageHero>
 

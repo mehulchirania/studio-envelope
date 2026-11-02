@@ -11,7 +11,7 @@ export function pageMetadata({ title, description, path }: { title: string; desc
     title,
     description,
     alternates: { canonical: path },
-    openGraph: { title: `${title} — ${site.name}`, description, url: path },
+    openGraph: { title: `${title} | ${site.name}`, description, url: path },
   };
 }
 
@@ -26,7 +26,7 @@ export function getLocalBusinessSchema() {
     legalName: site.name,
     url: SITE_URL,
     logo: `${SITE_URL}/icon.svg`,
-    image: `${SITE_URL}/images/projects/james-residence/living.jpg`,
+    image: `${SITE_URL}/images/site/dining-mural.jpg`,
     description: site.description,
     telephone: site.contact.phone,
     email: site.contact.email,
@@ -122,7 +122,7 @@ export function getProjectSchema(project: Project) {
     "@context": "https://schema.org",
     "@type": ["CreativeWork", "VisualArtwork"],
     name: project.title,
-    headline: `${project.title} — ${project.scope} by Studio Envelope`,
+    headline: `${project.title}, ${project.scope} by Studio Envelope`,
     description: project.summary || project.description.slice(0, 200),
     url: `${SITE_URL}/projects/${project.slug}`,
     image: Array.from(new Set(images)),
@@ -134,10 +134,7 @@ export function getProjectSchema(project: Project) {
     provider: {
       "@id": `${SITE_URL}/#organization`,
     },
-    locationCreated: {
-      "@type": "Place",
-      name: project.location,
-    },
+    ...(project.location ? { locationCreated: { "@type": "Place", name: project.location } } : {}),
     ...(project.year ? { dateCreated: `${project.year}` } : {}),
     genre: project.scope,
     artform: "Architecture and Interior Design",

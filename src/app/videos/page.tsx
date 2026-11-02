@@ -45,7 +45,7 @@ export default async function VideosPage() {
         <div className="container-x w-full pb-10 sm:pb-16">
           <h1 className="h1 max-w-4xl text-bone">Videos</h1>
           <p className="mt-6 max-w-xl text-base leading-7 text-mist sm:mt-8 sm:text-lg">
-            Walk-throughs and films of our completed spaces.
+            Walkthroughs and films of our completed spaces.
           </p>
         </div>
       </section>

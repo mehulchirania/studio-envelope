@@ -7,8 +7,8 @@ import { submitContact } from "@/lib/firebase/contact";
 import type { ContactMessage } from "@/lib/content/types";
 
 const PROJECT_TYPES = ["Interior", "Architecture & Interior", "Renovation", "Not sure yet"];
-const BUDGETS = ["Under ₹20L", "₹20L – ₹50L", "₹50L – ₹1Cr", "Above ₹1Cr", "Prefer not to say"];
-const TIMELINES = ["Within 3 months", "3–6 months", "6–12 months", "Just exploring"];
+const BUDGETS = ["Under ₹20L", "₹20L to ₹50L", "₹50L to ₹1Cr", "Above ₹1Cr", "Prefer not to say"];
+const TIMELINES = ["Within 3 months", "3 to 6 months", "6 to 12 months", "Just exploring"];
 const SOURCES = ["Instagram", "Referral", "Google", "Other"];
 
 type Status = "idle" | "submitting" | "success" | "error";

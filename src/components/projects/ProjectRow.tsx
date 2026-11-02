@@ -45,7 +45,7 @@ export default function ProjectRow({ project, priority }: { project: Project; pr
 
       <div className="flex flex-col lg:order-1 lg:pr-4">
         <h2 className="font-display text-4xl font-light leading-tight text-ink sm:text-5xl">{project.title}</h2>
-        <p className="label mt-3">{project.location}</p>
+        {project.location && <p className="label mt-3">{project.location}</p>}
 
         <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 border-t border-hairline pt-5 text-sm leading-6">
           {facts

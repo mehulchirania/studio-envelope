@@ -74,9 +74,14 @@ export default function Header() {
       style={{ viewTransitionName: "site-header" }}
     >
       <div className="container-x flex h-16 items-center justify-between gap-6 sm:h-20 lg:grid lg:grid-cols-[1fr_auto_1fr]">
-        <Link href="/" aria-label="Studio Envelope home" className="shrink-0 justify-self-start">
-          <Logo variant="light" />
-        </Link>
+        {/* The home page hero already carries the logo, so the bar shows an empty slot there to keep the nav centred and the menu button at the far right. */}
+        {pathname === "/" ? (
+          <span aria-hidden="true" className="shrink-0" />
+        ) : (
+          <Link href="/" aria-label="Studio Envelope home" className="shrink-0 justify-self-start">
+            <Logo variant="light" />
+          </Link>
+        )}
 
         <nav className="hidden items-center justify-center gap-7 lg:flex" aria-label="Primary">
           {links.map((link) => {

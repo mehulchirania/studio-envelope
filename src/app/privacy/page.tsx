@@ -64,16 +64,16 @@ export default function PrivacyPolicyPage() {
               <li>Managing project timelines, vendor coordination, and turnkey site deliveries.</li>
             </ul>
             <p className="text-base leading-relaxed text-muted">
-              We do not sell, rent, or trade your personal data to third-party marketers or advertisers under any circumstances.
+              We do not sell, rent, or trade your personal data to third party marketers or advertisers under any circumstances.
             </p>
           </section>
 
           <section className="space-y-4 border-t border-hairline pt-8">
             <h2 className="font-display text-2xl text-ink">3. Analytics &amp; Cookies</h2>
             <p className="text-base leading-relaxed text-muted">
-              Our website uses privacy-focused, cookie-free web analytics (Vercel Web Analytics) to understand aggregate traffic
-              patterns and improve site performance. This system records non-identifying technical data (such as page views,
-              browser type, and referral source) without creating cross-site tracking profiles or storing personally identifiable cookies.
+              Our website uses privacy focused, cookie free web analytics (Vercel Web Analytics) to understand aggregate traffic
+              patterns and improve site performance. This system records non identifying technical data (such as page views,
+              browser type, and referral source) without creating cross site tracking profiles or storing personally identifiable cookies.
             </p>
           </section>
 
@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
             <p className="text-base leading-relaxed text-muted">
               Inquiries submitted through our website are securely processed and stored in our database (Google Firebase /
               Firestore) with strict access control rules. Only authorized studio administrators can access the inquiry inbox.
-              We implement industry-standard security measures to prevent unauthorized access or disclosure.
+              We implement industry standard security measures to prevent unauthorized access or disclosure.
             </p>
           </section>
 

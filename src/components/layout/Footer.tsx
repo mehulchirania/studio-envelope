@@ -77,7 +77,7 @@ export default function Footer() {
               <p className="text-xs text-mist">Design consultations pan India</p>
             </div>
             <p className="pt-2 text-xs text-mist/80">
-              Hours: Mon – Sat, 10:00 AM – 7:00 PM IST
+              Hours: Mon to Sat, 10:00 AM to 7:00 PM IST
             </p>
           </div>
 

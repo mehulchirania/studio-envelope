@@ -34,7 +34,7 @@ export default function WorkGlimpse({ images, limit = 14 }: { images: GlimpseIma
   const cycle = `${Math.max(items.length, 4) * 4.5}s`;
 
   return (
-    <section id="work" className="band-bone overflow-hidden py-14 sm:py-20" aria-labelledby="work-glimpse">
+    <section id="work" className="band-bone overflow-hidden border-t border-hairline py-14 sm:py-20" aria-labelledby="work-glimpse">
       {/* Keyframes live here (globals.css is not touched): the track slides one full copy, then repeats. */}
       <style>{`
         @keyframes glimpse-drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }

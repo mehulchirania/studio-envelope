@@ -9,71 +9,54 @@ const jamesRooms: Room[] = [
   {
     name: "Kitchen & Dining",
     images: [
-      { src: "/images/projects/james-residence/kitchen-dining.jpg", kind: "photo", alt: "Kitchen with blue-grey cabinetry, pendant lights and walnut bar stools opening onto the dining area", width: 1483, height: 988 },
-      { src: "/images/projects/james-residence/kitchen-island.jpg", kind: "photo", alt: "Kitchen island in blue-grey laminate with a marble-effect countertop and pendant lighting", width: 1071, height: 1499 },
-    ],
-  },
-  {
-    name: "In-house Office",
-    images: [
-      { src: "/images/projects/james-residence/office-desk.jpg", kind: "photo", alt: "Built-in study desk in warm wood tones with open shelving and a task chair", width: 1456, height: 970 },
-      { src: "/images/projects/james-residence/office-lounge.jpg", kind: "photo", alt: "Small home-office lounge corner with an armchair beside a wood-panelled wall", width: 999, height: 1499 },
+      { src: "/images/projects/james-residence/photos/kitchen-dining-1.jpg", kind: "photo", alt: "Open kitchen with blue grey cabinets seen past a dining table with cream upholstered chairs and a rust coloured unit on the left", width: 2000, height: 1334 },
+      { src: "/images/projects/james-residence/photos/kitchen-dining-2.jpg", kind: "photo", alt: "Corner of the kitchen with pale blue upper cabinets, dark fluted breakfast counter and brown wood bar stools", width: 2000, height: 1334 },
+      { src: "/images/projects/james-residence/photos/kitchen-dining-3.jpg", kind: "photo", alt: "L shaped kitchen in two tones of blue grey with a cream stone counter, black hood and two bar stools at a curved peninsula", width: 2000, height: 1334 },
     ],
   },
   {
     name: "Living",
     images: [
-      { src: "/images/projects/james-residence/living.jpg", kind: "photo", alt: "Living room with a neutral sectional sofa, textured rug and warm wood accent wall", width: 1650, height: 1795 },
-      { src: "/images/projects/james-residence/living-detail.jpg", kind: "photo", alt: "Detail of the living room seating with layered cushions and a low wooden side table", width: 985, height: 1019 },
+      { src: "/images/projects/james-residence/photos/living-1.jpg", kind: "photo", alt: "Living room with two dark grey sofas, a round layered coffee table and a green plant against a panelled warm grey wall", width: 1333, height: 2000 },
+      { src: "/images/projects/james-residence/photos/living-2.jpg", kind: "photo", alt: "Wider view of the living area with grey sofas, a patterned rug, a ceiling fan and a glass partition to the study", width: 1428, height: 2000 },
+      { src: "/images/projects/james-residence/photos/living-3.jpg", kind: "photo", alt: "Wood slatted TV wall with a floating console beside a rust coloured crockery unit, seen from the living area", width: 1333, height: 2000 },
     ],
   },
   {
-    name: "TV Unit & Dining",
+    name: "In House Office",
     images: [
-      { src: "/images/projects/james-residence/tv-dining.jpg", kind: "photo", alt: "TV unit in fluted wood panelling facing the dining table across an open living space", width: 1112, height: 768 },
+      { src: "/images/projects/james-residence/photos/in-house-office-1.jpg", kind: "photo", alt: "Study desk in walnut with a tall open shelving unit behind it, a black framed glass partition and sheer curtains", width: 2000, height: 1333 },
+      { src: "/images/projects/james-residence/photos/in-house-office-2.jpg", kind: "photo", alt: "Home office seen through a black framed reeded glass partition, with a walnut desk, shelving and a dark office chair", width: 1428, height: 2000 },
+      { src: "/images/projects/james-residence/photos/in-house-office-3.jpg", kind: "photo", alt: "Small seating corner beside the office with a green leather sofa, a blue accent wall and a colourful framed artwork", width: 1333, height: 2000 },
     ],
   },
   {
     name: "Crockery Unit & Common Vanity",
     images: [
-      { src: "/images/projects/james-residence/crockery-unit.jpg", kind: "photo", alt: "Tall crockery unit with glass-front shelving and integrated display lighting", width: 1117, height: 1499 },
-      { src: "/images/projects/james-residence/common-vanity.jpg", kind: "photo", alt: "Common washroom vanity with a wood-toned counter and a round backlit mirror", width: 1000, height: 1499 },
+      { src: "/images/projects/james-residence/photos/crockery-unit-vanity-1.jpg", kind: "photo", alt: "Crockery unit with rust coloured fluted base cabinets, an open shelf and black glass overhead cabinets beside the dining area", width: 1333, height: 2000 },
+      { src: "/images/projects/james-residence/photos/crockery-unit-vanity-2.jpg", kind: "photo", alt: "Common vanity with a floating wood counter, a stone basin, a round mirror and rose and charcoal tiles", width: 1334, height: 2000 },
     ],
   },
   {
     name: "Parents' Bedroom",
     images: [
-      { src: "/images/projects/james-residence/parents-bedroom.jpg", kind: "photo", alt: "Parents' bedroom with an upholstered headboard and warm bedside lighting", width: 999, height: 1499 },
-      { src: "/images/projects/james-residence/parents-dresser.jpg", kind: "photo", alt: "Dresser unit in the parents' bedroom with a mirror and soft accent lighting", width: 836, height: 1280 },
+      { src: "/images/projects/james-residence/photos/parents-bedroom-1.jpg", kind: "photo", alt: "Parents' bedroom with a herringbone wood headboard wall, sliding wardrobe above a lit niche and grey bedding", width: 1333, height: 2000 },
     ],
   },
   {
     name: "Master Bedroom",
     images: [
-      { src: "/images/projects/james-residence/master-bedroom-1.jpg", kind: "photo", alt: "Master bedroom with a panelled headboard wall and layered neutral bedding", width: 1071, height: 1499 },
-      { src: "/images/projects/james-residence/master-bedroom-2.jpg", kind: "photo", alt: "Master bedroom seating nook beside a large window with sheer curtains", width: 1001, height: 1499 },
-      { src: "/images/projects/james-residence/master-dresser.jpg", kind: "photo", alt: "Master bedroom dresser with a backlit mirror and wood-veneer drawers", width: 1000, height: 1499 },
-      { src: "/images/projects/james-residence/master-wardrobe.jpg", kind: "photo", alt: "Floor-to-ceiling wardrobe in the master bedroom with matte-finish shutters", width: 1200, height: 1499 },
-    ],
-  },
-  {
-    name: "Master Washroom",
-    images: [
-      { src: "/images/projects/james-residence/master-bath-vanity.jpg", kind: "photo", alt: "Master washroom vanity in dark stone with dual basins and a wide mirror", width: 768, height: 1320 },
-      { src: "/images/projects/james-residence/master-bath-shower.jpg", kind: "photo", alt: "Master washroom shower enclosure finished in textured tile with glass panelling", width: 768, height: 784 },
+      { src: "/images/projects/james-residence/photos/master-bedroom-1.jpg", kind: "photo", alt: "Bedroom with a grey upholstered headboard, blue bedding, wall lamps and roman blinds on the windows", width: 2000, height: 1334 },
+      { src: "/images/projects/james-residence/photos/master-bedroom-2.jpg", kind: "photo", alt: "Close view of the bed with a grey headboard, quilted blue and grey bedding and a patterned cushion", width: 1336, height: 2000 },
+      { src: "/images/projects/james-residence/photos/master-bedroom-3.jpg", kind: "photo", alt: "Corner dressing table in wood with a round brass framed mirror, a tan chair and a trailing plant", width: 1333, height: 2000 },
+      { src: "/images/projects/james-residence/photos/master-bedroom-4.jpg", kind: "photo", alt: "Bedroom with full height grey wardrobes, a dressing table with a round mirror and wood flooring", width: 1600, height: 2000 },
     ],
   },
   {
     name: "Kids' Room",
     images: [
-      { src: "/images/projects/james-residence/kids-room.jpg", kind: "photo", alt: "Kids' bedroom with a study desk, bunk-style bed and playful accent colours", width: 2014, height: 1342 },
-    ],
-  },
-  {
-    name: "Kids' Washroom",
-    images: [
-      { src: "/images/projects/james-residence/kids-bath-1.jpg", kind: "photo", alt: "Kids' washroom with colourful tiling and a compact vanity counter", width: 1071, height: 1499 },
-      { src: "/images/projects/james-residence/kids-bath-2.jpg", kind: "photo", alt: "Kids' washroom shower area with patterned tile and glass partition", width: 1071, height: 1499 },
+      { src: "/images/projects/james-residence/photos/kids-room-1.jpg", kind: "photo", alt: "Kids' room with blue and sea green wardrobes with open shelves, a built in bed and a patterned headboard panel", width: 1429, height: 2000 },
+      { src: "/images/projects/james-residence/photos/kids-room-2.jpg", kind: "photo", alt: "Wide view of the kids' room with two beds on either side of a central blue and green storage unit", width: 2000, height: 1332 },
     ],
   },
 ];
@@ -82,31 +65,174 @@ const jamesDrawings: Drawing[] = [
   { src: "/images/projects/james-residence/plan.png", alt: "Floor plan of the James Residence apartment", width: 1536, height: 876 },
 ];
 
+const ashiyanaRooms: Room[] = [
+  {
+    name: "Living",
+    images: [
+      { src: "/images/projects/ashiyana/living-1.jpg", kind: "photo", alt: "Long living room with a pink plaster wall on the right, a cream sofa and two blush armchairs, a wall mounted TV and a low wooden console on the left", width: 2000, height: 1335 },
+      { src: "/images/projects/ashiyana/living-2.jpg", kind: "photo", alt: "Seating area with blush armchairs and a striped cream sofa beside a pink plaster wall, a grey rug and a dark coffee table in front of a sheer curtained window", width: 2000, height: 1333 },
+      { src: "/images/projects/ashiyana/living-3.jpg", kind: "photo", alt: "Corner of the living room with a pink textured wall, a striped cream sofa with a knitted throw, a black framed coffee table and sunflowers in a vase", width: 1333, height: 2000 },
+      { src: "/images/projects/ashiyana/living-4.jpg", kind: "photo", alt: "Pink plaster wall with a faint floral pattern behind a cream sofa and a blush armchair with printed cushions, a brass pendant light hanging beside it", width: 1334, height: 2000 },
+      { src: "/images/projects/ashiyana/living-5.jpg", kind: "photo", alt: "TV wall with a wall mounted television, an arched mirror niche, a wooden slatted rack and open shelves, with a low console and curtains at the side", width: 1334, height: 2000 },
+      { src: "/images/projects/ashiyana/living-6.jpg", kind: "photo", alt: "Cream marble patterned TV wall with a vertical timber panel, a wall mounted TV, a floating white and wood console and a red gladiolus in a vase", width: 1334, height: 2000 },
+    ],
+  },
+  {
+    name: "Dining",
+    images: [
+      { src: "/images/projects/ashiyana/dining-1.jpg", kind: "photo", alt: "Dining area with a stone top table and grey upholstered chairs under a crystal chandelier, an arched timber opening and a painted pink counter on the right", width: 2000, height: 1334 },
+      { src: "/images/projects/ashiyana/dining-2.jpg", kind: "photo", alt: "Dining table set with fruit and grey chairs, beside a large carved white mural with a fan shaped pattern on the wall", width: 2000, height: 1334 },
+      { src: "/images/projects/ashiyana/dining-3.jpg", kind: "photo", alt: "Carved white relief mural above a console with a brass Buddha figure, dried flowers and white vases", width: 2000, height: 1334 },
+    ],
+  },
+  {
+    name: "Kitchen",
+    images: [
+      { src: "/images/projects/ashiyana/kitchen-1.jpg", kind: "photo", alt: "Kitchen seen through a timber arch, with cream upper cabinets with glass fronts, a black chimney hood and a pink painted counter in the foreground", width: 2000, height: 1333 },
+      { src: "/images/projects/ashiyana/kitchen-2.jpg", kind: "photo", alt: "Kitchen with cream overhead cabinets, a black hood, a white backsplash and mauve lower cabinets with a cream counter", width: 2000, height: 1333 },
+      { src: "/images/projects/ashiyana/kitchen-3.jpg", kind: "photo", alt: "Corner of the kitchen with glass fronted cream cabinets, a gas hob, mauve lower cabinets and a pink patterned counter front with a bowl of grapes", width: 2000, height: 1333 },
+      { src: "/images/projects/ashiyana/kitchen-4.jpg", kind: "photo", alt: "Pink counter painted with a folk style mural of trees and animals, with the kitchen cabinets and a dining chair behind it", width: 1333, height: 2000 },
+      { src: "/images/projects/ashiyana/kitchen-5.jpg", kind: "photo", alt: "Kitchen detail with a black hood, ribbed glass fronted cabinets, a white tiled backsplash, a gas hob and mauve drawers", width: 1334, height: 2000 },
+    ],
+  },
+  {
+    name: "Kids' Room",
+    images: [
+      { src: "/images/projects/ashiyana/kids-room-1.jpg", kind: "photo", alt: "Narrow children's room with two cream daybeds with storage drawers facing each other, a wooden shelf and a window at the far end", width: 2000, height: 1334 },
+      { src: "/images/projects/ashiyana/kids-room-2.jpg", kind: "photo", alt: "Daybed with soft toys, a sunflower and a roman blind at the window, with a toy storage shelf under the bed platform", width: 1333, height: 2000 },
+      { src: "/images/projects/ashiyana/kids-room-3.jpg", kind: "photo", alt: "Study corner with cream wardrobe doors, a zigzag patterned lower panel in red and orange, a pegboard wall and an orange framed desk", width: 2000, height: 1334 },
+      { src: "/images/projects/ashiyana/kids-room-4.jpg", kind: "photo", alt: "Pegboard desk with an orange chair, open orange shelf cubbies above, and a red and cream zigzag patterned panel", width: 1332, height: 2000 },
+    ],
+  },
+  {
+    name: "Bedroom",
+    images: [
+      { src: "/images/projects/ashiyana/bedroom-1.jpg", kind: "photo", alt: "Bedroom with a grey upholstered bed, a floral wallpaper headboard wall, a long wooden console under the window and a grey and wood wardrobe", width: 2000, height: 1333 },
+      { src: "/images/projects/ashiyana/bedroom-2.jpg", kind: "photo", alt: "Bed with a grey padded headboard, a plaid blanket, blue and pink cushions, floral wallpaper, an oval mirror and blue grey wardrobe doors", width: 2000, height: 1333 },
+      { src: "/images/projects/ashiyana/bedroom-3.jpg", kind: "photo", alt: "Close view of the bed with blue and pink cushions and yellow flowers, next to a blue grey wardrobe with cane panelled doors", width: 2000, height: 1334 },
+      { src: "/images/projects/ashiyana/bedroom-4.jpg", kind: "photo", alt: "Wood panelled wall with a blue grey storage unit, a floating desk and grey chair by a corner window, with a bed edge in the foreground", width: 2000, height: 1334 },
+    ],
+  },
+  {
+    name: "Bedroom Two",
+    images: [
+      { src: "/images/projects/ashiyana/bedroom-two-1.jpg", kind: "photo", alt: "Room with a mustard yellow sofa and a dark throw, a wall of cream wardrobe doors with patterned drawers, and a corner desk with wooden overhead cabinets", width: 2000, height: 1334 },
+      { src: "/images/projects/ashiyana/bedroom-two-2.jpg", kind: "photo", alt: "Wooden corner desk with overhead cabinets and open shelves, a pinboard, patterned drawer fronts and a yellow sofa with geometric cushions", width: 1334, height: 2000 },
+      { src: "/images/projects/ashiyana/bedroom-two-3.jpg", kind: "photo", alt: "Wall mounted desk with a grey chair beside a window with a roman blind, a grey cabinet above with an arched open niche and a green side table", width: 1334, height: 2000 },
+      { src: "/images/projects/ashiyana/bedroom-two-4.jpg", kind: "photo", alt: "Tall wardrobe with cream doors and a wooden desk niche, a pinboard, patterned lower drawers and a yellow sofa with cushions", width: 1334, height: 2000 },
+    ],
+  },
+];
+
+const urbanNestRooms: Room[] = [
+  {
+    name: "Entrance",
+    images: [
+      { src: "/images/projects/urban-nest/entrance-1.jpg", kind: "photo", alt: "Entrance with a dark wood shoe cabinet and an open bench for shoes, a printed cushion, a plant and a framed artwork above", width: 1334, height: 2000 },
+    ],
+  },
+  {
+    name: "Living",
+    images: [
+      { src: "/images/projects/urban-nest/living-1.jpg", kind: "photo", alt: "TV wall finished in grey textured plaster with a wall mounted TV, a floating wood console, tall open shelves on the right and a framed abstract print", width: 2000, height: 1360 },
+      { src: "/images/projects/urban-nest/living-2.jpg", kind: "photo", alt: "Corner beside the TV with a colourful striped framed print, yellow lilies in a brass vase, a potted plant and a wood panelled column", width: 1333, height: 2000 },
+      { src: "/images/projects/urban-nest/living-3.jpg", kind: "photo", alt: "Tall dark wood open shelving beside a grey plaster wall, holding books, a small camera, a plant and yellow lilies", width: 1333, height: 2000 },
+    ],
+  },
+  {
+    name: "Dining",
+    images: [
+      { src: "/images/projects/urban-nest/dining-1.jpg", kind: "photo", alt: "Wooden dining table with a woven table runner, a teal vase with white flowers, a bowl of fruit and two framed striped prints on a cream wall", width: 1334, height: 2000 },
+    ],
+  },
+  {
+    name: "Kitchen",
+    images: [
+      { src: "/images/projects/urban-nest/kitchen-1.jpg", kind: "photo", alt: "Kitchen with white upper cabinets, sage green lower drawers, a black stone counter, a marble look backsplash and an open shelf with plants", width: 2000, height: 1334 },
+      { src: "/images/projects/urban-nest/kitchen-2.jpg", kind: "photo", alt: "Kitchen counter with a black top and stone look front, white cabinets and a glass partition with a lit yellow niche beyond", width: 2000, height: 1334 },
+    ],
+  },
+  {
+    name: "Pooja",
+    images: [
+      { src: "/images/projects/urban-nest/pooja-1.jpg", kind: "photo", alt: "Pooja niche with an arched backlit marble wall, a brass figure on a wood drawer unit and a brass framed glass door etched with Om symbols, the kitchen beside it", width: 2000, height: 1334 },
+      { src: "/images/projects/urban-nest/pooja-2.jpg", kind: "photo", alt: "Brass figure in a pooja niche with a yellow arched wall and a white knot pattern, seen through an etched glass door", width: 1333, height: 2000 },
+    ],
+  },
+  {
+    name: "Balcony",
+    images: [
+      { src: "/images/projects/urban-nest/balcony-1.jpg", kind: "photo", alt: "Sunlit balcony with a wooden chair draped in a green cloth, potted plants and leaf shadows falling on a warm plaster wall", width: 1334, height: 2000 },
+    ],
+  },
+  {
+    name: "Bedroom",
+    images: [
+      { src: "/images/projects/urban-nest/bedroom-1.jpg", kind: "photo", alt: "Sitting corner with a grey armchair on a round jute rug, a green quilted stool, a small black bookshelf and a wall of grey wardrobe doors with black handles", width: 2000, height: 1332 },
+    ],
+  },
+  {
+    name: "Study",
+    images: [
+      { src: "/images/projects/urban-nest/study-1.jpg", kind: "photo", alt: "Study nook with a floating grey desk and a wooden chair, a tall grey wardrobe with a full length mirror and a dark wood door at the side", width: 2000, height: 1332 },
+      { src: "/images/projects/urban-nest/study-2.jpg", kind: "photo", alt: "Wall mounted desk with a teal vase and shelf above, a wooden chair, and a tall grey and wood wardrobe with a mirrored door", width: 1332, height: 2000 },
+    ],
+  },
+];
+
 const shyamkutirRooms: Room[] = [
   {
-    name: "TV Unit & Pooja",
+    name: "Kitchen & Dining",
     images: [
-      { src: "/images/projects/shyamkutir/tv-unit.jpg", kind: "photo", alt: "Living room TV unit in warm wood tones with an earthy textured backdrop", width: 1280, height: 937 },
-      { src: "/images/projects/shyamkutir/pooja.jpg", kind: "photo", alt: "Pooja corner with a carved wooden backdrop and warm ambient lighting", width: 641, height: 960 },
+      { src: "/images/projects/shyamkutir/photos/kitchen-dining-1.jpg", kind: "photo", alt: "Dining table with a dark glass top and orange runner, upholstered chairs and a bench, with the white kitchen beyond", width: 2000, height: 1334 },
+      { src: "/images/projects/shyamkutir/photos/kitchen-dining-2.jpg", kind: "photo", alt: "White kitchen seen across the dining table with pendant lamps, a vase of orange flowers and sheer curtains", width: 2000, height: 1334 },
+      { src: "/images/projects/shyamkutir/photos/kitchen-dining-3.jpg", kind: "photo", alt: "Corner of the kitchen with white cabinets, black glass overhead units, a black counter and a pale green accent band", width: 1600, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/kitchen-dining-4.jpg", kind: "photo", alt: "Kitchen wall with white tall cabinets, a black glass overhead unit and a counter with appliances", width: 1333, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/kitchen-dining-5.jpg", kind: "photo", alt: "Kitchen counter detail with a woven basket of fruit on a colourful embroidered runner", width: 1333, height: 2000 },
     ],
   },
   {
-    name: "Master Bedroom",
+    name: "Reading Corner",
     images: [
-      { src: "/images/projects/shyamkutir/master-bedroom.jpg", kind: "render", alt: "Visualisation of the master bedroom with a contemporary minimal palette and soft lighting", width: 1248, height: 768 },
+      { src: "/images/projects/shyamkutir/photos/reading-corner-1.jpg", kind: "photo", alt: "Informal sitting room with two cane chairs, a red throw, a study desk, built in storage and a large green plant", width: 2000, height: 1333 },
     ],
   },
   {
-    name: "Daughter's Bedroom",
+    name: "Bedroom One",
     images: [
-      { src: "/images/projects/shyamkutir/daughter-bedroom.jpg", kind: "render", alt: "Visualisation of the daughter's bedroom with a light, contemporary furniture layout", width: 1448, height: 768 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-one-1.jpg", kind: "photo", alt: "Bed with a taupe headboard backed by an open bookshelf, red and white cushions and a bedside table", width: 1600, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-one-2.jpg", kind: "photo", alt: "Bedroom with a shelf unit rising behind the headboard, red and white bedding and a cane armchair", width: 1334, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-one-3.jpg", kind: "photo", alt: "Dressing corner with a tall mirror, a small stool and a guitar beside the bed, on a herringbone floor", width: 1333, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-one-4.jpg", kind: "photo", alt: "Walk in wardrobe with open glass fronted shelving for shoes and a gilded mirror beside a potted plant", width: 1333, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-one-5.jpg", kind: "photo", alt: "Corner with a striped armchair, a round black side table, a plant and a patterned rug against a white wall", width: 1600, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-one-6.jpg", kind: "photo", alt: "Open wood shelving filled with books and ornaments, with a carved face figurine on a shelf", width: 1333, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-one-7.jpg", kind: "photo", alt: "Wood panelled wall with a gilded framed mirror beside a bookshelf and a potted plant", width: 1333, height: 2000 },
     ],
   },
   {
-    name: "Gym",
+    name: "Bedroom Two",
     images: [
-      { src: "/images/projects/shyamkutir/gym-1.jpg", kind: "render", alt: "Visualisation of the new gym with mirrored walls and rubber flooring", width: 1617, height: 664 },
-      { src: "/images/projects/shyamkutir/gym-2.jpg", kind: "render", alt: "Visualisation of the gym showing the equipment layout and natural light", width: 1231, height: 654 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-two-1.jpg", kind: "photo", alt: "Bedroom with a pale blue upholstered headboard, block print bedding and round mirrors on the wall", width: 2000, height: 1333 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-two-2.jpg", kind: "photo", alt: "Bed with a pale blue headboard, a built in white drawer unit, a round woven rug and a fabric stool", width: 2000, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-two-3.jpg", kind: "photo", alt: "Bedroom with block print bedding and a white study desk, looking toward a pale blue wall and an open door", width: 2000, height: 1332 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-two-4.jpg", kind: "photo", alt: "Window seat with a pale blue bench, grey curtains and a colourful framed painting", width: 1449, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/bedroom-two-5.jpg", kind: "photo", alt: "Passage with pale grey blue wardrobes, a door and a wooden coat stand beside a plant", width: 2000, height: 2000 },
+    ],
+  },
+  {
+    name: "Balcony",
+    images: [
+      { src: "/images/projects/shyamkutir/photos/balcony-1.jpg", kind: "photo", alt: "Balcony with a deep blue wall, cane chairs, woven stools, many potted plants and a patterned tile floor", width: 2000, height: 1866 },
+      { src: "/images/projects/shyamkutir/photos/balcony-2.jpg", kind: "photo", alt: "Cane armchair with a teal cushion against a blue wall, among plants on a patterned tile floor", width: 1333, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/balcony-3.jpg", kind: "photo", alt: "Round wicker chair beside a lattice screen hung with an embroidered textile, with large leafy plants", width: 1333, height: 2000 },
+      { src: "/images/projects/shyamkutir/photos/balcony-4.jpg", kind: "photo", alt: "Pale blue wall with arched niches holding small lamps, with potted plants and a dark wood door", width: 1314, height: 2000 },
+    ],
+  },
+  {
+    name: "Garden Pavilion",
+    images: [
+      { src: "/images/projects/shyamkutir/photos/garden-pavilion-1.jpg", kind: "photo", alt: "Timber garden pavilion with a lit wood ceiling, surrounded by tropical plants and a shaded seating area", width: 2000, height: 1270 },
+      { src: "/images/projects/shyamkutir/photos/garden-pavilion-2.jpg", kind: "photo", alt: "Wider view of the timber pavilion set in a lawn with mature trees and potted plants", width: 2000, height: 1125 },
     ],
   },
 ];
@@ -117,23 +243,11 @@ const shyamkutirDrawings: Drawing[] = [
 
 const polasRooms: Room[] = [
   {
-    name: "Kitchen & Dining",
+    name: "Bedroom",
     images: [
-      { src: "/images/projects/polas-residence/kitchen-dining.jpg", kind: "render", alt: "Visualisation of the kitchen and dining area with a contemporary open layout", width: 2427, height: 1528 },
-    ],
-  },
-  {
-    name: "Master Bedroom",
-    images: [
-      { src: "/images/projects/polas-residence/master-bedroom-1.jpg", kind: "render", alt: "Visualisation of the master bedroom with a panelled headboard and warm lighting", width: 1369, height: 933 },
-      { src: "/images/projects/polas-residence/master-bedroom-2.jpg", kind: "render", alt: "Visualisation of the master bedroom seating area beside the window", width: 1125, height: 756 },
-    ],
-  },
-  {
-    name: "Daughter's Bedroom",
-    images: [
-      { src: "/images/projects/polas-residence/daughter-bedroom-1.jpg", kind: "render", alt: "Visualisation of the daughter's bedroom with a study desk and soft furnishings", width: 1384, height: 844 },
-      { src: "/images/projects/polas-residence/daughter-bedroom-2.jpg", kind: "render", alt: "Visualisation of the daughter's bedroom wardrobe wall and bed layout", width: 1143, height: 775 },
+      { src: "/images/projects/polas-residence/photos/bedroom-1.jpg", kind: "photo", alt: "Bedroom with a low bed in white linen with a rust coloured throw, a white sliding wardrobe and cream curtains", width: 2000, height: 1333 },
+      { src: "/images/projects/polas-residence/photos/bedroom-2.jpg", kind: "photo", alt: "Bedroom wall with floating wood display boxes, a wood sideboard, a tall window with curtains and a dark wood floor", width: 2000, height: 1333 },
+      { src: "/images/projects/polas-residence/photos/bedroom-3.jpg", kind: "photo", alt: "Lit wood display boxes above a walnut sideboard, with a bed edge and a small wooden figure on a rug in the foreground", width: 1600, height: 2000 },
     ],
   },
 ];
@@ -142,54 +256,64 @@ const polasDrawings: Drawing[] = [
   { src: "/images/projects/polas-residence/plans.png", alt: "Ground and first floor plans of Pola's Residence", width: 612, height: 593 },
 ];
 
-const doshiRooms: Room[] = [
-  {
-    name: "Staircase & Puja",
-    images: [
-      { src: "/images/projects/doshi-residence/stair-puja.jpg", kind: "render", alt: "Visualisation of the staircase with an integrated puja room and planters", width: 865, height: 1080 },
-    ],
-  },
-  {
-    name: "Living & Dining",
-    images: [
-      { src: "/images/projects/doshi-residence/living-dining-1.jpg", kind: "render", alt: "Visualisation of the living and dining space with a minimal, refined material palette", width: 2017, height: 1121 },
-      { src: "/images/projects/doshi-residence/living-dining-2.jpg", kind: "render", alt: "Visualisation of the dining area seen from the adjoining living space", width: 1399, height: 798 },
-    ],
-  },
-  {
-    name: "Master Bedroom",
-    images: [
-      { src: "/images/projects/doshi-residence/master-bedroom.jpg", kind: "render", alt: "Visualisation of the master bedroom with a simple, elegant furniture layout", width: 1607, height: 893 },
-    ],
-  },
-  {
-    name: "Kids' Bedroom",
-    images: [
-      { src: "/images/projects/doshi-residence/kids-bedroom.jpg", kind: "render", alt: "Visualisation of the kids' bedroom with a minimal approach and playful accents", width: 1473, height: 893 },
-    ],
-  },
-];
-
 export const seedProjects: Project[] = [
   {
     id: "james-residence",
     slug: "james-residence",
     title: "James Residence",
-    subtitle: "A three-bedroom home for three generations",
+    subtitle: "A three bedroom home for three generations",
     location: "Hennur, Bangalore",
     year: 2023,
     area: "1,600 sq ft",
     status: "Completed",
     scope: "Interior",
-    summary: "A modern, minimalist three-bedroom apartment for a family of three generations in Hennur, Bangalore.",
+    summary: "A modern, minimalist three bedroom apartment for a family of three generations in Hennur, Bangalore.",
     description:
-      "Located in Hennur, Bangalore, this three-bedroom apartment was designed with a modern, minimalist approach — simple, elegant and impactful — for a family of three generations living under one roof.",
-    coverImage: "/images/projects/james-residence/kitchen-dining.jpg",
+      "Located in Hennur, Bangalore, this three bedroom apartment was designed with a modern, minimalist approach for a family of three generations living under one roof. The aim was to keep it simple, elegant and impactful.",
+    coverImage: "/images/projects/james-residence/photos/kitchen-dining-1.jpg",
     rooms: jamesRooms,
     drawings: jamesDrawings,
     gallery: galleryOf(jamesRooms),
     featured: true,
     order: 0,
+    published: true,
+  },
+  {
+    id: "ashiyana",
+    slug: "ashiyana",
+    title: "Ashiyana",
+    location: "",
+    year: null,
+    status: "Completed",
+    scope: "Interior",
+    summary: "A residential interior with a pink plaster living room, a carved white mural and a kitchen framed by a timber arch.",
+    description:
+      "A residential interior with a living room finished in pink plaster, a dining area with a carved white mural, a kitchen with a timber arch and a painted pink counter, a children's room with two daybeds and a pegboard desk, and two bedrooms.",
+    coverImage: "/images/projects/ashiyana/living-1.jpg",
+    rooms: ashiyanaRooms,
+    drawings: [],
+    gallery: galleryOf(ashiyanaRooms),
+    featured: true,
+    order: 1,
+    published: true,
+  },
+  {
+    id: "urban-nest",
+    slug: "urban-nest",
+    title: "Urban Nest",
+    location: "",
+    year: null,
+    status: "Completed",
+    scope: "Interior",
+    summary: "A residential interior with a grey plaster TV wall, a backlit arched pooja niche and a sunlit balcony.",
+    description:
+      "A residential interior with a grey plaster TV wall, a wooden dining table, a kitchen with white and sage green cabinets, a backlit arched pooja niche, a sunlit balcony, a bedroom with grey wardrobes and a study nook.",
+    coverImage: "/images/projects/urban-nest/living-1.jpg",
+    rooms: urbanNestRooms,
+    drawings: [],
+    gallery: galleryOf(urbanNestRooms),
+    featured: true,
+    order: 2,
     published: true,
   },
   {
@@ -204,20 +328,20 @@ export const seedProjects: Project[] = [
     scope: "Architecture & Interior",
     summary: "An architectural renovation and interior project in Ballari, adding two bedrooms and a gym to an existing bungalow.",
     description:
-      "An architectural renovation and interior project in Ballari. The brief was to add two bedrooms and a gym to an existing bungalow and refurbish its formal and informal living spaces. The design holds the contrasting tastes of two sisters — one drawn to earthy tones with a traditional touch, the other to contemporary, minimal aesthetics.",
-    coverImage: "/images/projects/shyamkutir/tv-unit.jpg",
+      "An architectural renovation and interior project in Ballari. The brief was to add two bedrooms and a gym to an existing bungalow and refurbish its formal and informal living spaces. The design holds the contrasting tastes of two sisters, one drawn to earthy tones with a traditional touch, the other to contemporary, minimal aesthetics.",
+    coverImage: "/images/projects/shyamkutir/photos/kitchen-dining-1.jpg",
     rooms: shyamkutirRooms,
     drawings: shyamkutirDrawings,
     gallery: galleryOf(shyamkutirRooms),
     featured: true,
-    order: 1,
+    order: 3,
     published: true,
   },
   {
     id: "polas-residence",
     slug: "polas-residence",
     title: "Pola's Residence",
-    subtitle: "A row-house interior in Ashok Vatika Society",
+    subtitle: "A row house interior in Ashok Vatika Society",
     location: "Ashok Vatika Society, Ballari, Karnataka",
     year: 2024,
     area: "2,100 sq ft",
@@ -225,34 +349,12 @@ export const seedProjects: Project[] = [
     scope: "Interior",
     summary: "A residential interior for a row house in Ashok Vatika Society, Ballari, Karnataka.",
     description: "A residential interior for a row house in Ashok Vatika Society, Ballari, Karnataka.",
-    coverImage: "/images/projects/polas-residence/kitchen-dining.jpg",
+    coverImage: "/images/projects/polas-residence/photos/bedroom-1.jpg",
     rooms: polasRooms,
     drawings: polasDrawings,
     gallery: galleryOf(polasRooms),
     featured: true,
-    order: 2,
-    published: true,
-  },
-  {
-    id: "doshi-residence",
-    slug: "doshi-residence",
-    title: "Doshi Residence",
-    subtitle: "A simple, elegant home on a tight urban site",
-    location: "Pune, Maharashtra",
-    year: 2019,
-    area: "2,500 sq ft",
-    status: "Completed",
-    scope: "Interior",
-    summary: "A simple, elegant three-bedroom residence on a tight urban site in Pune.",
-    description:
-      "Set on a tight urban site in Pune, this residence was designed to be simple and elegant while carrying a refined, polished look. Three bedrooms follow a minimal approach, and the puja room integrates seamlessly with the planters and staircase to form a cohesive whole.",
-    credit: "In association with Cadence Architects",
-    coverImage: "/images/projects/doshi-residence/stair-puja.jpg",
-    rooms: doshiRooms,
-    drawings: [],
-    gallery: galleryOf(doshiRooms),
-    featured: true,
-    order: 3,
+    order: 4,
     published: true,
   },
 ];

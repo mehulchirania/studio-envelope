@@ -32,7 +32,7 @@ export default function ProjectCard({ project, sizes, priority, className }: Pro
       <div className="mt-4 flex items-start justify-between gap-5 border-t border-hairline pt-4">
         <div>
           <h3 className="font-display text-3xl font-light text-ink sm:text-4xl">{project.title}</h3>
-          <p className="label mt-2">{project.location}</p>
+          {project.location && <p className="label mt-2">{project.location}</p>}
           {facts && <p className="mt-2 text-sm leading-6 text-muted">{facts}</p>}
         </div>
         <ArrowUpRight

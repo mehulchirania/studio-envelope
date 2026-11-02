@@ -5,7 +5,7 @@ export const serviceDescriptions: Record<string, string> = {
   "Design Consultation": "An initial walkthrough of your space and brief to set the direction for the project.",
   "Space Planning": "Working out how each room is used and laid out, before any material or furniture decision.",
   "Colour Consultation": "A palette for walls, ceilings and trims chosen to suit light, material and mood.",
-  "Lighting Consultation": "A lighting layout — ambient, task and accent — planned alongside the electrical drawings.",
+  "Lighting Consultation": "A lighting layout covering ambient, task and accent light, planned alongside the electrical drawings.",
   "Material Selection": "Flooring, wall finishes, countertops and hardware chosen to work together and wear well.",
   "Furniture Selection": "Sourcing and specifying furniture that fits the plan, the budget and the material palette.",
   "Soft Furnishing": "Curtains, upholstery, rugs and linens selected to complete the space.",
@@ -31,7 +31,7 @@ export const serviceImages: Record<string, { src: string; alt: string }> = {
   },
   "Space Planning": {
     src: "/images/services/space-planning.jpg",
-    alt: "Hands on a laptop keyboard beside a printed floor plan with blue-shaded rooms",
+    alt: "Hands on a laptop keyboard beside a printed floor plan with blue shaded rooms",
   },
   "Colour Consultation": {
     src: "/images/services/colour-consultation.jpg",
@@ -43,7 +43,7 @@ export const serviceImages: Record<string, { src: string; alt: string }> = {
   },
   "Material Selection": {
     src: "/images/services/material-selection.jpg",
-    alt: "Close-up of a hand-painted blue and white ceramic tile",
+    alt: "Close-up of a hand painted blue and white ceramic tile",
   },
   "Furniture Selection": {
     src: "/images/services/furniture-selection.jpg",
@@ -59,7 +59,7 @@ export const serviceImages: Record<string, { src: string; alt: string }> = {
   },
   "Project Management": {
     src: "/images/services/project-management.jpg",
-    alt: "Two people in high-visibility vests pointing at construction plans",
+    alt: "Two people in high visibility vests pointing at construction plans",
   },
   "Photo & Video Shoot": {
     src: "/images/services/photo-video-shoot.jpg",
@@ -104,7 +104,7 @@ export const faqs = [
   },
   {
     q: "What should I bring to a first conversation?",
-    a: "Whatever you already have — site details or drawings, photos, dimensions, references you're drawn to. It's just as useful to start with nothing more than a sense of what you want the space to feel like.",
+    a: "Whatever you already have: site details or drawings, photos, dimensions, references you're drawn to. It's just as useful to start with nothing more than a sense of what you want the space to feel like.",
   },
   {
     q: "Can we work together if I'm not based near the studio?",

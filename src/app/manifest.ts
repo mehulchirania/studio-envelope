@@ -3,7 +3,7 @@ import { site } from "@/lib/content/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Studio Envelope — Architecture & Interior Design",
+    name: "Studio Envelope | Architecture & Interior Design",
     short_name: "Studio Envelope",
     description: site.description,
     start_url: "/",

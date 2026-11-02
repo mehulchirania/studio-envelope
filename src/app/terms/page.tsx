@@ -41,8 +41,8 @@ export default function TermsPage() {
           <section className="space-y-4 border-t border-hairline pt-8">
             <h2 className="font-display text-2xl text-ink">1. Intellectual Property &amp; Copyright</h2>
             <p className="text-base leading-relaxed text-muted">
-              All materials published on this website—including architectural plans, drawings, 3D visualisations, interior concepts,
-              photographs, styling layouts, editorial copy, logos, and graphics—are the exclusive intellectual property of Studio
+              All materials published on this website, including architectural plans, drawings, 3D visualisations, interior concepts,
+              photographs, styling layouts, editorial copy, logos, and graphics, are the exclusive intellectual property of Studio
               Envelope and Ar. Prachi Chirania, unless otherwise credited.
             </p>
             <p className="text-base leading-relaxed text-muted">

@@ -25,7 +25,7 @@ export async function generateMetadata(props: PageProps<"/projects/[slug]">): Pr
   const project = await getProject(slug);
   if (!project) return {};
 
-  const title = `${project.title} — ${project.scope} in ${project.location}`;
+  const title = `${project.title}, ${project.scope}${project.location ? ` in ${project.location}` : ""}`;
   const description = project.summary || project.description.slice(0, 160);
 
   return {
@@ -35,7 +35,7 @@ export async function generateMetadata(props: PageProps<"/projects/[slug]">): Pr
       canonical: `/projects/${project.slug}`,
     },
     openGraph: {
-      title: `${title} — Studio Envelope`,
+      title: `${title} | Studio Envelope`,
       description,
       url: `/projects/${project.slug}`,
       images: [
@@ -48,7 +48,7 @@ export async function generateMetadata(props: PageProps<"/projects/[slug]">): Pr
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} — Studio Envelope`,
+      title: `${title} | Studio Envelope`,
       description,
       images: [project.coverImage],
     },
@@ -73,9 +73,9 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
     kind: "photo" as const,
   };
 
-  const statusValue = project.status === "Ongoing" ? "Ongoing" : `Completed · ${project.year}`;
+  const statusValue = project.status === "Ongoing" ? "Ongoing" : project.year ? `Completed · ${project.year}` : "Completed";
   const datasheetItems = [
-    { label: "Location", value: project.location },
+    ...(project.location ? [{ label: "Location", value: project.location }] : []),
     ...(project.area ? [{ label: "Area", value: project.area }] : []),
     { label: "Scope", value: project.scope },
     { label: "Status", value: statusValue },
