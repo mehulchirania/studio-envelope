@@ -46,3 +46,7 @@ ui-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large source photo folders, kept out of git
+/assets/Images for website/
+/assets/PROJECTS/
