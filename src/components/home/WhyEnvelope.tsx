@@ -28,7 +28,7 @@ export default function WhyEnvelope({ image, hideHeading = false, tone = "dark" 
           )}
           <div
             className={clsx(
-              "max-w-[62ch] space-y-6 text-left text-base leading-7 [hyphens:manual] [text-wrap:pretty]",
+              "max-w-[62ch] space-y-6 text-justify text-base leading-7 [hyphens:auto] sm:text-left sm:[hyphens:manual] sm:[text-wrap:pretty]",
               !hideHeading && "mt-8 sm:mt-10",
               dark ? "text-mist" : "text-muted",
             )}

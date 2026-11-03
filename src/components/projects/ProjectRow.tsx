@@ -33,8 +33,7 @@ export default function ProjectRow({ project, priority }: { project: Project; pr
   const facts: [string, string][] = [
     ["Type of work", project.scope],
     ["Area", project.area ?? ""],
-    ["Year", project.status === "Ongoing" ? "Ongoing" : project.year ? String(project.year) : ""],
-    ["Status", project.status],
+    ["Year", project.year ? String(project.year) : ""],
   ];
 
   return (

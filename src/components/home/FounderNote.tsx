@@ -21,7 +21,7 @@ export default function FounderNote() {
         <div>
           <p className="label text-muted">{site.principal.role}</p>
           <h2 className="mt-4 font-display text-[clamp(32px,3.4vw,52px)] font-light leading-tight text-ink">{site.principal.name}</h2>
-          <p className="mt-6 max-w-[62ch] text-base leading-7 text-muted [hyphens:manual] [text-wrap:pretty]">{site.principal.bio[1]}</p>
+          <p className="mt-6 max-w-[62ch] text-justify text-base leading-7 text-muted [hyphens:auto] sm:text-left sm:[hyphens:manual] sm:[text-wrap:pretty]">{site.principal.bio[1]}</p>
           <Link href="/about" className="link-arrow mt-8 inline-flex">
             About the studio <ArrowUpRight size={16} aria-hidden="true" />
           </Link>

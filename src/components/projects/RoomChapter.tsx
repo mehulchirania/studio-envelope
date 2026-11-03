@@ -19,7 +19,7 @@ function Frame({ image, indexBySrc, sizes }: { image: RoomImage; indexBySrc: Map
   );
 }
 
-/** One room as a band: its name, then its images laid out by orientation in a
+/** One room as a band (no heading; `room.name` only feeds the anchor id): its images laid out by orientation in a
  * centred column (max ~1000px, so photos stay easy to take in on big screens
  * instead of running edge to edge). A lone landscape fills the column,
  * portraits pair up, a landscape beside a portrait splits 2/3 + 1/3, and a
@@ -32,9 +32,7 @@ export default function RoomChapter({ room, tone, indexBySrc, id }: RoomChapterP
     <section id={id ?? slugifyRoom(room.name)} className={clsx(isDark ? "band-dark" : "band-bone", "scroll-mt-20 py-10 sm:py-14")}>
       <div className="container-x">
         <div className="mx-auto max-w-5xl">
-          <h2 className={clsx("font-display text-3xl italic sm:text-4xl", isDark ? "text-bone" : "text-ink")}>{room.name}</h2>
-
-          <div className="mt-6 space-y-2 sm:mt-8 sm:space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {chunks.map((chunk, i) => {
               if (chunk.type === "single") {
                 const portrait = chunk.image.height > chunk.image.width;

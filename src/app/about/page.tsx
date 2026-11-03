@@ -49,7 +49,7 @@ export default function AboutPage() {
           <div>
             <p className="label text-mist">{site.principal.role}</p>
             <h2 className="mt-4 font-display text-[clamp(28px,2.7vw,44px)] font-light leading-tight text-bone lg:whitespace-nowrap">{site.principal.name}</h2>
-            <div className="mt-6 max-w-xl space-y-5 text-base leading-7 text-mist [hyphens:manual] [text-wrap:pretty]">
+            <div className="mt-6 max-w-xl space-y-5 text-justify text-base leading-7 text-mist [hyphens:auto] sm:text-left sm:[hyphens:manual] sm:[text-wrap:pretty]">
               {site.principal.bio.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}

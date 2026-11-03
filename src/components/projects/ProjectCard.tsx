@@ -14,7 +14,7 @@ type ProjectCardProps = {
 /** A project's cover, title, location and one line of facts, linking to its page. */
 export default function ProjectCard({ project, sizes, priority, className }: ProjectCardProps) {
   const cover = findImageMeta(project, project.coverImage);
-  const facts = [project.area, project.scope, project.status === "Ongoing" ? "Ongoing" : project.year].filter(Boolean).join(" · ");
+  const facts = [project.area, project.scope, project.year].filter(Boolean).join(" · ");
 
   return (
     <Link href={`/projects/${project.slug}`} className={`group block ${className ?? ""}`}>
