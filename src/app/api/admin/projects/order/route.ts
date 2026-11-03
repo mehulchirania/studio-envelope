@@ -11,7 +11,7 @@ export async function PUT(request: Request) {
       throw new HttpError(400, "Invalid order.");
     }
     await reorderProjects(body.ids as string[]);
-    revalidateSite();
+    revalidateSite({ notify: false });
     return NextResponse.json({ ok: true });
   });
 }

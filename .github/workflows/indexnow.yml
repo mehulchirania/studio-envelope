@@ -1,0 +1,17 @@
+name: IndexNow
+
+# Pings search engines after each successful production deploy (code changes).
+# Admin edits are handled by the site itself (src/lib/admin/revalidate.ts).
+on:
+  deployment_status:
+
+jobs:
+  ping:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/ping-indexnow.mjs
