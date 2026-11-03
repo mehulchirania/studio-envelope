@@ -4,19 +4,16 @@ import WhyEnvelope from "@/components/home/WhyEnvelope";
 import FounderNote from "@/components/home/FounderNote";
 import WorkGlimpse from "@/components/home/WorkGlimpse";
 import { getProjects } from "@/lib/data";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, SHARE_DESCRIPTION, SHARE_TITLE } from "@/lib/seo";
 import PageTransition from "@/components/layout/PageTransition";
 
-const HOME_TITLE = "Architects & Interior Designers in Bangalore | Studio Envelope";
+const home = pageMetadata({ title: SHARE_TITLE, description: SHARE_DESCRIPTION, path: "/" });
 
 export const metadata: Metadata = {
-  ...pageMetadata({
-    title: HOME_TITLE,
-    description:
-      "Studio Envelope is an architect led architecture and interior design studio in Bangalore, led by Ar. Prachi Chirania. Residential and commercial projects, with design consultations across India.",
-    path: "/",
-  }),
-  title: { absolute: HOME_TITLE },
+  ...home,
+  title: { absolute: SHARE_TITLE },
+  openGraph: { ...home.openGraph, title: SHARE_TITLE },
+  twitter: { ...home.twitter, title: SHARE_TITLE },
 };
 
 export default async function Home() {

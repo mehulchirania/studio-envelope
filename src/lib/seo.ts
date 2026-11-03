@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import { site } from "@/lib/content/site";
 import type { Project } from "@/lib/content/types";
 
-export const SITE_URL = "https://studioenvelope.com";
+export const SITE_URL = "https://www.studioenvelope.com";
+
+export const SHARE_TITLE = "Studio Envelope — Architecture & Interior Design Studio";
+export const SHARE_DESCRIPTION =
+  "Architecture and interior design studio based in Bangalore, crafting bespoke residential and commercial spaces across India.";
+
+/** Default share image (1200x630), used wherever a page has no image of its own. */
+export const OG_IMAGE = { url: "/og-image.jpg", width: 1200, height: 630, alt: "A dining area at a Studio Envelope home, beside a mirror work wall panel" };
 
 /** Per-page metadata: sets the canonical URL and keeps Open Graph in step with
  * the title and description. Prefer this over hand-writing both blocks. */
@@ -11,7 +18,8 @@ export function pageMetadata({ title, description, path }: { title: string; desc
     title,
     description,
     alternates: { canonical: path },
-    openGraph: { title: `${title} | ${site.name}`, description, url: path },
+    openGraph: { type: "website", siteName: site.name, title: `${title} | ${site.name}`, description, url: path, locale: "en_IN", images: [OG_IMAGE] },
+    twitter: { card: "summary_large_image", title: `${title} | ${site.name}`, description, images: [OG_IMAGE.url] },
   };
 }
 
@@ -26,7 +34,7 @@ export function getLocalBusinessSchema() {
     legalName: site.name,
     url: SITE_URL,
     logo: `${SITE_URL}/icon.svg`,
-    image: `${SITE_URL}/images/site/dining-mural.jpg`,
+    image: `${SITE_URL}/og-image.jpg`,
     description: site.description,
     telephone: site.contact.phone,
     email: site.contact.email,
@@ -39,7 +47,7 @@ export function getLocalBusinessSchema() {
     founder: {
       "@type": "Person",
       name: site.principal.name,
-      jobTitle: site.principal.role,
+      jobTitle: "Principal Architect",
       sameAs: [site.principal.instagram],
     },
     areaServed: [

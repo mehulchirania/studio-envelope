@@ -7,7 +7,7 @@ import HideOnAdmin from "@/components/layout/HideOnAdmin";
 import BackToTop from "@/components/layout/BackToTop";
 import ScrollFade from "@/components/layout/ScrollFade";
 import JsonLd from "@/components/seo/JsonLd";
-import { getLocalBusinessSchema, getWebSiteSchema, SITE_URL } from "@/lib/seo";
+import { getLocalBusinessSchema, getWebSiteSchema, OG_IMAGE, SHARE_DESCRIPTION, SHARE_TITLE, SITE_URL } from "@/lib/seo";
 import { site } from "@/lib/content/site";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -26,14 +26,11 @@ const jost = Jost({
   display: "swap",
 });
 
-const SHARE_TITLE = "Architects & Interior Designers in Bangalore | Studio Envelope";
-const SHARE_IMAGE = "/images/site/dining-mural.jpg";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   icons: { icon: "/icon.svg", apple: "/icon.svg" },
   title: { default: SHARE_TITLE, template: "%s | Studio Envelope" },
-  description: site.description,
+  description: SHARE_DESCRIPTION,
   keywords: [
     "Studio Envelope",
     "architecture studio Bangalore",
@@ -50,16 +47,16 @@ export const metadata: Metadata = {
     type: "website",
     siteName: site.name,
     title: SHARE_TITLE,
-    description: site.description,
+    description: SHARE_DESCRIPTION,
     url: SITE_URL,
     locale: "en_IN",
-    images: [{ url: SHARE_IMAGE, width: 2400, height: 1600, alt: SHARE_TITLE }],
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: SHARE_TITLE,
-    description: site.description,
-    images: [SHARE_IMAGE],
+    description: SHARE_DESCRIPTION,
+    images: [OG_IMAGE.url],
   },
   // Set GOOGLE_SITE_VERIFICATION to the token from Search Console (HTML tag method).
   verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
