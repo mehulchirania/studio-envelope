@@ -7,7 +7,7 @@ function galleryOf(rooms: Room[]): string[] {
 
 const jamesRooms: Room[] = [
   {
-    name: "Kitchen & Dining",
+    name: "",
     images: [
       { src: "/images/projects/james-residence/photos/kitchen-dining-1.jpg", kind: "photo", alt: "Open kitchen with blue grey cabinets seen past a dining table with cream upholstered chairs and a rust coloured unit on the left", width: 2000, height: 1334 },
       { src: "/images/projects/james-residence/photos/kitchen-dining-2.jpg", kind: "photo", alt: "Corner of the kitchen with pale blue upper cabinets, dark fluted breakfast counter and brown wood bar stools", width: 2000, height: 1334 },
@@ -15,7 +15,7 @@ const jamesRooms: Room[] = [
     ],
   },
   {
-    name: "Living",
+    name: "",
     images: [
       { src: "/images/projects/james-residence/photos/living-1.jpg", kind: "photo", alt: "Living room with two dark grey sofas, a round layered coffee table and a green plant against a panelled warm grey wall", width: 1333, height: 2000 },
       { src: "/images/projects/james-residence/photos/living-2.jpg", kind: "photo", alt: "Wider view of the living area with grey sofas, a patterned rug, a ceiling fan and a glass partition to the study", width: 1428, height: 2000 },
@@ -23,7 +23,7 @@ const jamesRooms: Room[] = [
     ],
   },
   {
-    name: "In House Office",
+    name: "",
     images: [
       { src: "/images/projects/james-residence/photos/in-house-office-1.jpg", kind: "photo", alt: "Study desk in walnut with a tall open shelving unit behind it, a black framed glass partition and sheer curtains", width: 2000, height: 1333 },
       { src: "/images/projects/james-residence/photos/in-house-office-2.jpg", kind: "photo", alt: "Home office seen through a black framed reeded glass partition, with a walnut desk, shelving and a dark office chair", width: 1428, height: 2000 },
@@ -31,20 +31,20 @@ const jamesRooms: Room[] = [
     ],
   },
   {
-    name: "Crockery Unit & Common Vanity",
+    name: "",
     images: [
       { src: "/images/projects/james-residence/photos/crockery-unit-vanity-1.jpg", kind: "photo", alt: "Crockery unit with rust coloured fluted base cabinets, an open shelf and black glass overhead cabinets beside the dining area", width: 1333, height: 2000 },
       { src: "/images/projects/james-residence/photos/crockery-unit-vanity-2.jpg", kind: "photo", alt: "Common vanity with a floating wood counter, a stone basin, a round mirror and rose and charcoal tiles", width: 1334, height: 2000 },
     ],
   },
   {
-    name: "Parents' Bedroom",
+    name: "",
     images: [
       { src: "/images/projects/james-residence/photos/parents-bedroom-1.jpg", kind: "photo", alt: "Parents' bedroom with a herringbone wood headboard wall, sliding wardrobe above a lit niche and grey bedding", width: 1333, height: 2000 },
     ],
   },
   {
-    name: "Master Bedroom",
+    name: "",
     images: [
       { src: "/images/projects/james-residence/photos/master-bedroom-1.jpg", kind: "photo", alt: "Bedroom with a grey upholstered headboard, blue bedding, wall lamps and roman blinds on the windows", width: 2000, height: 1334 },
       { src: "/images/projects/james-residence/photos/master-bedroom-2.jpg", kind: "photo", alt: "Close view of the bed with a grey headboard, quilted blue and grey bedding and a patterned cushion", width: 1336, height: 2000 },
@@ -53,7 +53,7 @@ const jamesRooms: Room[] = [
     ],
   },
   {
-    name: "Kids' Room",
+    name: "",
     images: [
       { src: "/images/projects/james-residence/photos/kids-room-1.jpg", kind: "photo", alt: "Kids' room with blue and sea green wardrobes with open shelves, a built in bed and a patterned headboard panel", width: 1429, height: 2000 },
       { src: "/images/projects/james-residence/photos/kids-room-2.jpg", kind: "photo", alt: "Wide view of the kids' room with two beds on either side of a central blue and green storage unit", width: 2000, height: 1332 },
@@ -67,7 +67,7 @@ const jamesDrawings: Drawing[] = [
 
 const ashiyanaRooms: Room[] = [
   {
-    name: "Living",
+    name: "",
     images: [
       { src: "/images/projects/ashiyana/living-1.jpg", kind: "photo", alt: "Long living room with a pink plaster wall on the right, a cream sofa and two blush armchairs, a wall mounted TV and a low wooden console on the left", width: 2000, height: 1335 },
       { src: "/images/projects/ashiyana/living-2.jpg", kind: "photo", alt: "Seating area with blush armchairs and a striped cream sofa beside a pink plaster wall, a grey rug and a dark coffee table in front of a sheer curtained window", width: 2000, height: 1333 },
@@ -78,7 +78,7 @@ const ashiyanaRooms: Room[] = [
     ],
   },
   {
-    name: "Dining",
+    name: "",
     images: [
       { src: "/images/projects/ashiyana/dining-1.jpg", kind: "photo", alt: "Dining area with a stone top table and grey upholstered chairs under a crystal chandelier, an arched timber opening and a painted pink counter on the right", width: 2000, height: 1334 },
       { src: "/images/projects/ashiyana/dining-2.jpg", kind: "photo", alt: "Dining table set with fruit and grey chairs, beside a large carved white mural with a fan shaped pattern on the wall", width: 2000, height: 1334 },
@@ -86,7 +86,7 @@ const ashiyanaRooms: Room[] = [
     ],
   },
   {
-    name: "Kitchen",
+    name: "",
     images: [
       { src: "/images/projects/ashiyana/kitchen-1.jpg", kind: "photo", alt: "Kitchen seen through a timber arch, with cream upper cabinets with glass fronts, a black chimney hood and a pink painted counter in the foreground", width: 2000, height: 1333 },
       { src: "/images/projects/ashiyana/kitchen-2.jpg", kind: "photo", alt: "Kitchen with cream overhead cabinets, a black hood, a white backsplash and mauve lower cabinets with a cream counter", width: 2000, height: 1333 },
@@ -96,7 +96,7 @@ const ashiyanaRooms: Room[] = [
     ],
   },
   {
-    name: "Kids' Room",
+    name: "",
     images: [
       { src: "/images/projects/ashiyana/kids-room-1.jpg", kind: "photo", alt: "Narrow children's room with two cream daybeds with storage drawers facing each other, a wooden shelf and a window at the far end", width: 2000, height: 1334 },
       { src: "/images/projects/ashiyana/kids-room-2.jpg", kind: "photo", alt: "Daybed with soft toys, a sunflower and a roman blind at the window, with a toy storage shelf under the bed platform", width: 1333, height: 2000 },
@@ -105,7 +105,7 @@ const ashiyanaRooms: Room[] = [
     ],
   },
   {
-    name: "Bedroom",
+    name: "",
     images: [
       { src: "/images/projects/ashiyana/bedroom-1.jpg", kind: "photo", alt: "Bedroom with a grey upholstered bed, a floral wallpaper headboard wall, a long wooden console under the window and a grey and wood wardrobe", width: 2000, height: 1333 },
       { src: "/images/projects/ashiyana/bedroom-2.jpg", kind: "photo", alt: "Bed with a grey padded headboard, a plaid blanket, blue and pink cushions, floral wallpaper, an oval mirror and blue grey wardrobe doors", width: 2000, height: 1333 },
@@ -114,7 +114,7 @@ const ashiyanaRooms: Room[] = [
     ],
   },
   {
-    name: "Bedroom Two",
+    name: "",
     images: [
       { src: "/images/projects/ashiyana/bedroom-two-1.jpg", kind: "photo", alt: "Room with a mustard yellow sofa and a dark throw, a wall of cream wardrobe doors with patterned drawers, and a corner desk with wooden overhead cabinets", width: 2000, height: 1334 },
       { src: "/images/projects/ashiyana/bedroom-two-2.jpg", kind: "photo", alt: "Wooden corner desk with overhead cabinets and open shelves, a pinboard, patterned drawer fronts and a yellow sofa with geometric cushions", width: 1334, height: 2000 },
@@ -126,13 +126,13 @@ const ashiyanaRooms: Room[] = [
 
 const urbanNestRooms: Room[] = [
   {
-    name: "Entrance",
+    name: "",
     images: [
       { src: "/images/projects/urban-nest/entrance-1.jpg", kind: "photo", alt: "Entrance with a dark wood shoe cabinet and an open bench for shoes, a printed cushion, a plant and a framed artwork above", width: 1334, height: 2000 },
     ],
   },
   {
-    name: "Living",
+    name: "",
     images: [
       { src: "/images/projects/urban-nest/living-1.jpg", kind: "photo", alt: "TV wall finished in grey textured plaster with a wall mounted TV, a floating wood console, tall open shelves on the right and a framed abstract print", width: 2000, height: 1360 },
       { src: "/images/projects/urban-nest/living-2.jpg", kind: "photo", alt: "Corner beside the TV with a colourful striped framed print, yellow lilies in a brass vase, a potted plant and a wood panelled column", width: 1333, height: 2000 },
@@ -140,39 +140,39 @@ const urbanNestRooms: Room[] = [
     ],
   },
   {
-    name: "Dining",
+    name: "",
     images: [
       { src: "/images/projects/urban-nest/dining-1.jpg", kind: "photo", alt: "Wooden dining table with a woven table runner, a teal vase with white flowers, a bowl of fruit and two framed striped prints on a cream wall", width: 1334, height: 2000 },
     ],
   },
   {
-    name: "Kitchen",
+    name: "",
     images: [
       { src: "/images/projects/urban-nest/kitchen-1.jpg", kind: "photo", alt: "Kitchen with white upper cabinets, sage green lower drawers, a black stone counter, a marble look backsplash and an open shelf with plants", width: 2000, height: 1334 },
       { src: "/images/projects/urban-nest/kitchen-2.jpg", kind: "photo", alt: "Kitchen counter with a black top and stone look front, white cabinets and a glass partition with a lit yellow niche beyond", width: 2000, height: 1334 },
     ],
   },
   {
-    name: "Pooja",
+    name: "",
     images: [
       { src: "/images/projects/urban-nest/pooja-1.jpg", kind: "photo", alt: "Pooja niche with an arched backlit marble wall, a brass figure on a wood drawer unit and a brass framed glass door etched with Om symbols, the kitchen beside it", width: 2000, height: 1334 },
       { src: "/images/projects/urban-nest/pooja-2.jpg", kind: "photo", alt: "Brass figure in a pooja niche with a yellow arched wall and a white knot pattern, seen through an etched glass door", width: 1333, height: 2000 },
     ],
   },
   {
-    name: "Balcony",
+    name: "",
     images: [
       { src: "/images/projects/urban-nest/balcony-1.jpg", kind: "photo", alt: "Sunlit balcony with a wooden chair draped in a green cloth, potted plants and leaf shadows falling on a warm plaster wall", width: 1334, height: 2000 },
     ],
   },
   {
-    name: "Bedroom",
+    name: "",
     images: [
       { src: "/images/projects/urban-nest/bedroom-1.jpg", kind: "photo", alt: "Sitting corner with a grey armchair on a round jute rug, a green quilted stool, a small black bookshelf and a wall of grey wardrobe doors with black handles", width: 2000, height: 1332 },
     ],
   },
   {
-    name: "Study",
+    name: "",
     images: [
       { src: "/images/projects/urban-nest/study-1.jpg", kind: "photo", alt: "Study nook with a floating grey desk and a wooden chair, a tall grey wardrobe with a full length mirror and a dark wood door at the side", width: 2000, height: 1332 },
       { src: "/images/projects/urban-nest/study-2.jpg", kind: "photo", alt: "Wall mounted desk with a teal vase and shelf above, a wooden chair, and a tall grey and wood wardrobe with a mirrored door", width: 1332, height: 2000 },
@@ -182,7 +182,7 @@ const urbanNestRooms: Room[] = [
 
 const shyamkutirRooms: Room[] = [
   {
-    name: "Kitchen & Dining",
+    name: "",
     images: [
       { src: "/images/projects/shyamkutir/photos/kitchen-dining-1.jpg", kind: "photo", alt: "Dining table with a dark glass top and orange runner, upholstered chairs and a bench, with the white kitchen beyond", width: 2000, height: 1334 },
       { src: "/images/projects/shyamkutir/photos/kitchen-dining-2.jpg", kind: "photo", alt: "White kitchen seen across the dining table with pendant lamps, a vase of orange flowers and sheer curtains", width: 2000, height: 1334 },
@@ -192,13 +192,13 @@ const shyamkutirRooms: Room[] = [
     ],
   },
   {
-    name: "Reading Corner",
+    name: "",
     images: [
       { src: "/images/projects/shyamkutir/photos/reading-corner-1.jpg", kind: "photo", alt: "Informal sitting room with two cane chairs, a red throw, a study desk, built in storage and a large green plant", width: 2000, height: 1333 },
     ],
   },
   {
-    name: "Bedroom One",
+    name: "",
     images: [
       { src: "/images/projects/shyamkutir/photos/bedroom-one-1.jpg", kind: "photo", alt: "Bed with a taupe headboard backed by an open bookshelf, red and white cushions and a bedside table", width: 1600, height: 2000 },
       { src: "/images/projects/shyamkutir/photos/bedroom-one-2.jpg", kind: "photo", alt: "Bedroom with a shelf unit rising behind the headboard, red and white bedding and a cane armchair", width: 1334, height: 2000 },
@@ -210,7 +210,7 @@ const shyamkutirRooms: Room[] = [
     ],
   },
   {
-    name: "Bedroom Two",
+    name: "",
     images: [
       { src: "/images/projects/shyamkutir/photos/bedroom-two-1.jpg", kind: "photo", alt: "Bedroom with a pale blue upholstered headboard, block print bedding and round mirrors on the wall", width: 2000, height: 1333 },
       { src: "/images/projects/shyamkutir/photos/bedroom-two-2.jpg", kind: "photo", alt: "Bed with a pale blue headboard, a built in white drawer unit, a round woven rug and a fabric stool", width: 2000, height: 2000 },
@@ -220,7 +220,7 @@ const shyamkutirRooms: Room[] = [
     ],
   },
   {
-    name: "Balcony",
+    name: "",
     images: [
       { src: "/images/projects/shyamkutir/photos/balcony-1.jpg", kind: "photo", alt: "Balcony with a deep blue wall, cane chairs, woven stools, many potted plants and a patterned tile floor", width: 2000, height: 1866 },
       { src: "/images/projects/shyamkutir/photos/balcony-2.jpg", kind: "photo", alt: "Cane armchair with a teal cushion against a blue wall, among plants on a patterned tile floor", width: 1333, height: 2000 },
@@ -229,7 +229,7 @@ const shyamkutirRooms: Room[] = [
     ],
   },
   {
-    name: "Garden Pavilion",
+    name: "",
     images: [
       { src: "/images/projects/shyamkutir/photos/garden-pavilion-1.jpg", kind: "photo", alt: "Timber garden pavilion with a lit wood ceiling, surrounded by tropical plants and a shaded seating area", width: 2000, height: 1270 },
       { src: "/images/projects/shyamkutir/photos/garden-pavilion-2.jpg", kind: "photo", alt: "Wider view of the timber pavilion set in a lawn with mature trees and potted plants", width: 2000, height: 1125 },
@@ -243,7 +243,7 @@ const shyamkutirDrawings: Drawing[] = [
 
 const polasRooms: Room[] = [
   {
-    name: "Bedroom",
+    name: "",
     images: [
       { src: "/images/projects/polas-residence/photos/bedroom-1.jpg", kind: "photo", alt: "Bedroom with a low bed in white linen with a rust coloured throw, a white sliding wardrobe and cream curtains", width: 2000, height: 1333 },
       { src: "/images/projects/polas-residence/photos/bedroom-2.jpg", kind: "photo", alt: "Bedroom wall with floating wood display boxes, a wood sideboard, a tall window with curtains and a dark wood floor", width: 2000, height: 1333 },

@@ -76,14 +76,14 @@ export function parseProjectFields(body: unknown): ProjectFields {
     if (!rawRoom || typeof rawRoom !== "object") throw new HttpError(400, "A room is invalid.");
     const room = rawRoom as Record<string, unknown>;
     const name = text(room.name, "Room name", 80);
-    if (!name) throw new HttpError(400, `Give room ${index + 1} a name.`);
+    const label = name ? `Room "${name}"` : `Room ${index + 1}`;
     const images: RoomImage[] = list(room.images, "photos in a room", 60).map((rawImage) => {
-      const parsed = image(rawImage, `Room "${name}"`);
+      const parsed = image(rawImage, label);
       const kind = (rawImage as Record<string, unknown>).kind === "render" ? "render" : "photo";
       return { ...parsed, kind };
     });
     if (published && images.length === 0) {
-      throw new HttpError(400, `Room "${name}" has no photos yet. Add some or remove the room.`);
+      throw new HttpError(400, `${label} has no photos yet. Add some or remove the room.`);
     }
     return { name, images };
   });

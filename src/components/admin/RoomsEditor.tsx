@@ -46,7 +46,7 @@ export default function RoomsEditor({
             <input
               value={room.name}
               onChange={(e) => patchRoom(index, { name: e.target.value })}
-              placeholder="Room name, e.g. Kitchen & Dining"
+              placeholder="Room name shown on the site (optional), e.g. Kitchen & Dining"
               aria-label="Room name"
               className="flex-1 min-w-0 bg-ink/[0.05] border border-ink/25 rounded-lg px-3.5 py-2.5 text-[15px] text-ink placeholder:text-muted/60 focus:outline-none focus:border-teal"
             />

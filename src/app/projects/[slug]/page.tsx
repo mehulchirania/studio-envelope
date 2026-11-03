@@ -129,7 +129,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
         <div>
           {project.rooms.map((room, i) => (
             <RoomChapter
-              key={room.name}
+              key={i}
               id={roomLinks[i]?.id}
               room={room}
               tone={i % 2 === 0 ? "light" : "dark"}
