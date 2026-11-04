@@ -253,7 +253,7 @@ const polasRooms: Room[] = [
 ];
 
 const polasDrawings: Drawing[] = [
-  { src: "/images/projects/polas-residence/plans.png", alt: "Ground and first floor plans of Pola's Residence", width: 612, height: 593 },
+  { src: "/images/projects/polas-residence/plans.png", alt: "Ground and first floor plans of Villa Pola", width: 612, height: 593 },
 ];
 
 export const seedProjects: Project[] = [
@@ -342,7 +342,7 @@ export const seedProjects: Project[] = [
   {
     id: "polas-residence",
     slug: "polas-residence",
-    title: "Pola's Bungalow",
+    title: "Villa Pola",
     location: "Bungalow, Ballari",
     year: 2024,
     area: "2,500 sq ft",
