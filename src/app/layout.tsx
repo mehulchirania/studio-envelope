@@ -7,6 +7,7 @@ import HideOnAdmin from "@/components/layout/HideOnAdmin";
 import BackToTop from "@/components/layout/BackToTop";
 import ScrollFade from "@/components/layout/ScrollFade";
 import JsonLd from "@/components/seo/JsonLd";
+import GoogleTagManager from "@/components/seo/GoogleTagManager";
 import { getLocalBusinessSchema, getWebSiteSchema, OG_IMAGE, SHARE_DESCRIPTION, SHARE_TITLE, SITE_URL } from "@/lib/seo";
 import { site } from "@/lib/content/site";
 import { Analytics } from "@vercel/analytics/next";
@@ -75,6 +76,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <JsonLd schema={getWebSiteSchema()} />
       </head>
       <body id="page-top" className="flex min-h-full flex-col bg-bone font-sans text-ink">
+        <GoogleTagManager />
         {/* The header is fixed and overlays each page's dark hero, so <main>
             gets no top padding; every hero clears the header itself. Both are
             hidden on /admin, which renders its own chrome. */}
