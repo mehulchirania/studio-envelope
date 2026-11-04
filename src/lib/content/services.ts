@@ -15,52 +15,72 @@ export const serviceDescriptions: Record<string, string> = {
 };
 
 /**
- * One photo per service, in /public/images/services, cropped to 4:3. These are
+ * One photo per service, in /public/images/services, shown uncropped. These are
  * not Studio Envelope projects. Eight (design consultation, space planning,
  * colour palette selection, lighting, material, furniture, soft furnishing,
  * decor) are Pinterest references chosen by Prachi Chirania on 4 Nov 2026.
  * Project management (Burst) and photo & video shoot (Alejandro Escamilla)
  * are CC0 photos from StockSnap.io.
  */
-export const serviceImages: Record<string, { src: string; alt: string }> = {
+export const serviceImages: Record<string, { src: string; width: number; height: number; alt: string }> = {
   "Design Consultation": {
-    src: "/images/services/design-consultation-2.jpg",
+    src: "/images/services/design-consultation-3.jpg",
+    width: 736,
+    height: 736,
     alt: "Hands arranging interior photographs, fabric swatches and a floor plan on a wooden table",
   },
   "Space Planning": {
-    src: "/images/services/space-planning-2.jpg",
+    src: "/images/services/space-planning-3.jpg",
+    width: 736,
+    height: 1104,
     alt: "An architectural floor plan on a desk with a pen and ruler",
   },
   "Colour Palette Selection": {
-    src: "/images/services/colour-palette-selection-2.jpg",
+    src: "/images/services/colour-palette-selection-3.jpg",
+    width: 736,
+    height: 736,
     alt: "A palette of green, sand, terracotta and timber material samples",
   },
   "Lighting Consultation": {
-    src: "/images/services/lighting-consultation-2.jpg",
+    src: "/images/services/lighting-consultation-3.jpg",
+    width: 736,
+    height: 981,
     alt: "Ceramic pendant lamps with fringed teal beads hanging on twisted cords",
   },
   "Material Selection": {
-    src: "/images/services/material-selection-2.jpg",
+    src: "/images/services/material-selection-3.jpg",
+    width: 736,
+    height: 1038,
     alt: "Material samples: terrazzo, blue and white tile, glazed navy tile and walnut timber",
   },
   "Furniture Selection": {
-    src: "/images/services/furniture-selection-2.jpg",
+    src: "/images/services/furniture-selection-3.jpg",
+    width: 736,
+    height: 981,
     alt: "A sculptural cream boucle armchair beside a red side table with a bud vase",
   },
   "Soft Furnishing": {
-    src: "/images/services/soft-furnishing-2.jpg",
+    src: "/images/services/soft-furnishing-3.jpg",
+    width: 736,
+    height: 920,
     alt: "Block-printed fabric swatches in blue and mustard with a teal velvet sample and ceramic dishes",
   },
   "Décor Consultation": {
-    src: "/images/services/decor-consultation-2.jpg",
+    src: "/images/services/decor-consultation-3.jpg",
+    width: 736,
+    height: 1102,
     alt: "Black sculpted candle holders in front of a textured white artwork",
   },
   "Project Management": {
     src: "/images/services/project-management.jpg",
+    width: 1200,
+    height: 900,
     alt: "Two people in high visibility vests pointing at construction plans",
   },
   "Photo & Video Shoot": {
     src: "/images/services/photo-video-shoot.jpg",
+    width: 1200,
+    height: 900,
     alt: "A vintage film camera and lens on a wooden desk beside a pot of pencils",
   },
 };

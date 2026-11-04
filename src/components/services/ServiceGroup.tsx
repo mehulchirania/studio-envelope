@@ -5,7 +5,7 @@ type ServiceItem = {
   number: string;
   name: string;
   description: string;
-  image: { src: string; alt: string };
+  image: { src: string; width: number; height: number; alt: string };
 };
 
 type ServiceGroupProps = {
@@ -37,13 +37,14 @@ export default function ServiceGroup({ id, number, name, blurb, services }: Serv
       <ul className="mt-8 flex flex-col">
         {services.map((service) => (
           <li key={service.name} className="flex gap-4 border-t border-hairline py-5">
-            <div className="relative aspect-[4/3] w-24 shrink-0 self-start overflow-hidden bg-paper-2 sm:w-28">
+            <div className="w-24 shrink-0 self-start overflow-hidden bg-paper-2 sm:w-28">
               <Image
                 src={service.image.src}
                 alt={service.image.alt}
-                fill
+                width={service.image.width}
+                height={service.image.height}
                 sizes="112px"
-                className="object-cover"
+                className="h-auto w-full"
               />
             </div>
             <div className="min-w-0">
