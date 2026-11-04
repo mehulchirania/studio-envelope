@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { getProject, getProjects } from "@/lib/data";
 import ProjectLightboxProvider from "@/components/projects/ProjectLightboxProvider";
 import ProjectHero from "@/components/projects/ProjectHero";
-import RoomChapter from "@/components/projects/RoomChapter";
+import ProjectGallery from "@/components/projects/ProjectGallery";
 import NextProjectBand from "@/components/projects/NextProjectBand";
-import { findImageMeta, projectImages, slugifyRoom } from "@/components/projects/roomLayout";
+import { findImageMeta, projectImages } from "@/components/projects/roomLayout";
 
 import JsonLd from "@/components/seo/JsonLd";
 import { getBreadcrumbSchema, getProjectSchema } from "@/lib/seo";
@@ -89,15 +89,6 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
         : otherProjects[0]
       : null;
 
-  const seenRoomIds = new Map<string, number>();
-  const roomLinks = project.rooms.map((room) => {
-    const base = slugifyRoom(room.name) || "room";
-    const count = (seenRoomIds.get(base) ?? 0) + 1;
-    seenRoomIds.set(base, count);
-    const id = count > 1 ? `${base}-${count}` : base;
-    return { id, name: room.name };
-  });
-
   const projectSchema = getProjectSchema(project);
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: "/" },
@@ -126,17 +117,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[slu
           </div>
         )}
 
-        <div>
-          {project.rooms.map((room, i) => (
-            <RoomChapter
-              key={i}
-              id={roomLinks[i]?.id}
-              room={room}
-              tone={i % 2 === 0 ? "light" : "dark"}
-              indexBySrc={indexBySrc}
-            />
-          ))}
-        </div>
+        <ProjectGallery images={lightboxImages} indexBySrc={indexBySrc} />
       </article>
 
       {nextProject && <NextProjectBand project={nextProject} />}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import WhyEnvelope from "@/components/home/WhyEnvelope";
-import FounderNote from "@/components/home/FounderNote";
 import WorkGlimpse from "@/components/home/WorkGlimpse";
 import { getProjects } from "@/lib/data";
 import { pageMetadata, SHARE_DESCRIPTION, SHARE_TITLE } from "@/lib/seo";
@@ -31,7 +30,6 @@ export default async function Home() {
       <WhyEnvelope
         image={{ src: "/images/site/kitchen-detail.jpg", alt: "A hand embroidered mirror work runner draped over a kitchen counter beside a cane fruit basket" }}
       />
-      <FounderNote />
       <WorkGlimpse images={glimpseImages} />
     </PageTransition>
   );

@@ -2,60 +2,58 @@ import { services } from "./site";
 
 /** One-line description of each service, keyed by the names in `services` (site.ts). */
 export const serviceDescriptions: Record<string, string> = {
-  "Design Consultation": "An initial walkthrough of your space and brief to set the direction for the project.",
-  "Space Planning": "Working out how each room is used and laid out, before any material or furniture decision.",
-  "Colour Consultation": "A palette for walls, ceilings and trims chosen to suit light, material and mood.",
-  "Lighting Consultation": "A lighting layout covering ambient, task and accent light, planned alongside the electrical drawings.",
-  "Material Selection": "Flooring, wall finishes, countertops and hardware chosen to work together and wear well.",
-  "Furniture Selection": "Sourcing and specifying furniture that fits the plan, the budget and the material palette.",
-  "Soft Furnishing": "Curtains, upholstery, rugs and linens selected to complete the space.",
-  "Décor Consultation": "Art, accessories and styling details that finish a room once the larger pieces are in place.",
+  "Design Consultation": "We start with your space, your brief and how you want to live in it, and set the direction for the whole project.",
+  "Space Planning": "Layouts that work for how each room is used, settled before any finish or furniture is chosen.",
+  "Colour Palette Selection": "A considered palette for walls, ceilings and trims, chosen to suit the light, the materials and the mood you want.",
+  "Lighting Consultation": "Ambient, task and accent lighting planned with the electrical drawings, so fittings and layout work together.",
+  "Material Selection": "Flooring, tiles, wall finishes and hardware chosen to sit well together and to last.",
+  "Furniture Selection": "Furniture that suits the plan, the budget and the palette, sourced and specified for you.",
+  "Soft Furnishing": "Curtains, upholstery, rugs and fabrics selected to add warmth, texture and pattern.",
+  "Décor Consultation": "Art, accessories and finishing touches, chosen once the larger pieces are in place.",
   "Project Management": "Coordinating vendors, contractors and timelines so the design is executed as drawn.",
   "Photo & Video Shoot": "Professional documentation of the finished space once the project is complete.",
 };
 
 /**
- * One photo per service, in /public/images/services. These are generic stock
- * photographs (not Studio Envelope projects), all CC0 / public domain from
- * StockSnap.io, cropped to 4:3. Photographers, for the record:
- * design-consultation: Brodie Vissers; space-planning: energepic.com;
- * colour-consultation: Martin Vorel; lighting-consultation: Adrianna Calvo;
- * material-selection: Travel Photographer; furniture-selection: Nathan Fertig;
- * soft-furnishing: Kari Shea; decor-consultation: Chimene Gaspar;
- * project-management: Burst; photo-video-shoot: Alejandro Escamilla.
+ * One photo per service, in /public/images/services, cropped to 4:3. These are
+ * not Studio Envelope projects. Eight (design consultation, space planning,
+ * colour palette selection, lighting, material, furniture, soft furnishing,
+ * decor) are Pinterest references chosen by Prachi Chirania on 4 Nov 2026.
+ * Project management (Burst) and photo & video shoot (Alejandro Escamilla)
+ * are CC0 photos from StockSnap.io.
  */
 export const serviceImages: Record<string, { src: string; alt: string }> = {
   "Design Consultation": {
-    src: "/images/services/design-consultation.jpg",
-    alt: "Several people sketching a layout in pencil and marker over large sheets of paper",
+    src: "/images/services/design-consultation-2.jpg",
+    alt: "Hands arranging interior photographs, fabric swatches and a floor plan on a wooden table",
   },
   "Space Planning": {
-    src: "/images/services/space-planning.jpg",
-    alt: "Hands on a laptop keyboard beside a printed floor plan with blue shaded rooms",
+    src: "/images/services/space-planning-2.jpg",
+    alt: "An architectural floor plan on a desk with a pen and ruler",
   },
-  "Colour Consultation": {
-    src: "/images/services/colour-consultation.jpg",
-    alt: "A fan of paint colour swatches in warm oranges, pinks and blues",
+  "Colour Palette Selection": {
+    src: "/images/services/colour-palette-selection-2.jpg",
+    alt: "A palette of green, sand, terracotta and timber material samples",
   },
   "Lighting Consultation": {
-    src: "/images/services/lighting-consultation.jpg",
-    alt: "A black pendant lamp with a warm filament bulb hanging beside a timber post",
+    src: "/images/services/lighting-consultation-2.jpg",
+    alt: "Ceramic pendant lamps with fringed teal beads hanging on twisted cords",
   },
   "Material Selection": {
-    src: "/images/services/material-selection.jpg",
-    alt: "Close-up of a hand painted blue and white ceramic tile",
+    src: "/images/services/material-selection-2.jpg",
+    alt: "Material samples: terrazzo, blue and white tile, glazed navy tile and walnut timber",
   },
   "Furniture Selection": {
-    src: "/images/services/furniture-selection.jpg",
-    alt: "A grey tufted sofa with teal and patterned cushions in front of a bright window",
+    src: "/images/services/furniture-selection-2.jpg",
+    alt: "A sculptural cream boucle armchair beside a red side table with a bud vase",
   },
   "Soft Furnishing": {
-    src: "/images/services/soft-furnishing.jpg",
-    alt: "A cushioned armchair beside sheer white curtains",
+    src: "/images/services/soft-furnishing-2.jpg",
+    alt: "Block-printed fabric swatches in blue and mustard with a teal velvet sample and ceramic dishes",
   },
   "Décor Consultation": {
-    src: "/images/services/decor-consultation.jpg",
-    alt: "A blush ceramic vase holding dried pampas grass on a pale fleece rug",
+    src: "/images/services/decor-consultation-2.jpg",
+    alt: "Black sculpted candle holders in front of a textured white artwork",
   },
   "Project Management": {
     src: "/images/services/project-management.jpg",

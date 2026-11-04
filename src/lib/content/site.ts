@@ -38,7 +38,7 @@ export const site = {
 
 /** The 10 service inclusions, grouped as in the brief. */
 export const services = {
-  design: ["Design Consultation", "Space Planning", "Colour Consultation", "Lighting Consultation", "Material Selection"],
+  design: ["Design Consultation", "Space Planning", "Colour Palette Selection", "Lighting Consultation", "Material Selection"],
   furnishAndStyle: ["Furniture Selection", "Soft Furnishing", "Décor Consultation"],
   deliver: ["Project Management", "Photo & Video Shoot"],
 } as const;

@@ -57,8 +57,6 @@ export default function ProjectRow({ project, priority }: { project: Project; pr
             ))}
         </dl>
 
-        <p className="mt-6 max-w-md text-base leading-7 text-muted">{project.summary}</p>
-
         <Link href={href} className="link-arrow mt-8 self-start text-brand hover:border-brand">
           View project
           <ArrowUpRight size={16} aria-hidden="true" />
