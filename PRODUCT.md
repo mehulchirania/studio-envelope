@@ -22,17 +22,17 @@ Architect-led, residential and personal. Spaces are shaped around each family's 
 - Client design references: studiogoya.in, maiadesign.in, studioruh.in.
 
 ## Capabilities and Constraints
-- Stack: Next.js 16 (App Router, breaking changes: read `node_modules/next/dist/docs/` first), React 19, Tailwind v4, framer-motion, Firebase Firestore + Auth (Spark plan), Vercel Blob, deployed on Vercel.
-- Admin panel and Firestore rules/allowlist must keep working; contact form writes to Firestore `messages`.
+- Stack: Next.js 16 (App Router, breaking changes: read `node_modules/next/dist/docs/` first), React 19, Tailwind v4 (no animation libraries), Firebase Firestore + Auth (Spark plan), Vercel Blob, deployed on Vercel.
+- Admin panel (projects, videos, messages) and the Firestore rules must keep working; contact form writes to Firestore `messages`.
 - Project model: rooms of images (photo or render, with real dimensions) plus drawings; renders must be labelled as visualisations.
-- Studio facts live in `src/lib/site.ts`; do not invent claims, awards, clients or numbers.
+- Studio facts live in `src/lib/content/site.ts`; do not invent claims, awards, clients or numbers.
 - Undecided: final scope of the current simplification redesign (in progress with ChatGPT).
 
 ## Brand Commitments
 Name: Studio Envelope. Logo: envelope-flap triangle with dot between two amber bars (colour, amber-only, colour-on-dark and all-white variants in `assets/`). Logo palette: teal #0E4B5E, amber #FCB618, cream #F6F3EE. Principal named as Ar. Prachi Chirania Bhalotia.
 
 ## Evidence on Hand
-Four real projects with photos/renders and plans (James Residence, Shyamkutir, Pola's Residence, Doshi Residence) in `public/images/projects/`; eight Instagram previews in `public/images/instagram/`; portfolio PDF (`Studio Evnelope_Portfolio.pdf`); client brief and letterhead docx and logo files in `assets/`. No testimonials, awards, press or client counts exist; do not fabricate them. Principal photo and personal note were promised by the client but are not yet supplied.
+Real projects with photos/renders and plans (Ashiyana, James Residence, Shyamkutir, Urban Nest, Villa Pola) in `public/images/projects/`; eight Instagram previews in `public/images/instagram/`; portfolio PDF (`Studio Evnelope_Portfolio.pdf`); client brief and letterhead docx and logo files in `assets/`. No testimonials, awards, press or client counts exist; do not fabricate them. Principal photo and personal note were promised by the client but are not yet supplied.
 
 ## Product Principles
 1. Honest and specific: only real projects, facts and imagery; label renders.
