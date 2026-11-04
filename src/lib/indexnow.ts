@@ -1,7 +1,7 @@
 import { SITE_URL } from "@/lib/seo";
 
 /** Public by design: IndexNow verifies it against public/<key>.txt. */
-export const INDEXNOW_KEY = "da0fc452378d09cac0b452d3afa4340c";
+const INDEXNOW_KEY = "da0fc452378d09cac0b452d3afa4340c";
 
 /** Tells IndexNow (Bing, Yandex and partners) which URLs changed, using the live
  * sitemap as the URL list. Fetching the sitemap also makes it regenerate with the

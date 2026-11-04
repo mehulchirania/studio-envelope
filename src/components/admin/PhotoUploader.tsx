@@ -160,7 +160,7 @@ export function CoverUploader({
 
 // ---------- Many photos (a room, or drawings) ----------
 
-export interface PhotoItem {
+interface PhotoItem {
   src: string;
   alt: string;
   width: number;

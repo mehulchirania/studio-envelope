@@ -5,7 +5,6 @@
 // Admin writes do not use this file; see src/lib/firebase/admin-server.ts.
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { connectFirestoreEmulator, getFirestore as getFirestoreSdk, type Firestore } from "firebase/firestore";
-import { getAuth, type Auth } from "firebase/auth";
 
 /** Local-dev-only escape hatch: when set, points Firestore at the
  * `firebase emulators:start` suite instead of the real project, so local
@@ -51,14 +50,3 @@ export function getDb(): Firestore | undefined {
   }
   return dbSingleton;
 }
-
-let authSingleton: Auth | undefined;
-
-/** Returns the client Auth instance, or undefined when Firebase isn't configured. */
-export function getFirebaseAuth(): Auth | undefined {
-  const a = getFirebaseApp();
-  if (!a) return undefined;
-  if (!authSingleton) authSingleton = getAuth(a);
-  return authSingleton;
-}
-

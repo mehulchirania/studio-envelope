@@ -7,7 +7,7 @@ import { parseYouTubeId } from "@/lib/admin/youtube";
 export const BLOB_HOST_SUFFIX = ".public.blob.vercel-storage.com";
 
 /** Only our own Blob host or the bundled /images/* seed files, so next/image never meets an unconfigured host. */
-export function isAllowedImageSrc(src: string): boolean {
+function isAllowedImageSrc(src: string): boolean {
   if (src.startsWith("/images/") && !src.includes("..")) return true;
   try {
     const url = new URL(src);
@@ -126,7 +126,7 @@ export function parseProjectFields(body: unknown): ProjectFields {
 }
 
 /** Uploaded films live only on our own Blob host. */
-export function isAllowedVideoSrc(src: string): boolean {
+function isAllowedVideoSrc(src: string): boolean {
   try {
     const url = new URL(src);
     return url.protocol === "https:" && url.hostname.endsWith(BLOB_HOST_SUFFIX);

@@ -3,7 +3,7 @@ export type ProjectScope = string;
 
 export const SCOPE_PRESETS = ["Interior", "Architecture & Interior", "Architecture", "Renovation"] as const;
 
-export type ProjectImageKind = "photo" | "render";
+type ProjectImageKind = "photo" | "render";
 
 export interface RoomImage {
   src: string; // absolute path under /public

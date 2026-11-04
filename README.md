@@ -46,9 +46,9 @@ src/
     layout/               Header, Footer, HideOnAdmin, BackToTop
     ui/                   Reusable pieces: Button, Logo, Seal, SectionHeader, PageHero,
                           ProjectImage, Datasheet, Lightbox
-    home/                 Hero, FeaturedProjects
+    home/                 Hero, WorkGlimpse, FounderNote, WhyEnvelope
     videos/               VideoFeature (YouTube embed or uploaded file, plays on click)
-    projects/             ProjectCard/Grid, ProjectHero, RoomChapter, RoomIndex, lightbox
+    projects/             ProjectCard/Grid, ProjectHero, RoomChapter, lightbox
                           provider + image, NextProjectBand, roomLayout.ts (layout helpers)
     services/             ServiceGroup, ProcessStep, FaqItem
     contact/              ContactForm
@@ -62,7 +62,7 @@ src/
     admin/                Admin internals: users.ts (the logins), session.ts (signed cookie), http.ts,
                           validate.ts (form payload checks), youtube.ts (YouTube link parsing),
                           client.ts (browser fetch helpers)
-    data.ts               Public read API: getProjects / getFeaturedProjects / getProject / getVideos
+    data.ts               Public read API: getProjects / getProject / getVideos
     indexnow.ts           Pings search engines after admin edits (production only)
     seo.ts                SITE_URL, pageMetadata(), JSON-LD builders
 ```

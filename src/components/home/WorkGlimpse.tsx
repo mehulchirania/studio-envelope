@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-export type GlimpseImage = { src: string; alt: string; slug: string };
+type GlimpseImage = { src: string; alt: string; slug: string };
 
 function shuffled<T>(items: T[]): T[] {
   const copy = [...items];

@@ -21,7 +21,7 @@ function orientation(image: RoomImage): "landscape" | "portrait" {
   return image.width >= image.height ? "landscape" : "portrait";
 }
 
-export type RoomChunk =
+type RoomChunk =
   | { type: "single"; image: RoomImage }
   | { type: "pair"; images: [RoomImage, RoomImage] }
   | { type: "mixed"; wide: RoomImage; narrow: RoomImage };

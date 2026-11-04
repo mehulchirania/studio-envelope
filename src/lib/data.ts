@@ -75,10 +75,6 @@ export async function getProjects(): Promise<Project[]> {
   return fallbackProjects();
 }
 
-export async function getFeaturedProjects(): Promise<Project[]> {
-  return (await getProjects()).filter((p) => p.featured);
-}
-
 export async function getProject(slug: string): Promise<Project | null> {
   return (await getProjects()).find((p) => p.slug === slug) ?? null;
 }

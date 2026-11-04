@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export type ServiceItem = {
+type ServiceItem = {
   /** Running number across all ten services, e.g. "04". */
   number: string;
   name: string;
