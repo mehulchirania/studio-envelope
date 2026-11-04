@@ -30,7 +30,7 @@ import { normalizeProject } from "@/lib/data";
 import { firebaseConfig, isFirebaseConfigured, USE_EMULATORS } from "@/lib/firebase/client";
 import { HttpError } from "@/lib/admin/http";
 import { slugify } from "@/lib/admin/slug";
-import type { AdminMessage, ProjectFields } from "@/lib/admin/types";
+import type { AdminMessage, ProjectFields, VideoFields, VideoRecord } from "@/lib/admin/types";
 import { BLOB_HOST_SUFFIX } from "@/lib/admin/validate";
 
 const APP_NAME = "admin-service";
@@ -94,8 +94,8 @@ function imageUrls(project: Pick<Project, "coverImage" | "rooms" | "drawings">):
   ].filter(Boolean);
 }
 
-/** Best effort: removes our own Blob images that are no longer referenced. Never throws. */
-async function deleteBlobImages(urls: string[]): Promise<void> {
+/** Best effort: removes our own Blob files (images or videos) that are no longer referenced. Never throws. */
+async function deleteBlobFiles(urls: string[]): Promise<void> {
   const ours = [
     ...new Set(
       urls.filter((url) => {
@@ -111,7 +111,7 @@ async function deleteBlobImages(urls: string[]): Promise<void> {
   try {
     await del(ours);
   } catch (err) {
-    console.warn("[admin] Could not delete some images from Blob storage:", err);
+    console.warn("[admin] Could not delete some files from Blob storage:", err);
   }
 }
 
@@ -165,7 +165,7 @@ export async function updateProject(id: string, fields: ProjectFields): Promise<
 
   const next = normalizeProject(data, id);
   const stillUsed = new Set(imageUrls(next));
-  await deleteBlobImages(imageUrls(previous).filter((url) => !stillUsed.has(url)));
+  await deleteBlobFiles(imageUrls(previous).filter((url) => !stillUsed.has(url)));
   return next;
 }
 
@@ -176,7 +176,7 @@ export async function deleteProject(id: string): Promise<void> {
   if (!snap.exists()) return;
   const previous = normalizeProject(snap.data(), id);
   await deleteDoc(ref);
-  await deleteBlobImages(imageUrls(previous));
+  await deleteBlobFiles(imageUrls(previous));
 }
 
 /** Saves the given order (first id = first on the site). Unknown ids are ignored. */
@@ -204,6 +204,84 @@ export async function importSampleProjects(): Promise<number> {
   }
   await batch.commit();
   return seedProjects.length;
+}
+
+// ---------- Videos ----------
+
+function normalizeVideo(data: Record<string, unknown>, id: string): VideoRecord {
+  const video: VideoRecord = {
+    id,
+    title: (data.title as string) ?? "",
+    order: typeof data.order === "number" ? data.order : 0,
+    published: Boolean(data.published),
+  };
+  for (const key of ["projectSlug", "credits", "youtubeId", "src", "poster"] as const) {
+    if (typeof data[key] === "string" && data[key]) video[key] = data[key] as string;
+  }
+  return video;
+}
+
+const videoFiles = (video: Pick<VideoRecord, "src" | "poster">) =>
+  [video.src, video.poster].filter((url): url is string => Boolean(url));
+
+/** Every video in the database (drafts included), in site order. */
+export async function listVideos(): Promise<VideoRecord[]> {
+  const db = await getDb();
+  const snapshot = await getDocs(query(collection(db, "videos"), orderBy("order", "asc")));
+  return snapshot.docs.map((d) => normalizeVideo(d.data(), d.id));
+}
+
+export async function getVideo(id: string): Promise<VideoRecord | null> {
+  const db = await getDb();
+  const snap = await getDoc(doc(db, "videos", id));
+  return snap.exists() ? normalizeVideo(snap.data(), snap.id) : null;
+}
+
+export async function createVideo(fields: VideoFields): Promise<VideoRecord> {
+  const db = await getDb();
+  const existing = await listVideos();
+  const order = existing.reduce((max, v) => Math.max(max, v.order), -1) + 1;
+  const ref = doc(collection(db, "videos"));
+  const data = { ...fields, order };
+  await setDoc(ref, data);
+  return normalizeVideo(data, ref.id);
+}
+
+export async function updateVideo(id: string, fields: VideoFields): Promise<VideoRecord> {
+  const db = await getDb();
+  const ref = doc(db, "videos", id);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) throw new HttpError(404, "That video no longer exists.");
+
+  const previous = normalizeVideo(snap.data(), id);
+  const data = { ...fields, order: previous.order };
+  await setDoc(ref, data);
+
+  const next = normalizeVideo(data, id);
+  const stillUsed = new Set(videoFiles(next));
+  await deleteBlobFiles(videoFiles(previous).filter((url) => !stillUsed.has(url)));
+  return next;
+}
+
+export async function deleteVideo(id: string): Promise<void> {
+  const db = await getDb();
+  const ref = doc(db, "videos", id);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return;
+  const previous = normalizeVideo(snap.data(), id);
+  await deleteDoc(ref);
+  await deleteBlobFiles(videoFiles(previous));
+}
+
+/** Saves the given order (first id = first on the site). Unknown ids are ignored. */
+export async function reorderVideos(ids: string[]): Promise<void> {
+  const db = await getDb();
+  const existing = new Set((await listVideos()).map((v) => v.id));
+  const batch = writeBatch(db);
+  ids
+    .filter((id) => existing.has(id))
+    .forEach((id, index) => batch.update(doc(db, "videos", id), { order: index }));
+  await batch.commit();
 }
 
 // ---------- Messages ----------

@@ -55,7 +55,7 @@ export default function VideoFeature({ title, credits, facts, youtubeId, src, po
               className="absolute inset-0 h-full w-full border-0"
             />
           ) : (
-            <video src={src} poster={poster} controls autoPlay playsInline className="absolute inset-0 h-full w-full object-cover" />
+            <video src={src} poster={poster} controls autoPlay playsInline className="absolute inset-0 h-full w-full object-contain" />
           )
         ) : (
           <>

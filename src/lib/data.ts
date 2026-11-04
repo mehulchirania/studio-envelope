@@ -6,6 +6,7 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import type { Project, Room } from "@/lib/content/types";
 import { seedProjects } from "@/lib/content/seed";
+import { videos as seedVideos, type StudioVideo } from "@/lib/content/videos";
 import { getDb, isFirebaseConfigured } from "@/lib/firebase/client";
 
 /** Fills in fields that may be missing on older Firestore documents written
@@ -80,4 +81,30 @@ export async function getFeaturedProjects(): Promise<Project[]> {
 
 export async function getProject(slug: string): Promise<Project | null> {
   return (await getProjects()).find((p) => p.slug === slug) ?? null;
+}
+
+/** Published films in site order: Firestore when it has any, otherwise the built-in list in content/videos.ts. */
+export async function getVideos(): Promise<StudioVideo[]> {
+  if (isFirebaseConfigured) {
+    try {
+      const db = getDb();
+      if (!db) throw new Error("Firestore is not configured");
+      // Filter only, then sort here: a where + orderBy pair would need a composite index.
+      const snapshot = await getDocs(query(collection(db, "videos"), where("published", "==", true)));
+      const found = snapshot.docs
+        .map((d) => ({ data: d.data(), id: d.id }))
+        .sort((a, b) => Number(a.data.order ?? 0) - Number(b.data.order ?? 0))
+        .map(({ data, id }): StudioVideo => {
+          const video: StudioVideo = { id, title: (data.title as string) ?? "" };
+          for (const key of ["projectSlug", "credits", "youtubeId", "src", "poster"] as const) {
+            if (typeof data[key] === "string" && data[key]) video[key] = data[key] as string;
+          }
+          return video;
+        });
+      if (found.length > 0) return found;
+    } catch (err) {
+      console.warn("[data] Firestore video read failed, falling back to the built-in list:", err);
+    }
+  }
+  return seedVideos;
 }

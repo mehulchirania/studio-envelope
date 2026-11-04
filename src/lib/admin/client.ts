@@ -3,7 +3,7 @@
 import { upload } from "@vercel/blob/client";
 import type { Project } from "@/lib/content/types";
 import { slugify } from "@/lib/admin/slug";
-import type { AdminMessage, ProjectFields, ProjectsResponse } from "@/lib/admin/types";
+import type { AdminMessage, ProjectFields, ProjectsResponse, VideoFields, VideoRecord } from "@/lib/admin/types";
 
 export const UNAUTHORIZED_EVENT = "admin:unauthorized";
 
@@ -66,6 +66,32 @@ export async function importSamples(): Promise<void> {
   await request("/api/admin/projects/import", json("POST"));
 }
 
+// ---------- Videos ----------
+
+export async function listVideos(): Promise<VideoRecord[]> {
+  return (await request<{ videos: VideoRecord[] }>("/api/admin/videos")).videos;
+}
+
+export async function getVideo(id: string): Promise<VideoRecord> {
+  return (await request<{ video: VideoRecord }>(`/api/admin/videos/${encodeURIComponent(id)}`)).video;
+}
+
+export async function createVideo(fields: VideoFields): Promise<VideoRecord> {
+  return (await request<{ video: VideoRecord }>("/api/admin/videos", json("POST", fields))).video;
+}
+
+export async function updateVideo(id: string, fields: VideoFields): Promise<VideoRecord> {
+  return (await request<{ video: VideoRecord }>(`/api/admin/videos/${encodeURIComponent(id)}`, json("PUT", fields))).video;
+}
+
+export async function deleteVideo(id: string): Promise<void> {
+  await request(`/api/admin/videos/${encodeURIComponent(id)}`, json("DELETE"));
+}
+
+export async function saveVideoOrder(ids: string[]): Promise<void> {
+  await request("/api/admin/videos/order", json("PUT", { ids }));
+}
+
 // ---------- Messages ----------
 
 export async function listMessages(): Promise<AdminMessage[]> {
@@ -116,8 +142,22 @@ export async function uploadImage(
     upload(`projects/${slugify(folder) || "draft"}/${safeName}`, file, {
       access: "public",
       handleUploadUrl: "/api/upload",
+      clientPayload: "image",
       onUploadProgress: ({ percentage }) => onProgress?.(percentage),
     }),
   ]);
   return { src: blob.url, ...size };
+}
+
+/** Uploads a film (mp4, webm or mov) straight from the browser to Vercel Blob, in chunks so large files work. */
+export async function uploadVideo(file: File, onProgress?: (percent: number) => void): Promise<string> {
+  const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
+  const blob = await upload(`videos/${safeName}`, file, {
+    access: "public",
+    handleUploadUrl: "/api/upload",
+    clientPayload: "video",
+    multipart: true,
+    onUploadProgress: ({ percentage }) => onProgress?.(percentage),
+  });
+  return blob.url;
 }

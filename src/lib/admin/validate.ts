@@ -1,7 +1,8 @@
 // Server-only: turns an untrusted admin form payload into a clean ProjectFields.
 import type { Drawing, ProjectScope, Room, RoomImage } from "@/lib/content/types";
 import { HttpError } from "@/lib/admin/http";
-import type { ProjectFields } from "@/lib/admin/types";
+import type { ProjectFields, VideoFields } from "@/lib/admin/types";
+import { parseYouTubeId } from "@/lib/admin/youtube";
 
 export const BLOB_HOST_SUFFIX = ".public.blob.vercel-storage.com";
 
@@ -121,5 +122,53 @@ export function parseProjectFields(body: unknown): ProjectFields {
   if (area) fields.area = area;
   if (credit) fields.credit = credit;
 
+  return fields;
+}
+
+/** Uploaded films live only on our own Blob host. */
+export function isAllowedVideoSrc(src: string): boolean {
+  try {
+    const url = new URL(src);
+    return url.protocol === "https:" && url.hostname.endsWith(BLOB_HOST_SUFFIX);
+  } catch {
+    return false;
+  }
+}
+
+export function parseVideoFields(body: unknown): VideoFields {
+  if (!body || typeof body !== "object") throw new HttpError(400, "Invalid request.");
+  const b = body as Record<string, unknown>;
+
+  const title = text(b.title, "Title", 120);
+  if (!title) throw new HttpError(400, "Add a title.");
+  const published = b.published === true;
+
+  const fields: VideoFields = { title, published };
+
+  const credits = text(b.credits, "Credits", 300);
+  const projectSlug = text(b.projectSlug, "Linked project", 120);
+  if (credits) fields.credits = credits;
+  if (projectSlug) fields.projectSlug = projectSlug;
+
+  // One source only: a YouTube link wins over an uploaded file.
+  const youtube = text(b.youtubeId, "YouTube link", 300);
+  const src = text(b.src, "Video file", 600);
+  if (youtube) {
+    const id = parseYouTubeId(youtube);
+    if (!id) throw new HttpError(400, "That doesn't look like a YouTube link. Paste the video's address from YouTube.");
+    fields.youtubeId = id;
+  } else if (src) {
+    if (!isAllowedVideoSrc(src)) throw new HttpError(400, "The video file comes from an unsupported address.");
+    fields.src = src;
+  }
+  if (published && !fields.youtubeId && !fields.src) {
+    throw new HttpError(400, "Add a YouTube link or upload a video file before publishing.");
+  }
+
+  const poster = text(b.poster, "Cover image", 600);
+  if (poster) {
+    if (!isAllowedImageSrc(poster)) throw new HttpError(400, "The cover image comes from an unsupported address.");
+    fields.poster = poster;
+  }
   return fields;
 }

@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, LogOut, Mail } from "lucide-react";
+import { ExternalLink, Film, LayoutGrid, LogOut, Mail } from "lucide-react";
 import { logout } from "@/lib/admin/client";
 
 const links = [
   { href: "/admin", label: "Projects", icon: LayoutGrid },
+  { href: "/admin/videos", label: "Videos", icon: Film },
   { href: "/admin/messages", label: "Messages", icon: Mail },
 ];
 
@@ -45,6 +46,13 @@ export default function AdminNav({ user, onSignedOut }: { user: string; onSigned
 
         <div className="flex items-center gap-3">
           <span className="hidden sm:inline text-xs text-muted">Signed in as {user}</span>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-xs px-4 py-2.5 rounded-full border border-ink/25 hover:bg-ink/10 transition-colors"
+          >
+            <ExternalLink size={13} />
+            View website
+          </Link>
           <button
             onClick={signOut}
             className="inline-flex items-center gap-1.5 text-xs px-4 py-2.5 rounded-full border border-ink/25 hover:bg-ink/10 transition-colors"

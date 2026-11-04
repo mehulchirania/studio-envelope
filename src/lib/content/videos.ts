@@ -21,6 +21,8 @@ export interface VideoFact {
 }
 
 export interface StudioVideo {
+  /** Set on videos added in the admin panel; entries in the built-in list don't need it. */
+  id?: string;
   title: string;
   /** Slug of a project in the portfolio; used to derive `facts` when none are given. */
   projectSlug?: string;

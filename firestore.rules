@@ -45,6 +45,12 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // videos: same pattern as projects. The public query is where("published", "==", true).
+    match /videos/{videoId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
     // messages: anyone can submit a well-formed, unread message; only the
     // server account can read the inbox or mark/delete messages.
     match /messages/{messageId} {

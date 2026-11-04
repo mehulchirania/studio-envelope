@@ -3,9 +3,9 @@ import { ArrowUpRight } from "lucide-react";
 import JsonLd from "@/components/seo/JsonLd";
 import PageTransition from "@/components/layout/PageTransition";
 import VideoFeature from "@/components/videos/VideoFeature";
-import { videos, type VideoFact } from "@/lib/content/videos";
+import type { VideoFact } from "@/lib/content/videos";
 import type { Project } from "@/lib/content/types";
-import { getProjects } from "@/lib/data";
+import { getProjects, getVideos } from "@/lib/data";
 import { site } from "@/lib/content/site";
 import { getBreadcrumbSchema, pageMetadata } from "@/lib/seo";
 
@@ -28,6 +28,7 @@ function factsFromProject(project?: Project): VideoFact[] | undefined {
 }
 
 export default async function VideosPage() {
+  const videos = await getVideos();
   const bySlug = new Map<string, Project>();
   if (videos.some((video) => video.projectSlug)) {
     for (const project of await getProjects()) bySlug.set(project.slug, project);
@@ -73,7 +74,7 @@ export default async function VideosPage() {
           ) : (
             <ul className="space-y-20 sm:space-y-32">
               {videos.map((video) => (
-                <li key={video.title}>
+                <li key={video.id ?? video.title}>
                   <VideoFeature
                     title={video.title}
                     credits={video.credits}
