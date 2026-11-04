@@ -7,6 +7,7 @@ import HideOnAdmin from "@/components/layout/HideOnAdmin";
 import BackToTop from "@/components/layout/BackToTop";
 import ScrollFade from "@/components/layout/ScrollFade";
 import JsonLd from "@/components/seo/JsonLd";
+import ConsentBanner from "@/components/layout/ConsentBanner";
 import GoogleTagManager from "@/components/seo/GoogleTagManager";
 import { getLocalBusinessSchema, getWebSiteSchema, OG_IMAGE, SHARE_DESCRIPTION, SHARE_TITLE, SITE_URL } from "@/lib/seo";
 import { site } from "@/lib/content/site";
@@ -91,6 +92,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <BackToTop />
           <ScrollFade />
         </HideOnAdmin>
+        <ConsentBanner />
         <Analytics />
       </body>
     </html>

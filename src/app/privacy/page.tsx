@@ -75,6 +75,11 @@ export default function PrivacyPolicyPage() {
               patterns and improve site performance. This system records non identifying technical data (such as page views,
               browser type, and referral source) without creating cross site tracking profiles or storing personally identifiable cookies.
             </p>
+            <p className="text-base leading-relaxed text-muted">
+              If you choose to accept analytics cookies in the banner shown on your first visit, we also use Google Tag Manager and
+              Google Analytics to measure how the site is used. These cookies are not set unless you accept, and you can clear your
+              browser storage at any time to change your choice.
+            </p>
           </section>
 
           <section className="space-y-4 border-t border-hairline pt-8">

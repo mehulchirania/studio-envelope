@@ -10,7 +10,7 @@ import PageTransition from "@/components/layout/PageTransition";
 export const metadata: Metadata = pageMetadata({
   title: "About: Ar. Prachi Chirania",
   description:
-    "Studio Envelope is an architecture and interior design practice in Bangalore, led by Founder and Creative Director Ar. Prachi Chirania. Residential and commercial projects across India.",
+    "Architecture and interior design practice in Bangalore, led by Ar. Prachi Chirania. Residential and commercial projects across India.",
   path: "/about",
 });
 
