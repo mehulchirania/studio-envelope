@@ -34,7 +34,7 @@ export default function Hero() {
         <span aria-hidden="true" className="h-px w-16 bg-ink/40" />
         <h1 className="max-w-[16ch] font-display text-[clamp(32px,3.6vw,56px)] font-light leading-[1.05] text-ink">
           Spaces, sealed with care.
-          <span className="sr-only"> Architecture &amp; Interior Design Studio, Bangalore</span>
+          <span className="sr-only"> Architecture &amp; Interior Design Studio, working across India</span>
         </h1>
       </div>
     </section>

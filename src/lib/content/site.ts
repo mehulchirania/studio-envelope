@@ -2,7 +2,7 @@
  * do not invent claims, awards, clients or numbers not listed there. */
 export const site = {
   name: "Studio Envelope",
-  tagline: "Architecture & Interior Design, Bangalore",
+  tagline: "Architecture & Interior Design, India",
   description:
     "Studio Envelope is an architecture and interior design studio based in Bangalore, led by Ar. Prachi Chirania.",
   principal: {
@@ -12,8 +12,6 @@ export const site = {
       "Founder and Creative Director, Prachi Chirania graduated from RV College of Architecture and went on to pursue her Masters at her esteemed alma mater CEPT University, Ahmedabad. She founded the studio as a result of her passion for creative spaces and travel with the resolution to create timeless, meaningful spaces.",
       "For Prachi, every project is an opportunity to explore a new perspective, discover unexpected possibilities and create spaces that feel deeply connected to the people who would experience it.",
     ],
-    instagram: "https://www.instagram.com/prachichirania/",
-    instagramHandle: "@prachichirania",
   },
   contact: {
     phone: "+91 96632 74949",
@@ -21,6 +19,7 @@ export const site = {
     whatsapp: "https://wa.me/919663274949",
     email: "hello@studioenvelope.com",
     location: "Bangalore, India",
+    hours: "Mon to Sat, 10:00 AM to 7:00 PM IST",
   },
   whyEnvelope: {
     heading: "Why an Envelope?",

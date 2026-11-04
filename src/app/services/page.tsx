@@ -12,9 +12,9 @@ import { getBreadcrumbSchema, getFaqSchema, pageMetadata } from "@/lib/seo";
 import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Architecture & Interior Design, Bangalore",
+  title: "Interior Design Services Across India",
   description:
-    "Space planning, design consultation, material selection, furnishing and project management. Based in Bangalore, working across India.",
+    "Design consultation, space planning, material selection, furnishing and project management for residential and commercial spaces across India.",
   path: "/services",
 });
 

@@ -3,10 +3,11 @@ import { site } from "@/lib/content/site";
 import type { Project } from "@/lib/content/types";
 
 export const SITE_URL = "https://www.studioenvelope.com";
+const PRINCIPAL_ID = `${SITE_URL}/#principal`;
 
 export const SHARE_TITLE = "Studio Envelope — Architecture & Interior Design Studio";
 export const SHARE_DESCRIPTION =
-  "Architecture and interior design studio based in Bangalore, crafting bespoke residential and commercial spaces across India.";
+  "Architecture and interior design studio led by Ar. Prachi Chirania, creating residential and commercial spaces across India. Based in Bangalore.";
 
 /** Default share image (1200x630), used wherever a page has no image of its own. */
 export const OG_IMAGE = { url: "/og-image.jpg", width: 1200, height: 630, alt: "A dining area at a Studio Envelope home, beside a mirror work wall panel" };
@@ -46,22 +47,16 @@ export function getLocalBusinessSchema() {
     },
     founder: {
       "@type": "Person",
+      "@id": PRINCIPAL_ID,
       name: site.principal.name,
-      jobTitle: "Principal Architect",
-      sameAs: [site.principal.instagram],
+      jobTitle: site.principal.role,
+      alumniOf: [
+        { "@type": "CollegeOrUniversity", name: "RV College of Architecture" },
+        { "@type": "CollegeOrUniversity", name: "CEPT University" },
+      ],
     },
-    areaServed: [
-      {
-        "@type": "City",
-        name: "Bangalore",
-        containedInPlace: { "@type": "State", name: "Karnataka" },
-      },
-      { "@type": "Country", name: "India" },
-    ],
-    sameAs: [
-      site.socials.instagram,
-      site.principal.instagram,
-    ],
+    areaServed: { "@type": "Country", name: "India" },
+    sameAs: [site.socials.instagram],
     knowsAbout: [
       "Architecture Design",
       "Interior Design",
@@ -80,7 +75,6 @@ export function getWebSiteSchema() {
     "@id": `${SITE_URL}/#website`,
     url: SITE_URL,
     name: site.name,
-    alternateName: "Studio Envelope Bangalore",
     description: site.description,
     inLanguage: "en-IN",
     publisher: {
@@ -128,23 +122,18 @@ export function getProjectSchema(project: Project) {
 
   return {
     "@context": "https://schema.org",
-    "@type": ["CreativeWork", "VisualArtwork"],
+    "@type": "CreativeWork",
     name: project.title,
     headline: `${project.title}, ${project.scope} by Studio Envelope`,
     description: project.summary || project.description.slice(0, 200),
     url: `${SITE_URL}/projects/${project.slug}`,
     image: Array.from(new Set(images)),
-    creator: {
-      "@type": "Person",
-      name: site.principal.name,
-      jobTitle: site.principal.role,
-    },
+    creator: { "@id": PRINCIPAL_ID },
     provider: {
       "@id": `${SITE_URL}/#organization`,
     },
     ...(project.location ? { locationCreated: { "@type": "Place", name: project.location } } : {}),
     ...(project.year ? { dateCreated: `${project.year}` } : {}),
     genre: project.scope,
-    artform: "Architecture and Interior Design",
   };
 }

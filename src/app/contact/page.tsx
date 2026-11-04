@@ -7,9 +7,9 @@ import { getBreadcrumbSchema, pageMetadata } from "@/lib/seo";
 import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Contact: Architecture & Interior Design Studio, Bangalore",
+  title: "Contact: Architecture & Interior Design Studio",
   description:
-    "Get in touch with Studio Envelope to discuss a residential architecture or interior design project in Bangalore, or a design consultation anywhere in India.",
+    "Get in touch with Studio Envelope to discuss an architecture or interior design project anywhere in India. The studio is based in Bangalore.",
   path: "/contact",
 });
 

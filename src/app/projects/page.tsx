@@ -7,7 +7,7 @@ import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = pageMetadata({
   title: "Selected Architecture & Interior Design Projects",
-  description: "Residential and commercial architecture and interior design projects by Studio Envelope, Bangalore.",
+  description: "Architecture and interior design projects by Studio Envelope, from homes to commercial spaces across India.",
   path: "/projects",
 });
 

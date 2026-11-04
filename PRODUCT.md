@@ -7,10 +7,10 @@
 web
 
 ## Users
-Homeowners (families) in Bangalore, Ballari and Pune who are considering hiring Studio Envelope for a residential interior or architecture project. Many arrive through referrals or Instagram (@studio__envelope) and already half-trust the studio; the site confirms their impression and moves them to enquire. Secondary: the studio principal and one other admin who manage projects and read enquiries.
+Homeowners (families) across India, mostly around Bangalore, Ballari and Pune, who are considering hiring Studio Envelope for a residential interior or architecture project. Many arrive through referrals or Instagram (@studio__envelope) and already half-trust the studio; the site confirms their impression and moves them to enquire. Secondary: the studio principal and one other admin who manage projects and read enquiries.
 
 ## Product Purpose
-The public website of Studio Envelope, an architecture and interior design studio in Bangalore led by Ar. Prachi Chirania Bhalotia. It shows a small, honest portfolio and explains the studio and its services, with the contact form (plus phone and WhatsApp) as the primary conversion. A private admin panel lets the studio publish projects and read enquiries without a developer.
+The public website of Studio Envelope, an architecture and interior design studio in Bangalore led by Ar. Prachi Chirania. It shows a small, honest portfolio and explains the studio and its services, with the contact form (plus phone and WhatsApp) as the primary conversion. A private admin panel lets the studio publish projects and read enquiries without a developer.
 
 ## Positioning
 Architect-led, residential and personal. Spaces are shaped around each family's personality and needs, expressed in the "envelope" idea: a space as a heartfelt message, crafted with care. Client tagline: "Spaces, sealed with care."; descriptor: "Art. Interiors. Architecture."
@@ -29,7 +29,7 @@ Architect-led, residential and personal. Spaces are shaped around each family's 
 - Undecided: final scope of the current simplification redesign (in progress with ChatGPT).
 
 ## Brand Commitments
-Name: Studio Envelope. Logo: envelope-flap triangle with dot between two amber bars (colour, amber-only, colour-on-dark and all-white variants in `assets/`). Logo palette: teal #0E4B5E, amber #FCB618, cream #F6F3EE. Principal named as Ar. Prachi Chirania Bhalotia.
+Name: Studio Envelope. Logo: envelope-flap triangle with dot between two amber bars (colour, amber-only, colour-on-dark and all-white variants in `assets/`). Logo palette: teal #0E4B5E, amber #FCB618, cream #F6F3EE. Principal named as Ar. Prachi Chirania.
 
 ## Evidence on Hand
 Real projects with photos/renders and plans (Ashiyana, James Residence, Shyamkutir, Urban Nest, Villa Pola) in `public/images/projects/`; eight Instagram previews in `public/images/instagram/`; portfolio PDF (`Studio Evnelope_Portfolio.pdf`); client brief and letterhead docx and logo files in `assets/`. No testimonials, awards, press or client counts exist; do not fabricate them. Principal photo and personal note were promised by the client but are not yet supplied.

@@ -9,11 +9,16 @@ import { getProjects, getVideos } from "@/lib/data";
 import { site } from "@/lib/content/site";
 import { getBreadcrumbSchema, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Videos",
-  description: "Films of Studio Envelope's architecture and interior design projects in Bangalore.",
-  path: "/videos",
-});
+/** Noindex while there are no films, so the "Coming soon" placeholder stays out of search results. */
+export async function generateMetadata(): Promise<Metadata> {
+  const videos = await getVideos();
+  const base = pageMetadata({
+    title: "Videos",
+    description: "Films of Studio Envelope's architecture and interior design projects across India.",
+    path: "/videos",
+  });
+  return videos.length === 0 ? { ...base, robots: { index: false, follow: true } } : base;
+}
 
 /** Fact row for a film, taken from the linked project's real data; anything missing is omitted. */
 function factsFromProject(project?: Project): VideoFact[] | undefined {

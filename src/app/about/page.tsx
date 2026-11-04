@@ -10,7 +10,7 @@ import PageTransition from "@/components/layout/PageTransition";
 export const metadata: Metadata = pageMetadata({
   title: "About: Ar. Prachi Chirania",
   description:
-    "Architecture and interior design practice in Bangalore, led by Ar. Prachi Chirania. Residential and commercial projects across India.",
+    "Architecture and interior design practice led by Ar. Prachi Chirania, an RV College of Architecture graduate with a Masters from CEPT University. Projects across India.",
   path: "/about",
 });
 
@@ -54,9 +54,6 @@ export default function AboutPage() {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
-            <a href={site.principal.instagram} target="_blank" rel="noopener noreferrer" className="link-underline mt-8 inline-flex py-2 text-lg text-bone">
-              {site.principal.instagramHandle}
-            </a>
           </div>
         </div>
       </section>

@@ -1,62 +1,16 @@
 import type { MetadataRoute } from "next";
-import { getProjects } from "@/lib/data";
+import { getProjects, getVideos } from "@/lib/data";
 
 import { SITE_URL } from "@/lib/seo";
 
+/** No `lastModified`, `changeFrequency` or `priority`: the content has no real modified dates, and a build
+ * timestamp on every URL tells crawlers nothing. Google ignores the other two fields. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const projects = await getProjects();
-  const buildDate = new Date();
+  const [projects, videos] = await Promise.all([getProjects(), getVideos()]);
 
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: SITE_URL,
-      lastModified: buildDate,
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: `${SITE_URL}/projects`,
-      lastModified: buildDate,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/videos`,
-      lastModified: buildDate,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${SITE_URL}/services`,
-      lastModified: buildDate,
-      changeFrequency: "monthly",
-      priority: 0.85,
-    },
-    {
-      url: `${SITE_URL}/about`,
-      lastModified: buildDate,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${SITE_URL}/contact`,
-      lastModified: buildDate,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${SITE_URL}/privacy`,
-      lastModified: buildDate,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: `${SITE_URL}/terms`,
-      lastModified: buildDate,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-  ];
+  // /videos is noindex until the first film is published, so it stays out of the sitemap too.
+  const paths = ["", "/projects", ...(videos.length > 0 ? ["/videos"] : []), "/services", "/about", "/contact", "/privacy", "/terms"];
+  const staticRoutes: MetadataRoute.Sitemap = paths.map((path) => ({ url: `${SITE_URL}${path}` }));
 
   const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => {
     const projectImages = [
@@ -68,9 +22,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     return {
       url: `${SITE_URL}/projects/${project.slug}`,
-      lastModified: buildDate,
-      changeFrequency: "monthly",
-      priority: 0.8,
       images: Array.from(new Set(projectImages)),
     };
   });

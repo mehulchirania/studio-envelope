@@ -10,12 +10,13 @@ const legalLinks = [
   { href: "/terms", label: "Terms of Use" },
 ];
 
+/** Names match the services listed on /services (site.ts `services`). */
 const expertiseList = [
-  "Architecture Design",
-  "Turnkey Interior Design",
-  "Space Planning & Renovation",
-  "Custom Furniture & Styling",
-  "Material & Lighting Design",
+  "Design Consultation",
+  "Space Planning",
+  "Material Selection",
+  "Furniture Selection",
+  "Project Management",
 ];
 
 /** Closing band on every public page: an invitation to connect, studio scope, locations, legal links, and copyright. */
@@ -45,7 +46,7 @@ export default function Footer() {
           <div className="space-y-4">
             <p className="label text-marigold">The Practice</p>
             <p className="text-base leading-relaxed text-bone/90">
-              Architecture and bespoke interiors crafted with warmth, precision, and purpose.
+              Architecture and interiors crafted with warmth, precision, and purpose.
             </p>
             <div className="pt-2 text-sm text-mist">
               <p className="font-medium text-bone">{site.principal.name}</p>
@@ -77,7 +78,7 @@ export default function Footer() {
               <p className="text-xs text-mist">Design consultations pan India</p>
             </div>
             <p className="pt-2 text-xs text-mist/80">
-              Hours: Mon to Sat, 10:00 AM to 7:00 PM IST
+              Hours: {site.contact.hours}
             </p>
           </div>
 
