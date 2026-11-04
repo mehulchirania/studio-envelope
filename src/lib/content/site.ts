@@ -19,7 +19,7 @@ export const site = {
     phone: "+91 96632 74949",
     phoneHref: "tel:+919663274949",
     whatsapp: "https://wa.me/919663274949",
-    email: "studioenvelope.info@gmail.com",
+    email: "hello@studioenvelope.com",
     location: "Bangalore, India",
   },
   whyEnvelope: {
