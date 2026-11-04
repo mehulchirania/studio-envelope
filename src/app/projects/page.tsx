@@ -3,6 +3,7 @@ import ProjectGrid from "@/components/projects/ProjectGrid";
 import JsonLd from "@/components/seo/JsonLd";
 import { getProjects } from "@/lib/data";
 import { getBreadcrumbSchema, pageMetadata } from "@/lib/seo";
+import PageHero from "@/components/ui/PageHero";
 import PageTransition from "@/components/layout/PageTransition";
 
 export const metadata: Metadata = pageMetadata({
@@ -22,14 +23,12 @@ export default async function ProjectsPage() {
           { name: "Projects", url: "/projects" },
         ])}
       />
-      <section className="band-dark flex min-h-[48svh] items-end pt-28 sm:min-h-[54svh] sm:pt-40">
-        <div className="container-x w-full pb-10 sm:pb-16">
-          <h1 className="h1 max-w-4xl text-bone">Projects</h1>
-          <p className="mt-6 max-w-xl text-base leading-7 text-mist sm:mt-8 sm:text-lg">
-            Residential architecture and interiors, each shaped by its people, place and pace of living.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Projects"
+        background={{ src: "/images/site/dining-mural.jpg", alt: "Dining area with a carved mirror-work mural wall, grey leather chairs and a mirrored crockery unit" }}
+      >
+        Residential architecture and interiors, each shaped by its people, place and pace of living.
+      </PageHero>
       <ProjectGrid projects={projects} />
     </PageTransition>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import JsonLd from "@/components/seo/JsonLd";
+import PageHero from "@/components/ui/PageHero";
 import PageTransition from "@/components/layout/PageTransition";
 import VideoFeature from "@/components/videos/VideoFeature";
 import type { VideoFact } from "@/lib/content/videos";
@@ -47,14 +48,12 @@ export default async function VideosPage() {
           { name: "Videos", url: "/videos" },
         ])}
       />
-      <section className="band-dark flex min-h-[48svh] items-end pt-28 sm:min-h-[54svh] sm:pt-40">
-        <div className="container-x w-full pb-10 sm:pb-16">
-          <h1 className="h1 max-w-4xl text-bone">Videos</h1>
-          <p className="mt-6 max-w-xl text-base leading-7 text-mist sm:mt-8 sm:text-lg">
-            Walkthroughs and films of our completed spaces.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Videos"
+        background={{ src: "/images/site/reading-corner.jpg", alt: "Reading corner with two carved wooden armchairs, a chess table and a wall of built-in shelving" }}
+      >
+        Walkthroughs and films of our completed spaces.
+      </PageHero>
 
       <section className="band-bone">
         <div className="container-x py-14 sm:py-24">
