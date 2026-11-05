@@ -15,7 +15,10 @@ const DEFAULT_USERS: AdminUser[] = [
 
 function configuredUsers(): AdminUser[] {
   const raw = process.env.ADMIN_USERS?.trim();
-  if (!raw) return DEFAULT_USERS;
+  // The well-known default passwords are for local development only: in
+  // production, with no ADMIN_USERS set, nobody can sign in.
+  const fallback = process.env.NODE_ENV === "production" ? [] : DEFAULT_USERS;
+  if (!raw) return fallback;
   const users = raw
     .split(",")
     .map((pair) => {
@@ -24,7 +27,7 @@ function configuredUsers(): AdminUser[] {
       return { username: pair.slice(0, index).trim().toLowerCase(), password: pair.slice(index + 1).trim() };
     })
     .filter((user): user is AdminUser => Boolean(user && user.username && user.password));
-  return users.length > 0 ? users : DEFAULT_USERS;
+  return users.length > 0 ? users : fallback;
 }
 
 function digest(value: string): Buffer {
