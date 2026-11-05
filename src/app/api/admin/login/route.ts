@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     const body = (await readJson(request)) as { username?: unknown; password?: unknown };
     const username = typeof body.username === "string" ? body.username : "";
     const password = typeof body.password === "string" ? body.password : "";
-    const user = verifyCredentials(username, password);
+    const user = await verifyCredentials(username, password);
 
     if (!user) {
       attempts.set(ip, {

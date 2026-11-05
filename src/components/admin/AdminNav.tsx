@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ExternalLink, Film, LayoutGrid, LogOut, Mail } from "lucide-react";
+import { ExternalLink, Film, KeyRound, LayoutGrid, LogOut, Mail } from "lucide-react";
 import { logout } from "@/lib/admin/client";
 
 const links = [
   { href: "/admin", label: "Projects", icon: LayoutGrid },
   { href: "/admin/videos", label: "Videos", icon: Film },
   { href: "/admin/messages", label: "Messages", icon: Mail },
+  { href: "/admin/account", label: "Password", icon: KeyRound },
 ];
 
 export default function AdminNav({ user, onSignedOut }: { user: string; onSignedOut: () => void }) {

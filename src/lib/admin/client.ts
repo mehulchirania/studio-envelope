@@ -34,6 +34,10 @@ export async function login(username: string, password: string): Promise<string>
   return (await request<{ user: string }>("/api/admin/login", json("POST", { username, password }))).user;
 }
 
+export async function changePassword(current: string, next: string): Promise<void> {
+  await request("/api/admin/password", json("POST", { current, next }));
+}
+
 export async function logout(): Promise<void> {
   await request("/api/admin/logout", json("POST"));
 }

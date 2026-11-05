@@ -1,7 +1,8 @@
 // Server-only: admin logins. Both are full admins, there is no
 // per-user access difference. Set ADMIN_USERS="name:password,name2:password2"
 // in the environment to override default local accounts.
-import { createHash, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import { getPasswordRecord, setPasswordRecord } from "@/lib/firebase/admin-server";
 
 interface AdminUser {
   username: string;
@@ -34,9 +35,26 @@ function digest(value: string): Buffer {
   return createHash("sha256").update(value).digest();
 }
 
+function hashPassword(password: string, salt: string): string {
+  return scryptSync(password, salt, 64).toString("hex");
+}
+
+/** A password changed from the admin panel (stored hashed in Firestore) replaces the one from ADMIN_USERS. */
+export async function setPassword(username: string, password: string): Promise<void> {
+  const salt = randomBytes(16).toString("hex");
+  await setPasswordRecord(username.trim().toLowerCase(), salt, hashPassword(password, salt));
+}
+
 /** Returns the canonical username when the credentials match, otherwise null. */
-export function verifyCredentials(username: string, password: string): string | null {
-  const wantedName = digest(username.trim().toLowerCase());
+export async function verifyCredentials(username: string, password: string): Promise<string | null> {
+  const name = username.trim().toLowerCase();
+  const stored = await getPasswordRecord(name).catch(() => null);
+  if (stored) {
+    const ok = timingSafeEqual(Buffer.from(hashPassword(password, stored.salt), "hex"), Buffer.from(stored.hash, "hex"));
+    return ok ? name : null;
+  }
+
+  const wantedName = digest(name);
   const givenPassword = digest(password);
   let matched: string | null = null;
   // Check every user (no early exit) so timing doesn't reveal which names exist.

@@ -315,3 +315,18 @@ export async function deleteMessage(id: string): Promise<void> {
   const db = await getDb();
   await deleteDoc(doc(db, "messages", id));
 }
+
+// ---------- Admin passwords ----------
+// Passwords changed from the admin panel: hashed (scrypt) in `adminUsers/{username}`.
+
+export async function getPasswordRecord(username: string): Promise<{ salt: string; hash: string } | null> {
+  const db = await getDb();
+  const snap = await getDoc(doc(db, "adminUsers", username));
+  const data = snap.data();
+  return data && typeof data.salt === "string" && typeof data.hash === "string" ? { salt: data.salt, hash: data.hash } : null;
+}
+
+export async function setPasswordRecord(username: string, salt: string, hash: string): Promise<void> {
+  const db = await getDb();
+  await setDoc(doc(db, "adminUsers", username), { salt, hash, updatedAt: new Date().toISOString() });
+}

@@ -58,6 +58,11 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // adminUsers: hashed passwords changed from the admin panel. Server account only.
+    match /adminUsers/{username} {
+      allow read, write: if isAdmin();
+    }
+
     // Deny everything else by default.
     match /{document=**} {
       allow read, write: if false;
