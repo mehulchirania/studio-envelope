@@ -24,12 +24,14 @@ export default function AboutPage() {
         ])}
       />
       <PageHero
+        compact
         title={site.whyEnvelope.heading}
         background={{ src: "/images/site/home-office.jpg", alt: "Home office with a walnut desk, built in shelving and sheer curtains" }}
       />
 
       <WhyEnvelope
         hideHeading
+        textFirstOnMobile
         tone="bone"
         image={{ src: "/images/site/blue-veranda.jpg", alt: "Veranda corner with a cane back armchair against a deep blue wall and potted plants" }}
       />

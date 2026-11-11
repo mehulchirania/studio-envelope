@@ -7,16 +7,18 @@ type WhyEnvelopeProps = {
   /** Hide the section heading where the page already has an h1 with the same words. */
   hideHeading?: boolean;
   tone?: "dark" | "bone";
+  /** Stacked (mobile) layout: show the copy before the photo, so it isn't pushed a full screen down. */
+  textFirstOnMobile?: boolean;
 };
 
 /** "Why an Envelope?": the studio's approach beside one photograph. Two columns from lg, stacked below.
  * The paragraphs sit in ONE left aligned column (never CSS multi columns, which split them unevenly). */
-export default function WhyEnvelope({ image, hideHeading = false, tone = "dark" }: WhyEnvelopeProps) {
+export default function WhyEnvelope({ image, hideHeading = false, tone = "dark", textFirstOnMobile = false }: WhyEnvelopeProps) {
   const dark = tone === "dark";
   return (
     <section className={dark ? "band-dark" : "band-bone"}>
-      <div className="container-x grid gap-10 py-14 sm:py-24 lg:grid-cols-2 lg:items-center lg:gap-20">
-        <div className="relative aspect-[4/5] overflow-hidden bg-paper-2">
+      <div className={clsx("container-x grid gap-10 lg:grid-cols-2 lg:gap-20", textFirstOnMobile ? "py-10 sm:py-14 lg:items-start" : "py-14 sm:py-24 lg:items-center")}>
+        <div className={clsx("relative aspect-[4/5] overflow-hidden bg-paper-2", textFirstOnMobile && "order-last lg:order-none")}>
           <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
         </div>
 

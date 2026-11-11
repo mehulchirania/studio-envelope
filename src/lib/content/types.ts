@@ -60,4 +60,10 @@ export interface ContactMessage {
   timeline?: string;
   hearAbout?: string;
   message: string;
+  /** Visitor ticked the privacy-notice consent box. Required. */
+  consent?: boolean;
+  /** "adult" = sender is 18+; "guardian" = a parent or guardian is writing for someone under 18. */
+  ageDeclaration?: "adult" | "guardian";
+  /** Policy version the visitor agreed to; set by the server. */
+  consentVersion?: string;
 }

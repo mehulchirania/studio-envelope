@@ -1,20 +1,23 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
+import clsx from "clsx";
 
 type PageHeroProps = {
   title: string;
   children?: ReactNode;
   /** Optional background photo, shown under a neutral black gradient so the title stays readable. */
   background?: { src: string; alt: string };
+  /** Short band for pages whose real content should be visible without scrolling (e.g. About). */
+  compact?: boolean;
 };
 
 /** Dark opening band for top-level pages. The fixed header overlays it, so
  * the top padding clears the header height. */
-export default function PageHero({ title, children, background }: PageHeroProps) {
+export default function PageHero({ title, children, background, compact = false }: PageHeroProps) {
   return (
     // `isolate` makes this its own stacking context: without it the image and gradient below
     // (negative z-index) paint behind this band's own background and the hero looks like a plain dark box.
-    <div className="band-dark relative isolate flex min-h-[60svh] items-end overflow-hidden pt-28 sm:min-h-[70svh] sm:pt-40">
+    <div className={clsx("band-dark relative isolate flex items-end overflow-hidden", compact ? "min-h-[34svh] pt-24 sm:min-h-[36svh] sm:pt-28" : "min-h-[60svh] pt-28 sm:min-h-[70svh] sm:pt-40")}>
       {background && (
         <>
           <Image src={background.src} alt={background.alt} fill priority sizes="100vw" className="absolute inset-0 -z-20 object-cover" />
@@ -24,7 +27,7 @@ export default function PageHero({ title, children, background }: PageHeroProps)
           <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/50 via-black/15 to-transparent" />
         </>
       )}
-      <div className="container-x w-full pb-14 sm:pb-24">
+      <div className={clsx("container-x w-full", compact ? "pb-8 sm:pb-12" : "pb-14 sm:pb-24")}>
         <h1 className="h1 max-w-5xl text-bone">{title}</h1>
         {children && <div className="mt-6 max-w-xl text-base leading-relaxed text-mist sm:mt-8 sm:text-lg">{children}</div>}
       </div>

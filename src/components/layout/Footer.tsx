@@ -2,11 +2,12 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
+import CookieSettingsLink from "@/components/layout/CookieSettingsLink";
 import HomeOnly from "@/components/layout/HomeOnly";
 import { site } from "@/lib/content/site";
 
 const legalLinks = [
-  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/privacy", label: "Privacy Notice" },
   { href: "/terms", label: "Terms of Use" },
 ];
 
@@ -142,6 +143,7 @@ export default function Footer() {
               {link.label}
             </Link>
           ))}
+          <CookieSettingsLink className="link-underline text-mist transition-colors hover:text-marigold" />
         </nav>
       </div>
     </footer>
