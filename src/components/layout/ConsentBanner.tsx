@@ -19,9 +19,9 @@ export default function ConsentBanner() {
     >
       <div className="container-x flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-2xl text-sm leading-relaxed text-mist">
-          We use analytics cookies to understand how the site is used. They are only set if you accept.{" "}
-          <Link href="/privacy" className="underline underline-offset-4 hover:text-bone">
-            Privacy policy
+          We use analytics cookies (Google Analytics through Tag Manager) to understand how the site is used. They are only set if you accept, and you can change your choice any time from &quot;Cookie settings&quot; in the footer.{" "}
+          <Link href="/privacy#cookies" className="underline underline-offset-4 hover:text-bone">
+            Privacy notice and cookies
           </Link>
         </p>
         <div className="flex shrink-0 gap-3">

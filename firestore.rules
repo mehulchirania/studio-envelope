@@ -16,26 +16,6 @@ service cloud.firestore {
         && request.auth.token.email == 'cms@studio-envelope.invalid';
     }
 
-    function isValidMessage() {
-      let incoming = request.resource.data;
-      let allowedKeys = ['name', 'email', 'message', 'phone', 'projectType', 'city', 'area', 'budget', 'timeline', 'hearAbout', 'read', 'createdAt'];
-      let requiredKeys = ['name', 'email', 'message', 'read', 'createdAt'];
-      return incoming.keys().hasOnly(allowedKeys)
-        && incoming.keys().hasAll(requiredKeys)
-        && incoming.name is string && incoming.name.size() > 0 && incoming.name.size() <= 100
-        && incoming.email is string && incoming.email.size() > 0 && incoming.email.size() <= 200
-        && incoming.message is string && incoming.message.size() > 0 && incoming.message.size() <= 3000
-        && (!('phone' in incoming) || (incoming.phone is string && incoming.phone.size() <= 30))
-        && (!('projectType' in incoming) || (incoming.projectType is string && incoming.projectType.size() <= 60))
-        && (!('city' in incoming) || (incoming.city is string && incoming.city.size() <= 100))
-        && (!('area' in incoming) || (incoming.area is string && incoming.area.size() <= 40))
-        && (!('budget' in incoming) || (incoming.budget is string && incoming.budget.size() <= 60))
-        && (!('timeline' in incoming) || (incoming.timeline is string && incoming.timeline.size() <= 60))
-        && (!('hearAbout' in incoming) || (incoming.hearAbout is string && incoming.hearAbout.size() <= 60))
-        && incoming.read == false
-        && incoming.createdAt == request.time;
-    }
-
     // projects: publicly readable when published; the server account can read/write everything.
     // The public read condition intentionally matches the public query shape
     // (where("published", "==", true)) so Firestore can validate `list`
@@ -51,11 +31,12 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
-    // messages: anyone can submit a well-formed, unread message; only the
-    // server account can read the inbox or mark/delete messages.
+    // messages: enquiries are validated and saved by the Next.js server
+    // (/api/contact), which enforces consent, age declaration, size limits and
+    // rate limits. Browsers cannot read or write them at all; only the server
+    // account can (inbox, mark read, delete, and the retention purge).
     match /messages/{messageId} {
-      allow create: if isValidMessage();
-      allow read, update, delete: if isAdmin();
+      allow read, write: if isAdmin();
     }
 
     // adminUsers: hashed passwords changed from the admin panel. Server account only.

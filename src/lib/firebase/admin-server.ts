@@ -16,7 +16,11 @@ import {
   getDocs,
   getFirestore,
   orderBy,
+  serverTimestamp,
   query,
+  addDoc,
+  Timestamp as FsTimestamp,
+  where,
   setDoc,
   updateDoc,
   writeBatch,
@@ -24,7 +28,7 @@ import {
   type Timestamp,
 } from "firebase/firestore";
 import { del } from "@vercel/blob";
-import type { Project } from "@/lib/content/types";
+import type { ContactMessage, Project } from "@/lib/content/types";
 import { seedProjects } from "@/lib/content/seed";
 import { normalizeProject } from "@/lib/data";
 import { firebaseConfig, isFirebaseConfigured, USE_EMULATORS } from "@/lib/firebase/client";
@@ -304,6 +308,30 @@ export async function listMessages(): Promise<AdminMessage[]> {
       createdAt: createdAt ? createdAt.toDate().toISOString() : null,
     };
   });
+}
+
+/** Saves a public enquiry. Called only by /api/contact after server-side validation; the rules allow no browser writes. */
+export async function createMessage(msg: ContactMessage, consentVersion: string): Promise<void> {
+  const db = await getDb();
+  await addDoc(collection(db, "messages"), {
+    ...msg,
+    consent: true,
+    consentVersion,
+    read: false,
+    createdAt: serverTimestamp(),
+  });
+}
+
+/** Deletes enquiries created before `cutoff` (data retention). Returns how many were removed. */
+export async function purgeMessagesBefore(cutoff: Date): Promise<number> {
+  const db = await getDb();
+  const snapshot = await getDocs(query(collection(db, "messages"), where("createdAt", "<", FsTimestamp.fromDate(cutoff))));
+  for (let i = 0; i < snapshot.docs.length; i += 400) {
+    const batch = writeBatch(db);
+    snapshot.docs.slice(i, i + 400).forEach((d) => batch.delete(d.ref));
+    await batch.commit();
+  }
+  return snapshot.size;
 }
 
 export async function markMessageRead(id: string, read: boolean): Promise<void> {

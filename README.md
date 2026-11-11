@@ -143,7 +143,7 @@ the logo are in `public/brand/`.
 - **`projects/{slug}`** — matches the `Project` type in `src/lib/content/types.ts`; the doc id is the
   project's slug (its page URL, fixed when the project is created). Publicly readable only where
   `published == true`; only the server's private account can read drafts or write.
-- **`messages/{id}`** — contact form submissions. Anyone can `create` one (validated server-side by
+- **`messages/{id}`** — contact form submissions. Browsers cannot touch them: `/api/contact` validates (consent, age declaration, limits, rate limit, honeypot) and saves them server-side, and `/api/cron/purge-messages` (weekly Vercel cron, needs `CRON_SECRET`) deletes enquiries after 12 months. Previously validated by
   `firestore.rules` — allowed fields, size limits, `read: false`, `createdAt` must equal the server time);
   only the server's private account can read, mark as read, or delete.
 - **`videos/{id}`** — `title`, `published`, `order`, and optionally `credits`, `projectSlug`, and either

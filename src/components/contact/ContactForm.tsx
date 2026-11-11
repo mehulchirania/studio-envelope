@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { LoaderCircle, CircleCheckBig, CircleAlert, ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { submitContact } from "@/lib/firebase/contact";
@@ -9,7 +10,7 @@ import { fieldError, type ContactField } from "@/lib/contact-validate";
 type Intent = "new" | "redo" | "commercial" | "question";
 type StepId = "intent" | "detail" | "scope" | "timeline" | "city" | "contact";
 type Status = "idle" | "submitting" | "success" | "error";
-type Errors = Partial<Record<"name" | "phone" | "email" | "message", string>>;
+type Errors = Partial<Record<"name" | "phone" | "email" | "message" | "age" | "consent", string>>;
 
 interface Choice {
   value: string;
@@ -179,6 +180,9 @@ export default function ContactForm() {
     const email = text("email");
     const note = text("message");
     const hearAbout = text("hearAbout");
+    const ageDeclaration = text("age");
+    const consent = form.get("consent") === "on";
+    const website = text("website");
     const isQuestion = answers.intent === "question";
 
     const next: Errors = {};
@@ -186,8 +190,10 @@ export default function ContactForm() {
       const err = fieldError(field, { name, phone, email, message: note }[field], { messageRequired: isQuestion });
       if (err) next[field] = err;
     });
+    if (ageDeclaration !== "adult" && ageDeclaration !== "guardian") next.age = "Please tell us which applies.";
+    if (!consent) next.consent = "Please agree to the privacy notice to send your enquiry.";
     setErrors(next);
-    const firstInvalid = (["message", "name", "phone", "email"] as const).find((f) => next[f]);
+    const firstInvalid = (["message", "name", "phone", "email", "age", "consent"] as const).find((f) => next[f]);
     if (firstInvalid) {
       document.getElementById(firstInvalid)?.focus();
       return;
@@ -206,7 +212,7 @@ export default function ContactForm() {
     }
     if (note) summary.push(intent === "question" ? note : `Note: ${note}`);
 
-    const data: ContactMessage = {
+    const data: ContactMessage & { website?: string } = {
       name,
       email,
       phone,
@@ -215,6 +221,9 @@ export default function ContactForm() {
       timeline: answers.timeline,
       hearAbout: hearAbout || undefined,
       message: summary.join("\n") || "Enquiry from the website.",
+      consent: true,
+      ageDeclaration: ageDeclaration === "guardian" ? "guardian" : "adult",
+      website,
     };
 
     setStatus("submitting");
@@ -309,7 +318,7 @@ export default function ContactForm() {
     const isQuestion = intent === "question";
     question = isQuestion ? "What would you like to ask?" : "Lovely. How can we reach you?";
     body = (
-      <form onSubmit={handleSubmit} onBlur={(e) => checkField(e.target, false)} onChange={(e) => checkField(e.target, true)} noValidate className="space-y-6">
+      <form onSubmit={handleSubmit} onBlur={(e) => checkField(e.target, false)} onChange={(e) => checkField(e.target, true)} noValidate className="relative space-y-6">
         {isQuestion && (
           <div>
             <label htmlFor="message" className="mb-1.5 block text-sm text-muted">
@@ -380,6 +389,49 @@ export default function ContactForm() {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Honeypot: hidden from people, tempting to bots. */}
+        <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+          <label htmlFor="website">Leave this empty</label>
+          <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        </div>
+
+        <fieldset aria-describedby={errors.age ? "age-error" : undefined}>
+          <legend className="mb-2 block text-sm text-muted">Who is writing?*</legend>
+          <div className="space-y-2 text-base text-ink">
+            <label className="flex items-start gap-3">
+              <input id="age" type="radio" name="age" value="adult" className="mt-1.5 size-4 accent-brand" />
+              <span>I am 18 or older</span>
+            </label>
+            <label className="flex items-start gap-3">
+              <input type="radio" name="age" value="guardian" className="mt-1.5 size-4 accent-brand" />
+              <span>I am a parent or legal guardian writing on behalf of someone under 18</span>
+            </label>
+          </div>
+          {errors.age && (
+            <p id="age-error" className={errorTextClass}>
+              {errors.age}
+            </p>
+          )}
+        </fieldset>
+
+        <div>
+          <label className="flex items-start gap-3 text-sm leading-relaxed text-muted">
+            <input id="consent" type="checkbox" name="consent" aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? "consent-error" : undefined} className="mt-1 size-4 shrink-0 accent-brand" />
+            <span>
+              I agree that Studio Envelope may store and use these details to reply to my enquiry, as described in the{" "}
+              <Link href="/privacy" target="_blank" className="text-brand underline underline-offset-4 hover:text-brand-deep">
+                Privacy Notice
+              </Link>
+              . I can withdraw this at any time by writing to the studio.*
+            </span>
+          </label>
+          {errors.consent && (
+            <p id="consent-error" className={errorTextClass}>
+              {errors.consent}
+            </p>
+          )}
         </div>
 
         {status === "error" && (

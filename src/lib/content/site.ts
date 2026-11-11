@@ -1,5 +1,16 @@
 /** Studio-wide facts used across the site. Keep in sync with the brief —
  * do not invent claims, awards, clients or numbers not listed there. */
+/** Data protection facts shown in the privacy policy and enforced in code. Review with the studio before relying on them. */
+export const privacy = {
+  /** Bump when the policy changes in a way that needs fresh consent; stored with each enquiry. */
+  policyVersion: "2026-11",
+  effectiveDate: "November 2026",
+  /** Enquiries are deleted automatically after this many months (see /api/cron/purge-messages). */
+  retentionMonths: 12,
+  /** Person visitors contact about their data (access, correction, erasure, withdrawing consent, complaints). */
+  contactPerson: { name: "Ar. Prachi Chirania", role: "Founder, Studio Envelope" },
+};
+
 export const site = {
   name: "Studio Envelope",
   tagline: "Architecture & Interior Design, India",

@@ -67,6 +67,8 @@ export function validateContact(msg: ContactMessage): string | null {
   if (msg.budget && msg.budget.trim().length > LIMITS.budget) return "Budget is too long.";
   if (msg.timeline && msg.timeline.trim().length > LIMITS.timeline) return "Timeline is too long.";
   if (msg.hearAbout && msg.hearAbout.trim().length > LIMITS.hearAbout) return "That field is too long.";
+  if (msg.consent !== true) return "Please agree to the privacy notice so we can contact you about your enquiry.";
+  if (msg.ageDeclaration !== "adult" && msg.ageDeclaration !== "guardian") return "Please confirm your age, or that a parent or guardian is writing.";
   return null;
 }
 
@@ -75,6 +77,8 @@ export function sanitizeContact(msg: ContactMessage): ContactMessage {
     name: msg.name.trim(),
     email: msg.email.trim(),
     message: msg.message.trim(),
+    consent: true,
+    ageDeclaration: msg.ageDeclaration === "guardian" ? "guardian" : "adult",
   };
   const optional = ["phone", "projectType", "city", "area", "budget", "timeline", "hearAbout"] as const;
   for (const key of optional) {

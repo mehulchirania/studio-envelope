@@ -23,6 +23,16 @@ export function setConsent(value: Exclude<Consent, null>): void {
   window.dispatchEvent(new Event(EVENT));
 }
 
+/** Forget the stored choice so the banner asks again (the footer's "Cookie settings" link). */
+export function resetConsent(): void {
+  try {
+    localStorage.removeItem(KEY);
+  } catch {
+    // Storage blocked: nothing stored to forget.
+  }
+  window.dispatchEvent(new Event(EVENT));
+}
+
 function subscribe(onChange: () => void) {
   window.addEventListener(EVENT, onChange);
   window.addEventListener("storage", onChange);
