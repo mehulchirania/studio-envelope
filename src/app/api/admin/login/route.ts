@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { HttpError, handle, readJson } from "@/lib/admin/http";
 import { SESSION_COOKIE, createSessionToken, sessionCookieOptions, sessionsConfigured } from "@/lib/admin/session";
-import { verifyCredentials } from "@/lib/admin/users";
+import { getPasswordVersion, verifyCredentials } from "@/lib/admin/users";
 
-// Best-effort brute-force brake: per-instance, per-IP attempt counter.
+// Best-effort brute-force brake: per-instance, per-IP attempt counter. Serverless
+// instances don't share it, so a Vercel Firewall rate-limit rule is the real brake.
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_ATTEMPTS = 10;
 const attempts = new Map<string, { count: number; resetAt: number }>();
@@ -34,12 +35,13 @@ export async function POST(request: Request) {
         count: entry && entry.resetAt > now ? entry.count + 1 : 1,
         resetAt: entry && entry.resetAt > now ? entry.resetAt : now + WINDOW_MS,
       });
+      if (attempts.size > 5000) for (const [k, v] of attempts) if (v.resetAt <= now) attempts.delete(k);
       await new Promise((resolve) => setTimeout(resolve, 500));
       throw new HttpError(401, "Wrong username or password.");
     }
 
     attempts.delete(ip);
-    const token = createSessionToken(user);
+    const token = createSessionToken(user, await getPasswordVersion(user));
     if (!token) throw new HttpError(503, "Admin sign-in isn't configured on the server.");
     (await cookies()).set(SESSION_COOKIE, token, sessionCookieOptions);
     return NextResponse.json({ user });

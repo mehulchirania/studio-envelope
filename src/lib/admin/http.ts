@@ -11,21 +11,24 @@ export class HttpError extends Error {
   }
 }
 
+/** True when the request's Origin matches its host. A missing Origin passes unless `requireOrigin` is set. */
+export function isSameOrigin(request: Request, { requireOrigin = false }: { requireOrigin?: boolean } = {}): boolean {
+  const origin = request.headers.get("origin");
+  const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
+  if (!origin) return !requireOrigin;
+  if (!host) return !requireOrigin;
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
+
 /** Throws 401 unless the request carries a valid admin session. Mutations must also come from our own origin. */
 export async function requireAdmin(request: Request): Promise<string> {
   const method = request.method.toUpperCase();
   if (method !== "GET" && method !== "HEAD") {
-    const origin = request.headers.get("origin");
-    const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
-    if (origin && host) {
-      let originHost = "";
-      try {
-        originHost = new URL(origin).host;
-      } catch {
-        /* treated as mismatch below */
-      }
-      if (originHost !== host) throw new HttpError(403, "Cross-site request blocked.");
-    }
+    if (!isSameOrigin(request)) throw new HttpError(403, "Cross-site request blocked.");
   }
   const user = await getSessionUser();
   if (!user) throw new HttpError(401, "Please sign in.");

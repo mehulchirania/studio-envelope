@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2, Save, Trash2 } from "lucide-react";
 import { SCOPE_PRESETS, type Drawing, type Project } from "@/lib/content/types";
-import type { ProjectFields } from "@/lib/admin/types";
+import type { AdminProject, ProjectFields } from "@/lib/admin/types";
 import { createProject, deleteProject, updateProject } from "@/lib/admin/client";
 import { slugify } from "@/lib/admin/slug";
 import { CoverUploader, PhotoGrid } from "@/components/admin/PhotoUploader";
@@ -55,7 +55,7 @@ function fieldsOf(project: Project): ProjectFields {
   };
 }
 
-export default function ProjectForm({ project }: { project?: Project }) {
+export default function ProjectForm({ project }: { project?: AdminProject }) {
   const router = useRouter();
   const [form, setForm] = useState<ProjectFields>(() => (project ? fieldsOf(project) : emptyFields()));
   const [saving, setSaving] = useState(false);
@@ -83,7 +83,7 @@ export default function ProjectForm({ project }: { project?: Project }) {
     }
     setSaving(true);
     try {
-      if (project) await updateProject(project.id, form);
+      if (project) await updateProject(project.id, form, project.updatedAt);
       else await createProject(form);
       router.push("/admin");
       router.refresh();

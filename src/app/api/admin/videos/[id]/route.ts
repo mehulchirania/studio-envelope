@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { HttpError, handle, readJson, requireAdmin } from "@/lib/admin/http";
 import { revalidateSite } from "@/lib/admin/revalidate";
-import { parseVideoFields } from "@/lib/admin/validate";
+import { parseExpectedUpdatedAt, parseVideoFields } from "@/lib/admin/validate";
 import { deleteVideo, getVideo, updateVideo } from "@/lib/firebase/admin-server";
 
 type Context = { params: Promise<{ id: string }> };
@@ -18,7 +18,8 @@ export async function GET(request: Request, { params }: Context) {
 export async function PUT(request: Request, { params }: Context) {
   return handle(async () => {
     await requireAdmin(request);
-    const video = await updateVideo((await params).id, parseVideoFields(await readJson(request)));
+    const body = await readJson(request);
+    const video = await updateVideo((await params).id, parseVideoFields(body), parseExpectedUpdatedAt(body));
     revalidateSite();
     return NextResponse.json({ video });
   });

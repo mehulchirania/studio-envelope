@@ -2,6 +2,7 @@
 // Token format: base64url(JSON {u, exp}) + "." + base64url(HMAC-SHA256).
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { getPasswordVersion } from "@/lib/admin/users";
 
 export const SESSION_COOKIE = "se_admin";
 const SESSION_SECONDS = 60 * 60 * 24 * 7;
@@ -22,16 +23,17 @@ function sign(payload: string, key: string): string {
   return createHmac("sha256", key).update(payload).digest("base64url");
 }
 
-export function createSessionToken(username: string): string | null {
+/** `version` is the password record's updatedAt ("" when none); changing the password invalidates old tokens. */
+export function createSessionToken(username: string, version = ""): string | null {
   const key = secret();
   if (!key) return null;
   const payload = Buffer.from(
-    JSON.stringify({ u: username, exp: Math.floor(Date.now() / 1000) + SESSION_SECONDS })
+    JSON.stringify({ u: username, v: version, exp: Math.floor(Date.now() / 1000) + SESSION_SECONDS })
   ).toString("base64url");
   return `${payload}.${sign(payload, key)}`;
 }
 
-function readSessionToken(token: string | undefined): string | null {
+function readSessionToken(token: string | undefined): { u: string; v: string } | null {
   const key = secret();
   if (!key || !token) return null;
   const [payload, signature] = token.split(".");
@@ -42,9 +44,9 @@ function readSessionToken(token: string | undefined): string | null {
   if (expected.length !== given.length || !timingSafeEqual(expected, given)) return null;
 
   try {
-    const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as { u?: string; exp?: number };
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as { u?: string; v?: string; exp?: number };
     if (!data.u || !data.exp || data.exp < Date.now() / 1000) return null;
-    return data.u;
+    return { u: data.u, v: typeof data.v === "string" ? data.v : "" };
   } catch {
     return null;
   }
@@ -52,7 +54,14 @@ function readSessionToken(token: string | undefined): string | null {
 
 export async function getSessionUser(): Promise<string | null> {
   const store = await cookies();
-  return readSessionToken(store.get(SESSION_COOKIE)?.value);
+  const session = readSessionToken(store.get(SESSION_COOKIE)?.value);
+  if (!session) return null;
+  try {
+    // Reject sessions issued before the latest password change; fail closed on lookup errors.
+    return (await getPasswordVersion(session.u)) === session.v ? session.u : null;
+  } catch {
+    return null;
+  }
 }
 
 export const sessionCookieOptions = {

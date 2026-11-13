@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { HttpError, handle, readJson, requireAdmin } from "@/lib/admin/http";
-import { setPassword, verifyCredentials } from "@/lib/admin/users";
+import { SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/admin/session";
+import { getPasswordVersion, setPassword, verifyCredentials } from "@/lib/admin/users";
 
 const MIN_LENGTH = 10;
 const MAX_LENGTH = 200;
@@ -20,6 +22,9 @@ export async function POST(request: Request) {
     if ((await verifyCredentials(user, current)) !== user) throw new HttpError(403, "Current password is wrong.");
 
     await setPassword(user, next);
+    // Old sessions (any device) are now invalid; keep this admin signed in.
+    const token = createSessionToken(user, await getPasswordVersion(user));
+    if (token) (await cookies()).set(SESSION_COOKIE, token, sessionCookieOptions);
     return NextResponse.json({ ok: true });
   });
 }

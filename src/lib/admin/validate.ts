@@ -172,3 +172,9 @@ export function parseVideoFields(body: unknown): VideoFields {
   }
   return fields;
 }
+
+/** The `updatedAt` the admin form loaded, sent back on PUT so the server can spot a concurrent edit. */
+export function parseExpectedUpdatedAt(body: unknown): string | undefined {
+  const value = body && typeof body === "object" ? (body as Record<string, unknown>).expectedUpdatedAt : undefined;
+  return typeof value === "string" && value.length <= 40 ? value : undefined;
+}

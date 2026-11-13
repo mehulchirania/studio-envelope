@@ -10,6 +10,8 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Note: the admin account is trusted by email. Once its uid is known, prefer
+    // matching request.auth.uid instead (an email can be reassigned; a uid cannot).
     function isAdmin() {
       return request.auth != null
         && request.auth.token.firebase.sign_in_provider == 'password'

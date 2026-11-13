@@ -5,6 +5,7 @@ import { sanitizeContact, validateContact } from "@/lib/contact-validate";
 import { privacy } from "@/lib/content/site";
 import { createMessage } from "@/lib/firebase/admin-server";
 import { isFirebaseConfigured } from "@/lib/firebase/client";
+import { isSameOrigin } from "@/lib/admin/http";
 
 // Emails each contact-form enquiry to the studio through Resend's REST API.
 // Env: RESEND_API_KEY (required), CONTACT_TO_EMAIL (default: site email),
@@ -46,20 +47,9 @@ function tooManyRequests(ip: string): boolean {
   return entry.count > MAX_PER_WINDOW;
 }
 
-function sameOrigin(request: Request): boolean {
-  const origin = request.headers.get("origin");
-  if (!origin) return false;
-  const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
-  try {
-    return new URL(origin).host === host;
-  } catch {
-    return false;
-  }
-}
-
 /** The one door for public enquiries: validates, saves to the inbox (server-side only), and emails the studio. */
 export async function POST(request: Request) {
-  if (!sameOrigin(request)) return NextResponse.json({ error: "Cross-site request blocked." }, { status: 403 });
+  if (!isSameOrigin(request, { requireOrigin: true })) return NextResponse.json({ error: "Cross-site request blocked." }, { status: 403 });
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (tooManyRequests(ip)) {
     return NextResponse.json({ error: "Too many messages. Please try again in a few minutes." }, { status: 429 });
@@ -114,23 +104,30 @@ export async function POST(request: Request) {
     `<table>${rows.map(([l, v]) => `<tr><td><b>${l}</b></td><td>${escapeHtml(v)}</td></tr>`).join("")}</table>` +
     `<p style="white-space:pre-wrap">${escapeHtml(msg.message)}</p>`;
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.CONTACT_FROM_EMAIL || "Studio Envelope Website <onboarding@resend.dev>",
-      to: [process.env.CONTACT_TO_EMAIL || site.contact.email],
-      reply_to: msg.email,
-      subject: `New enquiry from ${msg.name.replace(/[\r\n]+/g, " ")}`,
-      text,
-      html,
-    }),
-  });
+  // Not lost if it reached the inbox.
+  const emailFailed = () =>
+    saved ? NextResponse.json({ ok: true }) : NextResponse.json({ error: "Couldn't send email." }, { status: 502 });
 
-  if (!res.ok) {
-    console.error("[contact] Resend error", res.status, await res.text().catch(() => ""));
-    // Not lost if it reached the inbox.
-    return saved ? NextResponse.json({ ok: true }) : NextResponse.json({ error: "Couldn't send email." }, { status: 502 });
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: process.env.CONTACT_FROM_EMAIL || "Studio Envelope Website <onboarding@resend.dev>",
+        to: [process.env.CONTACT_TO_EMAIL || site.contact.email],
+        reply_to: msg.email,
+        subject: `New enquiry from ${msg.name.replace(/[\r\n]+/g, " ")}`,
+        text,
+        html,
+      }),
+    });
+    if (!res.ok) {
+      console.error("[contact] Resend error", res.status, await res.text().catch(() => ""));
+      return emailFailed();
+    }
+  } catch (err) {
+    console.error("[contact] Resend request failed:", err);
+    return emailFailed();
   }
   return NextResponse.json({ ok: true });
 }
