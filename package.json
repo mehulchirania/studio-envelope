@@ -7,7 +7,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "indexnow": "node scripts/ping-indexnow.mjs"
+    "indexnow": "node scripts/ping-indexnow.mjs",
+    "test": "node --experimental-transform-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --disable-warning=ExperimentalWarning --import ./tests/setup.mjs --test \"tests/*.test.mts\""
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -15,7 +16,7 @@
     "clsx": "^2.1.1",
     "firebase": "^12.19.0",
     "lucide-react": "^1.47.0",
-    "next": "16.3.5",
+    "next": "16.4.6",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
@@ -25,7 +26,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.5",
+    "eslint-config-next": "16.4.6",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

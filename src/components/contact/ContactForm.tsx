@@ -305,7 +305,7 @@ export default function ContactForm() {
               <label htmlFor="otherCity" className="mb-1.5 block text-sm text-muted">
                 Which city? (optional)
               </label>
-              <input id="otherCity" type="text" autoComplete="address-level2" value={otherCity} onChange={(e) => setOtherCity(e.target.value)} className={inputClasses} />
+              <input id="otherCity" type="text" maxLength={100} autoComplete="address-level2" value={otherCity} onChange={(e) => setOtherCity(e.target.value)} className={inputClasses} />
             </div>
             <button type="button" onClick={() => advance(answers)} className={pillClasses}>
               Continue

@@ -20,7 +20,7 @@ Simple, quiet, photograph-led. **No interactive flourishes**: no preloader, curs
 - Credentials: never write passwords, API keys, tokens or the Firebase service account's password in any file or doc; they live only in `.env.local` (gitignored) and Vercel environment variables. Docs use placeholders.
 
 ## Code layout
-`src/components/{layout,ui,home,projects,services,contact,seo,admin}` by feature; `src/lib/content` (copy and data), `src/lib/firebase` (backend access). Import with the `@/` alias. Page metadata goes through `pageMetadata()` in `src/lib/seo.ts`; structured data only states confirmed facts (no hours, prices or coordinates). Reuse `ui/Button`, `ui/PageHero`, `ui/SectionHeader`, `projects/ProjectCard` before adding new pieces. After moving or deleting files, run `npx tsc --noEmit`, `npx eslint src` and `npm run build`.
+`src/components/{layout,ui,home,projects,services,contact,seo,admin}` by feature; `src/lib/content` (copy and data), `src/lib/firebase` (backend access). Import with the `@/` alias. Page metadata goes through `pageMetadata()` in `src/lib/seo.ts`; structured data only states confirmed facts (no hours, prices or coordinates). Reuse `ui/Button`, `ui/PageHero`, `ui/SectionHeader` before adding new pieces. After moving or deleting files, run `npx tsc --noEmit`, `npx eslint src` and `npm run build`.
 
 ## Conventions
 - Tailwind v4 tokens are in `src/app/globals.css` (`@theme`). Token name `teal` is a brown, kept for compatibility.

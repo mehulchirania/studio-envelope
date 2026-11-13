@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { HttpError, handle, readJson, requireAdmin } from "@/lib/admin/http";
 import { revalidateSite } from "@/lib/admin/revalidate";
-import { parseProjectFields } from "@/lib/admin/validate";
+import { parseExpectedUpdatedAt, parseProjectFields } from "@/lib/admin/validate";
 import { deleteProject, getProject, updateProject } from "@/lib/firebase/admin-server";
 
 type Context = { params: Promise<{ id: string }> };
@@ -18,8 +18,8 @@ export async function GET(request: Request, { params }: Context) {
 export async function PUT(request: Request, { params }: Context) {
   return handle(async () => {
     await requireAdmin(request);
-    const fields = parseProjectFields(await readJson(request));
-    const project = await updateProject((await params).id, fields);
+    const body = await readJson(request);
+    const project = await updateProject((await params).id, parseProjectFields(body), parseExpectedUpdatedAt(body));
     revalidateSite();
     return NextResponse.json({ project });
   });

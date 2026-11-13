@@ -2,7 +2,8 @@
 // per-user access difference. Set ADMIN_USERS="name:password,name2:password2"
 // in the environment to override default local accounts.
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
-import { getPasswordRecord, setPasswordRecord } from "@/lib/firebase/admin-server";
+import { HttpError } from "@/lib/admin/http";
+import { getPasswordRecord,setPasswordRecord } from "@/lib/firebase/admin-server";
 
 interface AdminUser {
   username: string;
@@ -45,12 +46,25 @@ export async function setPassword(username: string, password: string): Promise<v
   await setPasswordRecord(username.trim().toLowerCase(), salt, hashPassword(password, salt));
 }
 
+/** Version stamp of the user's stored password ("" when none). Throws if the lookup fails. */
+export async function getPasswordVersion(username: string): Promise<string> {
+  return (await getPasswordRecord(username.trim().toLowerCase()))?.updatedAt ?? "";
+}
+
 /** Returns the canonical username when the credentials match, otherwise null. */
 export async function verifyCredentials(username: string, password: string): Promise<string | null> {
   const name = username.trim().toLowerCase();
-  const stored = await getPasswordRecord(name).catch(() => null);
+  let stored: Awaited<ReturnType<typeof getPasswordRecord>>;
+  try {
+    stored = await getPasswordRecord(name);
+  } catch {
+    // Fail closed: never fall back to env passwords when the lookup itself failed.
+    throw new HttpError(503, "Sign-in is temporarily unavailable. Please try again.");
+  }
   if (stored) {
-    const ok = timingSafeEqual(Buffer.from(hashPassword(password, stored.salt), "hex"), Buffer.from(stored.hash, "hex"));
+    const given = Buffer.from(hashPassword(password, stored.salt), "hex");
+    const wanted = Buffer.from(stored.hash, "hex");
+    const ok = given.length === wanted.length && timingSafeEqual(given, wanted);
     return ok ? name : null;
   }
 

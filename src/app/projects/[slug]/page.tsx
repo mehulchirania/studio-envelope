@@ -11,7 +11,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { getBreadcrumbSchema, getProjectSchema } from "@/lib/seo";
 import PageTransition from "@/components/layout/PageTransition";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const projects = await getProjects();

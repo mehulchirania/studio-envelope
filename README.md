@@ -48,7 +48,7 @@ src/
                           ProjectImage, Datasheet, Lightbox
     home/                 Hero, WorkGlimpse, FounderNote, WhyEnvelope
     videos/               VideoFeature (YouTube embed or uploaded file, plays on click)
-    projects/             ProjectCard/Grid, ProjectHero, RoomChapter, lightbox
+    projects/             ProjectGrid, ProjectHero, RoomChapter, lightbox
                           provider + image, NextProjectBand, roomLayout.ts (layout helpers)
     services/             ServiceGroup, ProcessStep, FaqItem
     contact/              ContactForm

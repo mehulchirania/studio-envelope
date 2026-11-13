@@ -1,9 +1,8 @@
 // Browser-side helpers for the admin panel. Everything goes through
 // /api/admin/* (cookie-authenticated); the browser never talks to Firebase.
 import { upload } from "@vercel/blob/client";
-import type { Project } from "@/lib/content/types";
 import { slugify } from "@/lib/admin/slug";
-import type { AdminMessage, ProjectFields, ProjectsResponse, VideoFields, VideoRecord } from "@/lib/admin/types";
+import type { AdminMessage, AdminProject, ProjectFields, ProjectsResponse, VideoFields, VideoRecord } from "@/lib/admin/types";
 
 export const UNAUTHORIZED_EVENT = "admin:unauthorized";
 
@@ -46,16 +45,16 @@ export async function logout(): Promise<void> {
 
 export const listProjects = () => request<ProjectsResponse>("/api/admin/projects");
 
-export async function getProject(id: string): Promise<Project> {
-  return (await request<{ project: Project }>(`/api/admin/projects/${encodeURIComponent(id)}`)).project;
+export async function getProject(id: string): Promise<AdminProject> {
+  return (await request<{ project: AdminProject }>(`/api/admin/projects/${encodeURIComponent(id)}`)).project;
 }
 
-export async function createProject(fields: ProjectFields): Promise<Project> {
-  return (await request<{ project: Project }>("/api/admin/projects", json("POST", fields))).project;
+export async function createProject(fields: ProjectFields): Promise<AdminProject> {
+  return (await request<{ project: AdminProject }>("/api/admin/projects", json("POST", fields))).project;
 }
 
-export async function updateProject(id: string, fields: ProjectFields): Promise<Project> {
-  return (await request<{ project: Project }>(`/api/admin/projects/${encodeURIComponent(id)}`, json("PUT", fields))).project;
+export async function updateProject(id: string, fields: ProjectFields, expectedUpdatedAt?: string): Promise<AdminProject> {
+  return (await request<{ project: AdminProject }>(`/api/admin/projects/${encodeURIComponent(id)}`, json("PUT", { ...fields, expectedUpdatedAt }))).project;
 }
 
 export async function deleteProject(id: string): Promise<void> {
@@ -84,8 +83,8 @@ export async function createVideo(fields: VideoFields): Promise<VideoRecord> {
   return (await request<{ video: VideoRecord }>("/api/admin/videos", json("POST", fields))).video;
 }
 
-export async function updateVideo(id: string, fields: VideoFields): Promise<VideoRecord> {
-  return (await request<{ video: VideoRecord }>(`/api/admin/videos/${encodeURIComponent(id)}`, json("PUT", fields))).video;
+export async function updateVideo(id: string, fields: VideoFields, expectedUpdatedAt?: string): Promise<VideoRecord> {
+  return (await request<{ video: VideoRecord }>(`/api/admin/videos/${encodeURIComponent(id)}`, json("PUT", { ...fields, expectedUpdatedAt }))).video;
 }
 
 export async function deleteVideo(id: string): Promise<void> {

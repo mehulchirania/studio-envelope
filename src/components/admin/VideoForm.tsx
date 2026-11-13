@@ -99,7 +99,7 @@ export default function VideoForm({ video }: { video?: VideoRecord }) {
       source === "youtube" ? { ...form, youtubeId: youtubeId ?? undefined, src: undefined } : { ...form, youtubeId: undefined };
     setSaving(true);
     try {
-      if (video) await updateVideo(video.id, payload);
+      if (video) await updateVideo(video.id, payload, video.updatedAt);
       else await createVideo(payload);
       router.push("/admin/videos");
       router.refresh();

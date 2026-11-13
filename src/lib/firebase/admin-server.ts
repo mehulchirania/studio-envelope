@@ -88,6 +88,13 @@ async function getDb(): Promise<Firestore> {
   return service.db;
 }
 
+const CONFLICT_MESSAGE = "Someone else changed this while you were editing. Reload the page and try again.";
+
+/** Throws 409 when the stored save time differs from the one the editor loaded. Skipped for records saved before updatedAt existed. */
+function assertNotStale(stored: unknown, expected: string | undefined): void {
+  if (typeof stored === "string" && stored && stored !== expected) throw new HttpError(409, CONFLICT_MESSAGE);
+}
+
 // ---------- Projects ----------
 
 function imageUrls(project: Pick<Project, "coverImage" | "rooms" | "drawings">): string[] {
@@ -124,6 +131,7 @@ function toDocument(fields: ProjectFields, slug: string, order: number) {
     ...fields,
     slug,
     order,
+    updatedAt: new Date().toISOString(),
     gallery: fields.rooms.flatMap((room) => room.images.map((image) => image.src)),
   };
 }
@@ -148,7 +156,11 @@ export async function createProject(fields: ProjectFields): Promise<Project> {
 
   const base = slugify(fields.title) || "project";
   let slug = base;
-  for (let n = 2; taken.has(slug); n++) slug = `${base}-${n}`;
+  // Bump past slugs in the list, then confirm against the document itself so a race can't overwrite one.
+  for (let n = 2; ; n++) {
+    if (!taken.has(slug) && !(await getDoc(doc(db, "projects", slug))).exists()) break;
+    slug = `${base}-${n}`;
+  }
 
   const order = existing.reduce((max, p) => Math.max(max, p.order), -1) + 1;
   const data = toDocument(fields, slug, order);
@@ -156,12 +168,13 @@ export async function createProject(fields: ProjectFields): Promise<Project> {
   return normalizeProject(data, slug);
 }
 
-export async function updateProject(id: string, fields: ProjectFields): Promise<Project> {
+export async function updateProject(id: string, fields: ProjectFields, expectedUpdatedAt?: string): Promise<Project> {
   const db = await getDb();
   const ref = doc(db, "projects", id);
   const snap = await getDoc(ref);
   if (!snap.exists()) throw new HttpError(404, "That project no longer exists.");
 
+  assertNotStale(snap.data().updatedAt, expectedUpdatedAt);
   const previous = normalizeProject(snap.data(), id);
   // Slug (the page URL) and order are kept stable across edits.
   const data = toDocument(fields, previous.slug, previous.order);
@@ -219,6 +232,7 @@ function normalizeVideo(data: Record<string, unknown>, id: string): VideoRecord 
     order: typeof data.order === "number" ? data.order : 0,
     published: Boolean(data.published),
   };
+  if (typeof data.updatedAt === "string" && data.updatedAt) video.updatedAt = data.updatedAt;
   for (const key of ["projectSlug", "credits", "youtubeId", "src", "poster"] as const) {
     if (typeof data[key] === "string" && data[key]) video[key] = data[key] as string;
   }
@@ -246,19 +260,20 @@ export async function createVideo(fields: VideoFields): Promise<VideoRecord> {
   const existing = await listVideos();
   const order = existing.reduce((max, v) => Math.max(max, v.order), -1) + 1;
   const ref = doc(collection(db, "videos"));
-  const data = { ...fields, order };
+  const data = { ...fields, order, updatedAt: new Date().toISOString() };
   await setDoc(ref, data);
   return normalizeVideo(data, ref.id);
 }
 
-export async function updateVideo(id: string, fields: VideoFields): Promise<VideoRecord> {
+export async function updateVideo(id: string, fields: VideoFields, expectedUpdatedAt?: string): Promise<VideoRecord> {
   const db = await getDb();
   const ref = doc(db, "videos", id);
   const snap = await getDoc(ref);
   if (!snap.exists()) throw new HttpError(404, "That video no longer exists.");
 
+  assertNotStale(snap.data().updatedAt, expectedUpdatedAt);
   const previous = normalizeVideo(snap.data(), id);
-  const data = { ...fields, order: previous.order };
+  const data = { ...fields, order: previous.order, updatedAt: new Date().toISOString() };
   await setDoc(ref, data);
 
   const next = normalizeVideo(data, id);
@@ -347,11 +362,13 @@ export async function deleteMessage(id: string): Promise<void> {
 // ---------- Admin passwords ----------
 // Passwords changed from the admin panel: hashed (scrypt) in `adminUsers/{username}`.
 
-export async function getPasswordRecord(username: string): Promise<{ salt: string; hash: string } | null> {
+export async function getPasswordRecord(username: string): Promise<{ salt: string; hash: string; updatedAt: string } | null> {
   const db = await getDb();
   const snap = await getDoc(doc(db, "adminUsers", username));
   const data = snap.data();
-  return data && typeof data.salt === "string" && typeof data.hash === "string" ? { salt: data.salt, hash: data.hash } : null;
+  return data && typeof data.salt === "string" && typeof data.hash === "string"
+    ? { salt: data.salt, hash: data.hash, updatedAt: typeof data.updatedAt === "string" ? data.updatedAt : "" }
+    : null;
 }
 
 export async function setPasswordRecord(username: string, salt: string, hash: string): Promise<void> {
