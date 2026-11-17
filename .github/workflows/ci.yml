@@ -15,6 +15,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # PageProps / LayoutProps are generated into .next/types (normally by next dev or next build).
+      - run: npx next typegen
       - run: npx tsc --noEmit
       - run: npx eslint src tests
       - run: npm test
