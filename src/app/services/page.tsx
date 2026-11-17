@@ -29,7 +29,7 @@ export default function ServicesPage() {
         ])}
       />
 
-      <PageHero title="Everything a home needs, in one studio." background={{ src: "/images/site/bedroom-study.jpg", alt: "Bedroom with a pale blue wardrobe wall, a study desk and a window seat" }}>
+      <PageHero title="Everything a space needs, in one studio." background={{ src: "/images/site/bedroom-study.jpg", alt: "Bedroom with a pale blue wardrobe wall, a study desk and a window seat" }}>
         From the first consultation to the final photo shoot, we carry every layer of a project, design, furnishing and delivery, under one roof.
       </PageHero>
 
