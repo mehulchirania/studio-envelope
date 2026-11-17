@@ -46,6 +46,8 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    // Default list goes up to 3840px; nothing on the site needs more than 1920px wide.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     remotePatterns: [
       {
         protocol: "https",
@@ -58,6 +60,12 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/projects/category/:slug",
+        destination: "/projects",
+        permanent: true,
+      },
+      // The Doshi Residence project was removed; send old links to the project list.
+      {
+        source: "/projects/doshi-residence",
         destination: "/projects",
         permanent: true,
       },
