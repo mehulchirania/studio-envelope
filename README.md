@@ -21,6 +21,40 @@ wire it up whenever you're ready to manage content dynamically and store real co
 - Vercel Blob — admin image uploads (cover + gallery images) and uploaded video files
 - Deployed on Vercel
 
+## Architecture
+
+```mermaid
+flowchart LR
+  V[Visitors<br/>browser] -->|HTTPS| VC
+
+  subgraph VC[Vercel]
+    direction TB
+    subgraph APP[Next.js 16 app]
+      PUB[Public pages<br/>home, projects, services,<br/>videos, about, contact]
+      ADM[Admin panel /admin<br/>session-cookie login]
+      API[API routes<br/>contact, upload, admin/*]
+    end
+    CRON[Weekly cron<br/>purge old messages]
+  end
+
+  PUB -->|published projects, videos| FS[(Firestore)]
+  PUB -.->|fallback if Firebase is not configured| SEED[Seed content<br/>src/lib/content]
+  ADM --> API
+  API -->|read / write via one private account| FS
+  API -->|images and video files| BLOB[(Vercel Blob)]
+  API -->|contact and reset emails| RS[Resend email]
+  API -->|revalidate pages after edits| PUB
+  CRON --> FS
+
+  V -.->|consent-gated| GTM[Google Tag Manager]
+  V -.-> VA[Vercel Analytics]
+
+  GH[GitHub<br/>main branch] -->|push triggers deploy| VC
+  GH -->|CI: typecheck, lint, tests| CI[GitHub Actions]
+  CI -->|after production deploy| IDX[IndexNow ping<br/>search engines]
+  PUB -->|sitemap.xml, robots.txt,<br/>metadata, JSON-LD| SE[Search engines]
+```
+
 ## Local development
 
 ```bash
