@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { CheckCircle2, FileText, ImageIcon, Mail, Plug, Plus } from "lucide-react";
 import { hasAnalytics, type AnalyticsRange } from "@/lib/admin/types";
 import { useAdminUser } from "@/components/admin/AdminShell";
@@ -24,6 +25,7 @@ interface Attention {
 
 export default function OverviewPage() {
   const user = useAdminUser();
+  const router = useRouter();
   const [range, setRange] = useState<AnalyticsRange>(30);
   const analytics = useAnalytics(range);
   const messages = useMessages();
@@ -50,8 +52,9 @@ export default function OverviewPage() {
       icon: <Mail size={15} aria-hidden="true" />,
       title: `${unread.length} new ${unread.length === 1 ? "enquiry" : "enquiries"}`,
       detail: `The oldest arrived ${timeAgo(oldest.createdAt).toLowerCase()}.`,
-      href: "/admin/messages",
-      action: "Open inbox",
+      // Opens the oldest unread message straight away.
+      href: `/admin/messages?open=${encodeURIComponent(oldest.id)}`,
+      action: unread.length === 1 ? "Read it" : "Open inbox",
     });
   }
   if (projects.data && !editable) {
@@ -143,13 +146,13 @@ export default function OverviewPage() {
           <ul className="a-attn">
             {attention.map((item) => (
               <li key={item.title}>
-                <span className={`ic ic-${item.tone}`}>{item.icon}</span>
-                <div className="t">
-                  <b>{item.title}</b>
-                  <span>{item.detail}</span>
-                </div>
-                <Link href={item.href} className="a-btn sm">
-                  {item.action}
+                <Link href={item.href} className="a-attn-row">
+                  <span className={`ic ic-${item.tone}`}>{item.icon}</span>
+                  <div className="t">
+                    <b>{item.title}</b>
+                    <span>{item.detail}</span>
+                  </div>
+                  <span className="a-btn sm">{item.action}</span>
                 </Link>
               </li>
             ))}
@@ -157,12 +160,14 @@ export default function OverviewPage() {
         ) : (
           <ul className="a-attn">
             <li>
-              <span className="ic ic-g">
-                <CheckCircle2 size={15} aria-hidden="true" />
-              </span>
-              <div className="t">
-                <b>{messages.loading || projects.loading ? "Checking…" : "Nothing needs your attention"}</b>
-                <span>{messages.loading || projects.loading ? "Looking at your inbox and projects." : "No unread enquiries and no drafts waiting."}</span>
+              <div className="a-attn-row">
+                <span className="ic ic-g">
+                  <CheckCircle2 size={15} aria-hidden="true" />
+                </span>
+                <div className="t">
+                  <b>{messages.loading || projects.loading ? "Checking…" : "Nothing needs your attention"}</b>
+                  <span>{messages.loading || projects.loading ? "Looking at your inbox and projects." : "No unread enquiries and no drafts waiting."}</span>
+                </div>
               </div>
             </li>
           </ul>
@@ -227,8 +232,12 @@ export default function OverviewPage() {
                 </thead>
                 <tbody>
                   {recent.map((m) => (
-                    <tr key={m.id}>
-                      <td>{m.name}</td>
+                    <tr key={m.id} className="click" onClick={() => router.push(`/admin/messages?open=${encodeURIComponent(m.id)}`)}>
+                      <td>
+                        <Link href={`/admin/messages?open=${encodeURIComponent(m.id)}`} className="font-medium text-ink hover:underline">
+                          {m.name}
+                        </Link>
+                      </td>
                       <td>{m.projectType || "Not said"}</td>
                       <td className="whitespace-nowrap">{timeAgo(m.createdAt)}</td>
                       <td>{m.read ? <span className="a-pill mute">Read</span> : <span className="a-pill new">New</span>}</td>

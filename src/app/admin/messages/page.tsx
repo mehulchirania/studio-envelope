@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Loader2, Mail, MailOpen, Trash2 } from "lucide-react";
 import { deleteMessage, listMessages, setMessageRead } from "@/lib/admin/client";
 import type { AdminMessage } from "@/lib/admin/types";
@@ -11,6 +12,17 @@ function formatDate(msg: AdminMessage): string {
 }
 
 export default function MessagesPage() {
+  // useSearchParams needs a Suspense boundary during prerender.
+  return (
+    <Suspense fallback={null}>
+      <Messages />
+    </Suspense>
+  );
+}
+
+function Messages() {
+  // ?open=<id> (from the Overview) expands that enquiry on arrival.
+  const openParam = useSearchParams().get("open");
   const [messages, setMessages] = useState<AdminMessage[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -29,7 +41,19 @@ export default function MessagesPage() {
     let cancelled = false;
     listMessages()
       .then((list) => {
-        if (!cancelled) setMessages(list);
+        if (cancelled) return;
+        setMessages(list);
+        const target = openParam ? list.find((m) => m.id === openParam) : undefined;
+        if (!target) return;
+        setOpenId(target.id);
+        requestAnimationFrame(() => document.getElementById(`msg-${target.id}`)?.scrollIntoView({ block: "center" }));
+        if (!target.read) {
+          setMessageRead(target.id, true)
+            .then(() => {
+              if (!cancelled) setMessages((prev) => prev && prev.map((m) => (m.id === target.id ? { ...m, read: true } : m)));
+            })
+            .catch(() => undefined);
+        }
       })
       .catch((err) => {
         if (!cancelled) setError(err instanceof Error ? err.message : "Failed to load messages.");
@@ -37,7 +61,7 @@ export default function MessagesPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [openParam]);
 
   async function toggleOpen(msg: AdminMessage) {
     const next = openId === msg.id ? null : msg.id;
@@ -95,11 +119,11 @@ export default function MessagesPage() {
       )}
 
       {messages && messages.length > 0 && (
-        <div className="border border-hairline rounded-xl overflow-hidden divide-y divide-hairline">
+        <div className="bg-surface border border-hairline rounded-xl overflow-hidden divide-y divide-hairline">
           {messages.map((m) => {
             const isOpen = openId === m.id;
             return (
-              <div key={m.id} className="px-4 py-3">
+              <div key={m.id} id={`msg-${m.id}`} className="px-4 py-3">
                 <button
                   type="button"
                   onClick={() => toggleOpen(m)}

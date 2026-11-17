@@ -5,32 +5,35 @@
    are re-pointed here, so every admin page follows the theme without per-page edits. */
 
 .admin-root {
-  --a-bg: #f1f5f5;
-  --a-surface: #ffffff;
-  --a-surface-2: #f6f9f9;
-  --a-line: #dae2e4;
-  --a-line-strong: #bfcbcf;
-  --a-text: #13262d;
-  --a-muted: #53676e;
-  --a-brand: #176b8a;
+  /* Light theme: the studio's beige (bone paper, ink-brown text) with the logo blue and amber as accents. */
+  --a-bg: #ebe1d2;
+  --a-surface: #f6f0e6;
+  --a-surface-2: #efe6d8;
+  --a-line: #d3c6b3;
+  --a-line-strong: #b9a994;
+  --a-text: #332c26;
+  --a-muted: #5f5448;
+  --a-brand: #10546d;
   --a-brand-deep: #10546d;
-  --a-brand-soft: #e2eff3;
+  --a-brand-soft: #d6e3e4;
   --a-amber: #fcb618;
   --a-amber-ink: #2b2000;
-  --a-amber-line: #c48a00;
-  --a-side: #0b2b36;
-  --a-side-2: #14404f;
-  --a-side-text: #d6e5e9;
-  --a-side-muted: #93adb5;
-  --a-side-line: #1b4352;
+  --a-amber-line: #b27d00;
+  --a-side: #e3d8c7;
+  --a-side-2: #d6c9b5;
+  --a-side-text: #3d342b;
+  --a-side-muted: #6a5d4f;
+  --a-side-line: #cdbfaa;
+  --a-side-strong: #26211c;
+  --a-side-accent: #10546d;
   --a-good: #17703f;
-  --a-good-soft: #e0f2e8;
+  --a-good-soft: #dcebd9;
   --a-warn: #85560a;
-  --a-warn-soft: #fcf0d0;
+  --a-warn-soft: #f3e3bd;
   --a-bad: #ae2a21;
-  --a-bad-soft: #fbe5e3;
-  --a-track: #e3ebed;
-  --a-ring: #176b8a;
+  --a-bad-soft: #f2d9d3;
+  --a-track: #ddd1bf;
+  --a-ring: #10546d;
 
   /* Legacy token overrides (see note above). */
   --color-bone: var(--a-bg);
@@ -65,7 +68,11 @@
   --a-amber-line: #fcb618;
   --a-side: #06161c;
   --a-side-2: #102d38;
+  --a-side-text: #d6e5e9;
+  --a-side-muted: #93adb5;
   --a-side-line: #14323d;
+  --a-side-strong: #ffffff;
+  --a-side-accent: #fcb618;
   --a-good: #52c890;
   --a-good-soft: #12342a;
   --a-warn: #f2b64c;
@@ -141,15 +148,15 @@
   z-index: 40;
 }
 .a-side :focus-visible {
-  outline-color: var(--a-amber);
+  outline-color: var(--a-side-accent);
 }
 .a-brand {
-  padding: 14px 16px 10px;
+  padding: 16px 18px 12px;
   border-bottom: 1px solid var(--a-side-line);
 }
 .a-brand img {
   display: block;
-  width: 172px;
+  width: 150px;
   height: auto;
 }
 .a-env {
@@ -204,11 +211,11 @@
 }
 .a-nav a[aria-current="page"] {
   background: var(--a-side-2);
-  color: #fff;
-  font-weight: 500;
+  color: var(--a-side-strong);
+  font-weight: 600;
 }
 .a-nav a[aria-current="page"] svg {
-  color: var(--a-amber);
+  color: var(--a-side-accent);
 }
 .a-nav svg {
   color: var(--a-side-muted);
@@ -252,7 +259,7 @@
 .a-me b {
   display: block;
   font-weight: 500;
-  color: #fff;
+  color: var(--a-side-strong);
   font-size: 13.5px;
   text-transform: capitalize;
 }
@@ -271,7 +278,7 @@
 }
 .a-me button:hover {
   background: var(--a-side-2);
-  color: #fff;
+  color: var(--a-side-strong);
 }
 
 .a-main {
@@ -512,11 +519,26 @@
   list-style: none;
 }
 .a-attn li {
+  border-top: 1px solid var(--a-line);
+}
+.a-attn-row {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  border-top: 1px solid var(--a-line);
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+a.a-attn-row:hover {
+  background: var(--a-surface-2);
+  text-decoration: none;
+}
+a.a-attn-row:hover .a-btn {
+  border-color: var(--a-muted);
+}
+.a-table tr.click {
+  cursor: pointer;
 }
 .a-attn li:first-child {
   border-top: 0;
@@ -972,4 +994,18 @@
     transition: none !important;
     animation: none !important;
   }
+}
+
+/* Native dropdowns: solid surface so the open list follows the theme (the legacy tinted fields are translucent). */
+.admin-root select {
+  background-color: var(--a-surface);
+  color: var(--a-text);
+}
+.admin-root select option {
+  background-color: var(--a-surface);
+  color: var(--a-text);
+}
+.admin-root input,
+.admin-root textarea {
+  color-scheme: inherit;
 }

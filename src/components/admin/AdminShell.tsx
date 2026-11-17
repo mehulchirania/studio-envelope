@@ -116,8 +116,11 @@ export default function AdminShell({ user, onSignedOut, children }: { user: stri
       <div className={`a-app${open ? " open" : ""}`}>
         <aside className="a-side" aria-label="Admin navigation">
           <div className="a-brand">
-            {/* eslint-disable-next-line @next/next/no-img-element -- small static logo, no optimisation needed */}
-            <img src="/brand/logo-white.png" alt="Studio Envelope" width={172} height={58} />
+            {/* The original logo: full colour on the light sidebar, the on-dark version on the dark one (swapped in admin.css). */}
+            {/* eslint-disable @next/next/no-img-element -- small static logos, no optimisation needed */}
+            <img src="/brand/logo-color.png" alt="Studio Envelope" width={150} height={51} className="a-logo-light" />
+            <img src="/brand/logo-on-dark.png" alt="Studio Envelope" width={150} height={51} className="a-logo-dark" />
+            {/* eslint-enable @next/next/no-img-element */}
           </div>
           <div className="a-env">
             <span className="a-dot" aria-hidden="true" />

@@ -11,7 +11,7 @@ function AdminLogo() {
     <div className="flex justify-center">
       {/* eslint-disable @next/next/no-img-element -- small static logos */}
       <img src="/brand/logo-color.png" alt="Studio Envelope" width={200} height={68} className="a-logo-light h-auto w-[200px]" />
-      <img src="/brand/logo-white.png" alt="Studio Envelope" width={200} height={68} className="a-logo-dark h-auto w-[200px]" />
+      <img src="/brand/logo-on-dark.png" alt="Studio Envelope" width={200} height={68} className="a-logo-dark h-auto w-[200px]" />
       {/* eslint-enable @next/next/no-img-element */}
     </div>
   );
