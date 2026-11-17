@@ -50,3 +50,40 @@ export interface CarouselResponse {
   /** Every photograph of every published project: the default list, and what "Reset" restores. */
   projectPhotos: CarouselImage[];
 }
+
+// ---------- Analytics (Vercel Web Analytics, read through /api/admin/analytics) ----------
+
+export type AnalyticsRange = 7 | 30 | 90;
+
+export interface AnalyticsRow {
+  name: string;
+  pageviews: number;
+  visitors: number;
+}
+
+export interface AnalyticsDay {
+  /** UTC calendar day, YYYY-MM-DD. */
+  date: string;
+  pageviews: number;
+  visitors: number;
+}
+
+export interface AnalyticsData {
+  configured: true;
+  range: AnalyticsRange;
+  /** One entry per day, oldest first, ending today (UTC). */
+  days: AnalyticsDay[];
+  /** Totals for the same number of days before `days`, or null when Vercel could not return them. */
+  previous: { pageviews: number; visitors: number } | null;
+  pages: AnalyticsRow[];
+  sources: AnalyticsRow[];
+  countries: AnalyticsRow[];
+  devices: AnalyticsRow[];
+  updatedAt: string;
+}
+
+export type AnalyticsResponse = { configured: false } | { configured: true; error: string } | AnalyticsData;
+
+export function hasAnalytics(response: AnalyticsResponse | null | undefined): response is AnalyticsData {
+  return Boolean(response && response.configured && "days" in response);
+}

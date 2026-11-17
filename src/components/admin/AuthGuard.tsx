@@ -3,14 +3,26 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Loader2 } from "lucide-react";
 import { UNAUTHORIZED_EVENT, changePassword, getSession, login, logout, requestPasswordReset, type AdminSession } from "@/lib/admin/client";
-import AdminNav from "@/components/admin/AdminNav";
+import AdminShell from "@/components/admin/AdminShell";
+
+/** The full-colour logo on the light theme, the white one on the dark theme (swapped in admin.css). */
+function AdminLogo() {
+  return (
+    <div className="flex justify-center">
+      {/* eslint-disable @next/next/no-img-element -- small static logos */}
+      <img src="/brand/logo-color.png" alt="Studio Envelope" width={200} height={68} className="a-logo-light h-auto w-[200px]" />
+      <img src="/brand/logo-white.png" alt="Studio Envelope" width={200} height={68} className="a-logo-dark h-auto w-[200px]" />
+      {/* eslint-enable @next/next/no-img-element */}
+    </div>
+  );
+}
 
 const fieldClass =
   "w-full bg-ink/[0.05] border border-ink/25 rounded-lg px-3.5 py-3 text-[15px] text-ink focus:outline-none focus:border-teal transition-colors";
 
 const alertClass = "text-sm text-red-700 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2";
 const buttonClass =
-  "w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-night text-bone text-sm font-medium hover:bg-abyss transition-colors disabled:opacity-60";
+  "w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full a-pri text-sm font-medium transition-colors disabled:opacity-60";
 const labelClass = "block text-xs uppercase tracking-wider text-muted mb-1.5";
 
 function ForgotForm({ onBack }: { onBack: () => void }) {
@@ -37,9 +49,9 @@ function ForgotForm({ onBack }: { onBack: () => void }) {
   return (
     <div className="min-h-screen flex items-center justify-center px-6">
       <form onSubmit={submit} className="w-full max-w-sm space-y-5">
-        <div className="text-center">
-          <h1 className="text-2xl font-light tracking-wide">Reset password</h1>
-          <p className="mt-1 text-xs uppercase tracking-[0.2em] text-teal-deep">Admin</p>
+        <div className="text-center space-y-3">
+          <AdminLogo />
+          <h1 className="font-display text-3xl font-medium">Reset password</h1>
         </div>
 
         {sent ? (
@@ -154,9 +166,9 @@ function LoginForm({ onSignedIn, onForgot }: { onSignedIn: (session: AdminSessio
   return (
     <div className="min-h-screen flex items-center justify-center px-6">
       <form onSubmit={submit} className="w-full max-w-sm space-y-5">
-        <div className="text-center">
-          <h1 className="text-2xl font-light tracking-wide">Studio Envelope</h1>
-          <p className="mt-1 text-xs uppercase tracking-[0.2em] text-teal-deep">Admin</p>
+        <div className="text-center space-y-3">
+          <AdminLogo />
+          <h1 className="font-display text-3xl font-medium">Admin sign-in</h1>
         </div>
 
         <div className="space-y-4">
@@ -198,7 +210,7 @@ function LoginForm({ onSignedIn, onForgot }: { onSignedIn: (session: AdminSessio
         <button
           type="submit"
           disabled={busy}
-          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-night text-bone text-sm font-medium hover:bg-abyss transition-colors disabled:opacity-60"
+          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full a-pri text-sm font-medium transition-colors disabled:opacity-60"
         >
           {busy && <Loader2 size={14} className="animate-spin" />}
           Sign in
@@ -278,9 +290,8 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
   }
 
   return (
-    <>
-      <AdminNav user={session.user} onSignedOut={signOut} />
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">{children}</main>
-    </>
+    <AdminShell user={session.user} onSignedOut={signOut}>
+      {children}
+    </AdminShell>
   );
 }

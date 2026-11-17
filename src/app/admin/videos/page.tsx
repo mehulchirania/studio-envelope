@@ -79,7 +79,7 @@ export default function AdminVideosPage() {
         </div>
         <Link
           href="/admin/videos/new"
-          className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full bg-night text-bone font-medium hover:bg-abyss transition-colors shrink-0"
+          className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full a-pri font-medium transition-colors shrink-0"
         >
           <Plus size={16} />
           Add video

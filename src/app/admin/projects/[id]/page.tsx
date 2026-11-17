@@ -37,7 +37,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
     return (
       <div className="text-center py-16 space-y-3">
         <p className="text-sm text-muted">That project couldn&rsquo;t be found.</p>
-        <Link href="/admin" className="text-sm text-teal-deep hover:underline">
+        <Link href="/admin/projects" className="text-sm text-teal-deep hover:underline">
           Back to all projects
         </Link>
       </div>

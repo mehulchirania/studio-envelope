@@ -85,7 +85,7 @@ export default function ProjectForm({ project }: { project?: AdminProject }) {
     try {
       if (project) await updateProject(project.id, form, project.updatedAt);
       else await createProject(form);
-      router.push("/admin");
+      router.push("/admin/projects");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Couldn't save. Please try again.");
@@ -100,7 +100,7 @@ export default function ProjectForm({ project }: { project?: AdminProject }) {
     setError(null);
     try {
       await deleteProject(project.id);
-      router.push("/admin");
+      router.push("/admin/projects");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Couldn't delete. Please try again.");
@@ -311,7 +311,7 @@ export default function ProjectForm({ project }: { project?: AdminProject }) {
               </button>
             )}
             <Link
-              href="/admin"
+              href="/admin/projects"
               className="ml-auto text-sm px-4 py-2.5 rounded-full text-ink hover:bg-ink/10 transition-colors"
             >
               Cancel
@@ -319,7 +319,7 @@ export default function ProjectForm({ project }: { project?: AdminProject }) {
             <button
               type="submit"
               disabled={busy}
-              className="inline-flex items-center gap-2 text-sm px-6 py-2.5 rounded-full bg-night text-bone font-medium hover:bg-abyss transition-colors disabled:opacity-60"
+              className="inline-flex items-center gap-2 text-sm px-6 py-2.5 rounded-full a-pri font-medium transition-colors disabled:opacity-60"
             >
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
               {form.published ? "Save" : "Save as draft"}

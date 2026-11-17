@@ -36,6 +36,8 @@
   --color-muted: #5f5448;
   --color-hairline: rgb(51 44 38 / 18%);
   --color-hairline-light: rgb(235 225 210 / 18%);
+  /* Raised panels in the admin (white in its light theme, deep teal in its dark one). Overridden in admin.css. */
+  --color-surface: #ffffff;
 
   --font-display: var(--font-cormorant), "Cormorant Garamond", serif;
   --font-sans: var(--font-jost), "Jost", system-ui, sans-serif;

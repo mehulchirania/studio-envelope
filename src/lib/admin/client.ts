@@ -2,7 +2,7 @@
 // /api/admin/* (cookie-authenticated); the browser never talks to Firebase.
 import { upload } from "@vercel/blob/client";
 import { slugify } from "@/lib/admin/slug";
-import type { AdminMessage, CarouselImage, CarouselResponse, AdminProject, ProjectFields, ProjectsResponse, VideoFields, VideoRecord } from "@/lib/admin/types";
+import type { AdminMessage, AnalyticsRange, AnalyticsResponse, CarouselImage, CarouselResponse, AdminProject, ProjectFields, ProjectsResponse, VideoFields, VideoRecord } from "@/lib/admin/types";
 
 export const UNAUTHORIZED_EVENT = "admin:unauthorized";
 
@@ -133,6 +133,10 @@ export async function setMessageRead(id: string, read: boolean): Promise<void> {
 export async function deleteMessage(id: string): Promise<void> {
   await request(`/api/admin/messages/${encodeURIComponent(id)}`, json("DELETE"));
 }
+
+// ---------- Analytics ----------
+
+export const getAnalytics = (range: AnalyticsRange) => request<AnalyticsResponse>(`/api/admin/analytics?range=${range}`);
 
 // ---------- Images ----------
 

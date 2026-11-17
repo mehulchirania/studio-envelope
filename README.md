@@ -193,6 +193,16 @@ the logo are in `public/brand/`.
 
 Visit `/admin` to access the studio CMS. Configured accounts have full admin permissions.
 
+The admin is a dashboard workspace: a sidebar (Overview, Analytics, Projects, Home carousel, Videos, Enquiries, Password), a light theme by
+default and a dark theme from the sun/moon button in the top bar (remembered per browser). Its styling lives in `src/app/admin/admin.css`
+and is scoped to `.admin-root`, so the public site is untouched.
+
+**Page views (optional).** Overview and Analytics read real traffic from the
+[Vercel Web Analytics API](https://vercel.com/docs/analytics/web-analytics-api) through `/api/admin/analytics`; the token stays on the server
+and results are cached for 15 minutes. Enable Web Analytics on the Vercel project, then set `VERCEL_ANALYTICS_TOKEN` (a Vercel access token),
+`VERCEL_PROJECT_ID` and, for a team project, `VERCEL_TEAM_ID`. Without them the dashboard still works and shows a "connect analytics" note
+in place of the traffic figures (enquiries and projects never need it). Only production traffic is counted.
+
 Set the admin logins with the `ADMIN_USERS` environment variable (locally in `.env.local`, and in production under Vercel Project Settings → Environment Variables), as a comma-separated `username:password` list:
 
 ```bash

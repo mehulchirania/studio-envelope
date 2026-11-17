@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import AuthGuard from "@/components/admin/AuthGuard";
+import AdminThemeRoot from "@/components/admin/AdminThemeRoot";
+import "./admin.css";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -8,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-bone text-ink">
+    <AdminThemeRoot>
       <AuthGuard>{children}</AuthGuard>
-    </div>
+    </AdminThemeRoot>
   );
 }

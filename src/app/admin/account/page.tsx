@@ -69,7 +69,7 @@ export default function AccountPage() {
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-night text-bone text-sm font-medium hover:bg-abyss transition-colors disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full a-pri text-sm font-medium transition-colors disabled:opacity-60"
         >
           {busy && <Loader2 size={14} className="animate-spin" />}
           Change password

@@ -127,7 +127,7 @@ export default function AdminCarouselPage() {
             type="button"
             onClick={save}
             disabled={busy || !dirty || uploading.length > 0}
-            className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full bg-night text-bone font-medium hover:bg-abyss transition-colors disabled:opacity-40 disabled:pointer-events-none"
+            className="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full a-pri font-medium transition-colors disabled:opacity-40 disabled:pointer-events-none"
           >
             {busy && <Loader2 size={15} className="animate-spin" />} Save changes
           </button>

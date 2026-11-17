@@ -292,7 +292,7 @@ export default function VideoForm({ video }: { video?: VideoRecord }) {
             <button
               type="submit"
               disabled={busy}
-              className="inline-flex items-center gap-2 text-sm px-6 py-2.5 rounded-full bg-night text-bone font-medium hover:bg-abyss transition-colors disabled:opacity-60"
+              className="inline-flex items-center gap-2 text-sm px-6 py-2.5 rounded-full a-pri font-medium transition-colors disabled:opacity-60"
             >
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
               {form.published ? "Save" : "Save as draft"}
