@@ -24,16 +24,18 @@ function sign(payload: string, key: string): string {
 }
 
 /** `version` is the password record's updatedAt ("" when none); changing the password invalidates old tokens. */
-export function createSessionToken(username: string, version = ""): string | null {
+export function createSessionToken(username: string, version = "", mustChange = false): string | null {
   const key = secret();
   if (!key) return null;
+  // A temporary-password session lasts one hour and can only change the password.
+  const seconds = mustChange ? 60 * 60 : SESSION_SECONDS;
   const payload = Buffer.from(
-    JSON.stringify({ u: username, v: version, exp: Math.floor(Date.now() / 1000) + SESSION_SECONDS })
+    JSON.stringify({ u: username, v: version, mc: mustChange, exp: Math.floor(Date.now() / 1000) + seconds })
   ).toString("base64url");
   return `${payload}.${sign(payload, key)}`;
 }
 
-function readSessionToken(token: string | undefined): { u: string; v: string } | null {
+function readSessionToken(token: string | undefined): { u: string; v: string; mc: boolean } | null {
   const key = secret();
   if (!key || !token) return null;
   const [payload, signature] = token.split(".");
@@ -44,24 +46,30 @@ function readSessionToken(token: string | undefined): { u: string; v: string } |
   if (expected.length !== given.length || !timingSafeEqual(expected, given)) return null;
 
   try {
-    const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as { u?: string; v?: string; exp?: number };
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as { u?: string; v?: string; mc?: boolean; exp?: number };
     if (!data.u || !data.exp || data.exp < Date.now() / 1000) return null;
-    return { u: data.u, v: typeof data.v === "string" ? data.v : "" };
+    return { u: data.u, v: typeof data.v === "string" ? data.v : "", mc: data.mc === true };
   } catch {
     return null;
   }
 }
 
-export async function getSessionUser(): Promise<string | null> {
+export async function getSession(): Promise<{ user: string; mustChange: boolean } | null> {
   const store = await cookies();
   const session = readSessionToken(store.get(SESSION_COOKIE)?.value);
   if (!session) return null;
   try {
     // Reject sessions issued before the latest password change; fail closed on lookup errors.
-    return (await getPasswordVersion(session.u)) === session.v ? session.u : null;
+    return (await getPasswordVersion(session.u)) === session.v ? { user: session.u, mustChange: session.mc } : null;
   } catch {
     return null;
   }
+}
+
+/** The signed-in admin, or null. A session that still has to replace its temporary password counts as signed out here. */
+export async function getSessionUser(): Promise<string | null> {
+  const session = await getSession();
+  return session && !session.mustChange ? session.user : null;
 }
 
 export const sessionCookieOptions = {

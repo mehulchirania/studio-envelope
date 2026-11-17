@@ -25,12 +25,24 @@ const json = (method: string, body?: unknown): RequestInit => ({ method, body: b
 
 // ---------- Session ----------
 
-export async function getSessionUser(): Promise<string | null> {
-  return (await request<{ user: string | null }>("/api/admin/session")).user;
+export interface AdminSession {
+  user: string;
+  /** Signed in with an emailed temporary password: must set a new one before anything else. */
+  mustChange: boolean;
 }
 
-export async function login(username: string, password: string): Promise<string> {
-  return (await request<{ user: string }>("/api/admin/login", json("POST", { username, password }))).user;
+export async function getSession(): Promise<AdminSession | null> {
+  const data = await request<{ user: string | null; mustChange?: boolean }>("/api/admin/session");
+  return data.user ? { user: data.user, mustChange: Boolean(data.mustChange) } : null;
+}
+
+export async function login(username: string, password: string): Promise<AdminSession> {
+  const data = await request<{ user: string; mustChange?: boolean }>("/api/admin/login", json("POST", { username, password }));
+  return { user: data.user, mustChange: Boolean(data.mustChange) };
+}
+
+export async function requestPasswordReset(username: string): Promise<void> {
+  await request("/api/admin/forgot", json("POST", { username }));
 }
 
 export async function changePassword(current: string, next: string): Promise<void> {

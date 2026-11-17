@@ -11,7 +11,7 @@ const MAX_LENGTH = 200;
 // so a stolen session cookie alone can't lock the owner out.
 export async function POST(request: Request) {
   return handle(async () => {
-    const user = await requireAdmin(request);
+    const user = await requireAdmin(request, { allowTemporary: true });
     const body = (await readJson(request)) as { current?: unknown; next?: unknown };
     const current = typeof body.current === "string" ? body.current : "";
     const next = typeof body.next === "string" ? body.next : "";

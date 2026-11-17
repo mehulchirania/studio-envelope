@@ -362,16 +362,36 @@ export async function deleteMessage(id: string): Promise<void> {
 // ---------- Admin passwords ----------
 // Passwords changed from the admin panel: hashed (scrypt) in `adminUsers/{username}`.
 
-export async function getPasswordRecord(username: string): Promise<{ salt: string; hash: string; updatedAt: string } | null> {
-  const db = await getDb();
-  const snap = await getDoc(doc(db, "adminUsers", username));
-  const data = snap.data();
-  return data && typeof data.salt === "string" && typeof data.hash === "string"
-    ? { salt: data.salt, hash: data.hash, updatedAt: typeof data.updatedAt === "string" ? data.updatedAt : "" }
-    : null;
+// A reset adds a short-lived `temp` password beside the real one (the real one keeps working,
+// so a stranger requesting resets can't lock the owner out). Saving a new password clears it.
+
+export interface PasswordRecord {
+  /** Empty when the user has no stored password yet (the one from ADMIN_USERS applies). */
+  salt: string;
+  hash: string;
+  updatedAt: string;
+  temp: { salt: string; hash: string; createdAt: string; expiresAt: string } | null;
 }
 
+export async function getPasswordRecord(username: string): Promise<PasswordRecord | null> {
+  const db = await getDb();
+  const data = (await getDoc(doc(db, "adminUsers", username))).data();
+  if (!data) return null;
+  const str = (v: unknown) => (typeof v === "string" ? v : "");
+  const t = data.temp as Record<string, unknown> | undefined;
+  const temp = t && str(t.salt) && str(t.hash) ? { salt: str(t.salt), hash: str(t.hash), createdAt: str(t.createdAt), expiresAt: str(t.expiresAt) } : null;
+  if (!(str(data.salt) && str(data.hash)) && !temp) return null;
+  return { salt: str(data.salt), hash: str(data.hash), updatedAt: str(data.updatedAt), temp };
+}
+
+/** Replaces the stored password and drops any temporary one. */
 export async function setPasswordRecord(username: string, salt: string, hash: string): Promise<void> {
   const db = await getDb();
   await setDoc(doc(db, "adminUsers", username), { salt, hash, updatedAt: new Date().toISOString() });
+}
+
+/** Adds a temporary password without touching the real one or its version stamp. */
+export async function setTempPasswordRecord(username: string, temp: { salt: string; hash: string; expiresAt: string }): Promise<void> {
+  const db = await getDb();
+  await setDoc(doc(db, "adminUsers", username), { temp: { ...temp, createdAt: new Date().toISOString() } }, { merge: true });
 }

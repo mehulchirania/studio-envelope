@@ -1,6 +1,6 @@
 // Server-only helpers shared by every /api/admin/* route.
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/admin/session";
+import { getSession, getSessionUser } from "@/lib/admin/session";
 
 export class HttpError extends Error {
   constructor(
@@ -25,12 +25,13 @@ export function isSameOrigin(request: Request, { requireOrigin = false }: { requ
 }
 
 /** Throws 401 unless the request carries a valid admin session. Mutations must also come from our own origin. */
-export async function requireAdmin(request: Request): Promise<string> {
+export async function requireAdmin(request: Request, { allowTemporary = false }: { allowTemporary?: boolean } = {}): Promise<string> {
   const method = request.method.toUpperCase();
   if (method !== "GET" && method !== "HEAD") {
     if (!isSameOrigin(request)) throw new HttpError(403, "Cross-site request blocked.");
   }
-  const user = await getSessionUser();
+  // A session opened with an emailed temporary password only works where allowTemporary is set (changing the password).
+  const user = allowTemporary ? (await getSession())?.user : await getSessionUser();
   if (!user) throw new HttpError(401, "Please sign in.");
   return user;
 }

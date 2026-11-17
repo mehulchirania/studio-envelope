@@ -10,7 +10,8 @@ const stubs = {
   "next/server": "export const NextResponse = { json(b, i){ return new Response(JSON.stringify(b), i); } };",
   "@/lib/firebase/admin-server":
     "export async function getPasswordRecord(n){ return globalThis.__getPasswordRecord(n); }" +
-    "export async function setPasswordRecord(){}",
+    "export async function setPasswordRecord(){}" +
+    "export async function setTempPasswordRecord(n, t){ globalThis.__temp = { n, t }; }",
 };
 
 registerHooks({

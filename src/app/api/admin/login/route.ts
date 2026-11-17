@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { HttpError, handle, readJson } from "@/lib/admin/http";
 import { SESSION_COOKIE, createSessionToken, sessionCookieOptions, sessionsConfigured } from "@/lib/admin/session";
-import { getPasswordVersion, verifyCredentials } from "@/lib/admin/users";
+import { getPasswordVersion, verifyLogin } from "@/lib/admin/users";
 
 // Best-effort brute-force brake: per-instance, per-IP attempt counter. Serverless
 // instances don't share it, so a Vercel Firewall rate-limit rule is the real brake.
@@ -28,9 +28,9 @@ export async function POST(request: Request) {
     const body = (await readJson(request)) as { username?: unknown; password?: unknown };
     const username = typeof body.username === "string" ? body.username : "";
     const password = typeof body.password === "string" ? body.password : "";
-    const user = await verifyCredentials(username, password);
+    const result = await verifyLogin(username, password);
 
-    if (!user) {
+    if (!result) {
       attempts.set(ip, {
         count: entry && entry.resetAt > now ? entry.count + 1 : 1,
         resetAt: entry && entry.resetAt > now ? entry.resetAt : now + WINDOW_MS,
@@ -41,9 +41,10 @@ export async function POST(request: Request) {
     }
 
     attempts.delete(ip);
-    const token = createSessionToken(user, await getPasswordVersion(user));
+    const { user, temporary } = result;
+    const token = createSessionToken(user, await getPasswordVersion(user), temporary);
     if (!token) throw new HttpError(503, "Admin sign-in isn't configured on the server.");
-    (await cookies()).set(SESSION_COOKIE, token, sessionCookieOptions);
-    return NextResponse.json({ user });
+    (await cookies()).set(SESSION_COOKIE, token, { ...sessionCookieOptions, ...(temporary && { maxAge: 60 * 60 }) });
+    return NextResponse.json({ user, mustChange: temporary });
   });
 }

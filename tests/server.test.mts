@@ -6,8 +6,8 @@ process.env.ADMIN_SESSION_SECRET = "test-secret-at-least-16-chars";
 process.env.ADMIN_USERS = "admin:s3cret";
 (globalThis as any).__getPasswordRecord = async () => null;
 
-const { createSessionToken, getSessionUser } = await import("../src/lib/admin/session.ts");
-const { verifyCredentials } = await import("../src/lib/admin/users.ts");
+const { createSessionToken, getSession, getSessionUser } = await import("../src/lib/admin/session.ts");
+const { issueTempPassword, verifyCredentials, verifyLogin } = await import("../src/lib/admin/users.ts");
 const { parseProjectFields, parseVideoFields } = await import("../src/lib/admin/validate.ts");
 const { HttpError } = await import("../src/lib/admin/http.ts");
 
@@ -49,6 +49,42 @@ test("verifyCredentials fails closed when Firestore lookup throws", async () => 
   (globalThis as any).__getPasswordRecord = async () => { throw new Error("down"); };
   await assert.rejects(() => verifyCredentials("admin", "s3cret"), (e: any) => e instanceof HttpError && e.status === 503);
   (globalThis as any).__getPasswordRecord = async () => null;
+});
+
+test("emailed temporary password signs in as temporary; the real password still works", async () => {
+  const g = globalThis as any;
+  g.__temp = undefined;
+  const temp = await issueTempPassword("Prachi");
+  assert.ok(temp && temp.length === 12);
+  assert.equal(g.__temp.n, "prachi");
+  const { salt, hash } = g.__temp.t;
+  const record = (expiresAt: string) => async () => ({ salt: "", hash: "", updatedAt: "", temp: { salt, hash, createdAt: new Date().toISOString(), expiresAt } });
+
+  g.__getPasswordRecord = record(new Date(Date.now() + 60_000).toISOString());
+  assert.deepEqual(await verifyLogin("prachi", temp), { user: "prachi", temporary: true });
+  assert.equal(await verifyLogin("prachi", "wrong"), null);
+
+  g.__getPasswordRecord = record(new Date(Date.now() - 1000).toISOString()); // expired
+  assert.equal(await verifyLogin("prachi", temp), null);
+  g.__getPasswordRecord = async () => null;
+});
+
+test("temporary passwords: only resettable users, and a cooldown between requests", async () => {
+  const g = globalThis as any;
+  assert.equal(await issueTempPassword("admin"), null);
+  assert.equal(await issueTempPassword("nobody"), null);
+  g.__getPasswordRecord = async () => ({ salt: "", hash: "", updatedAt: "", temp: { salt: "s", hash: "h", createdAt: new Date().toISOString(), expiresAt: "" } });
+  assert.equal(await issueTempPassword("prachi"), null);
+  g.__getPasswordRecord = async () => null;
+});
+
+test("a temporary-password session counts as signed out for normal routes", async () => {
+  const g = globalThis as any;
+  g.__cookie = createSessionToken("prachi", "", true)!;
+  assert.equal(await getSessionUser(), null);
+  assert.deepEqual(await getSession(), { user: "prachi", mustChange: true });
+  g.__cookie = createSessionToken("prachi", "", false)!;
+  assert.equal(await getSessionUser(), "prachi");
 });
 
 test("video fields reject non-Blob cover images", () => {

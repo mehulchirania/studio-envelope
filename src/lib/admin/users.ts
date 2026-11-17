@@ -1,9 +1,9 @@
 // Server-only: admin logins. Both are full admins, there is no
 // per-user access difference. Set ADMIN_USERS="name:password,name2:password2"
 // in the environment to override default local accounts.
-import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, randomInt, scryptSync, timingSafeEqual } from "node:crypto";
 import { HttpError } from "@/lib/admin/http";
-import { getPasswordRecord,setPasswordRecord } from "@/lib/firebase/admin-server";
+import { getPasswordRecord, setPasswordRecord, setTempPasswordRecord } from "@/lib/firebase/admin-server";
 
 interface AdminUser {
   username: string;
@@ -51,8 +51,42 @@ export async function getPasswordVersion(username: string): Promise<string> {
   return (await getPasswordRecord(username.trim().toLowerCase()))?.updatedAt ?? "";
 }
 
-/** Returns the canonical username when the credentials match, otherwise null. */
-export async function verifyCredentials(username: string, password: string): Promise<string | null> {
+function hashMatches(password: string, salt: string, hash: string): boolean {
+  const given = Buffer.from(hashPassword(password, salt), "hex");
+  const wanted = Buffer.from(hash, "hex");
+  return given.length === wanted.length && timingSafeEqual(given, wanted);
+}
+
+// Only these logins can be reset by email; the mail goes to the studio inbox.
+const RESETTABLE = ["prachi"];
+const TEMP_MINUTES = 60;
+const RESET_COOLDOWN_MS = 5 * 60 * 1000;
+// No look-alike characters (0/O, 1/l/I) so the code is easy to read from an email.
+const TEMP_ALPHABET = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+/**
+ * Creates a one-hour temporary password for a resettable admin and returns it so it can be
+ * emailed. Returns null when the username can't be reset or one was issued in the last
+ * few minutes (callers answer the same way either way, so nothing leaks).
+ */
+export async function issueTempPassword(username: string): Promise<string | null> {
+  const name = username.trim().toLowerCase();
+  if (!RESETTABLE.includes(name)) return null;
+  const existing = await getPasswordRecord(name);
+  if (existing?.temp && Date.now() - Date.parse(existing.temp.createdAt) < RESET_COOLDOWN_MS) return null;
+
+  const temp = Array.from({ length: 12 }, () => TEMP_ALPHABET[randomInt(TEMP_ALPHABET.length)]).join("");
+  const salt = randomBytes(16).toString("hex");
+  await setTempPasswordRecord(name, {
+    salt,
+    hash: hashPassword(temp, salt),
+    expiresAt: new Date(Date.now() + TEMP_MINUTES * 60 * 1000).toISOString(),
+  });
+  return temp;
+}
+
+/** Like verifyCredentials, but also says whether the match was an emailed temporary password. */
+export async function verifyLogin(username: string, password: string): Promise<{ user: string; temporary: boolean } | null> {
   const name = username.trim().toLowerCase();
   let stored: Awaited<ReturnType<typeof getPasswordRecord>>;
   try {
@@ -61,11 +95,11 @@ export async function verifyCredentials(username: string, password: string): Pro
     // Fail closed: never fall back to env passwords when the lookup itself failed.
     throw new HttpError(503, "Sign-in is temporarily unavailable. Please try again.");
   }
-  if (stored) {
-    const given = Buffer.from(hashPassword(password, stored.salt), "hex");
-    const wanted = Buffer.from(stored.hash, "hex");
-    const ok = given.length === wanted.length && timingSafeEqual(given, wanted);
-    return ok ? name : null;
+  if (stored?.temp && Date.parse(stored.temp.expiresAt) > Date.now() && hashMatches(password, stored.temp.salt, stored.temp.hash)) {
+    return { user: name, temporary: true };
+  }
+  if (stored?.hash) {
+    return hashMatches(password, stored.salt, stored.hash) ? { user: name, temporary: false } : null;
   }
 
   const wantedName = digest(name);
@@ -77,5 +111,10 @@ export async function verifyCredentials(username: string, password: string): Pro
     const passwordOk = timingSafeEqual(givenPassword, digest(user.password));
     if (nameOk && passwordOk) matched = user.username;
   }
-  return matched;
+  return matched ? { user: matched, temporary: false } : null;
+}
+
+/** Returns the canonical username when the credentials match (real or temporary password), otherwise null. */
+export async function verifyCredentials(username: string, password: string): Promise<string | null> {
+  return (await verifyLogin(username, password))?.user ?? null;
 }
