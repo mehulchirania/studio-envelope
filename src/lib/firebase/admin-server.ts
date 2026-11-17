@@ -336,7 +336,7 @@ export async function getCarousel(): Promise<CarouselImage[] | null> {
 /** Only files uploaded through the carousel editor are deleted from storage when removed; project photos are never touched. */
 function isCarouselUpload(url: string): boolean {
   try {
-    return new URL(url).pathname.startsWith("/projects/carousel/");
+    return new URL(url).pathname.startsWith("/home-carousel/");
   } catch {
     return false;
   }

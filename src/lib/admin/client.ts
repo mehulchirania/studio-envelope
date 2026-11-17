@@ -162,12 +162,13 @@ function readImageSize(file: File): Promise<{ width: number; height: number }> {
 export async function uploadImage(
   folder: string,
   file: File,
-  onProgress?: (percent: number) => void
+  onProgress?: (percent: number) => void,
+  root = "projects"
 ): Promise<UploadedImage> {
   const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
   const [size, blob] = await Promise.all([
     readImageSize(file),
-    upload(`projects/${slugify(folder) || "draft"}/${safeName}`, file, {
+    upload(`${root}/${slugify(folder) || "draft"}/${safeName}`, file, {
       access: "public",
       handleUploadUrl: "/api/upload",
       clientPayload: "image",

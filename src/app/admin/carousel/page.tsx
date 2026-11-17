@@ -59,7 +59,7 @@ export default function AdminCarouselPage() {
       }
       setUploading((u) => [...u, file.name]);
       try {
-        const { src } = await uploadImage("carousel", file);
+        const { src } = await uploadImage("photos", file, undefined, "home-carousel");
         setImages((current) => [...(current ?? []), { src, alt: "" }]);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Upload failed.");
