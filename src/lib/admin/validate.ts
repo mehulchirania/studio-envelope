@@ -1,7 +1,7 @@
 // Server-only: turns an untrusted admin form payload into a clean ProjectFields.
 import type { Drawing, ProjectScope, Room, RoomImage } from "@/lib/content/types";
 import { HttpError } from "@/lib/admin/errors";
-import type { ProjectFields, VideoFields } from "@/lib/admin/types";
+import type { CarouselImage, ProjectFields, VideoFields } from "@/lib/admin/types";
 import { parseYouTubeId } from "@/lib/admin/youtube";
 
 export const BLOB_HOST_SUFFIX = ".public.blob.vercel-storage.com";
@@ -171,6 +171,20 @@ export function parseVideoFields(body: unknown): VideoFields {
     fields.poster = poster;
   }
   return fields;
+}
+
+export function parseCarouselImages(body: unknown): CarouselImage[] {
+  const raw = body && typeof body === "object" ? (body as Record<string, unknown>).images : undefined;
+  return list(raw, "photos", 60).map((item) => {
+    if (!item || typeof item !== "object") throw new HttpError(400, "A photo is invalid.");
+    const r = item as Record<string, unknown>;
+    const src = text(r.src, "Photo", 600);
+    if (!src || !isAllowedImageSrc(src)) throw new HttpError(400, "A photo comes from an unsupported address.");
+    const out: CarouselImage = { src, alt: text(r.alt, "Photo description", 300) };
+    const slug = text(r.slug, "Linked project", 120);
+    if (slug) out.slug = slug;
+    return out;
+  });
 }
 
 /** The `updatedAt` the admin form loaded, sent back on PUT so the server can spot a concurrent edit. */

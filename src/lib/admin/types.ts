@@ -36,3 +36,17 @@ export interface VideoRecord extends StudioVideo {
 
 /** What the admin video form edits. Order is managed by the server. */
 export type VideoFields = Omit<VideoRecord, "id" | "order" | "facts" | "updatedAt">;
+
+/** One photograph in the home page "A glimpse of our work" carousel. `slug` is the project it opens (none = the projects page). */
+export interface CarouselImage {
+  src: string;
+  alt: string;
+  slug?: string;
+}
+
+export interface CarouselResponse {
+  /** The saved list, or null when none has been saved (the site then uses every published project photograph). */
+  saved: CarouselImage[] | null;
+  /** Every photograph of every published project: the default list, and what "Reset" restores. */
+  projectPhotos: CarouselImage[];
+}

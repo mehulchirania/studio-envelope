@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ExternalLink, Film, KeyRound, LayoutGrid, LogOut, Mail } from "lucide-react";
+import { ExternalLink, Film, Images, KeyRound, LayoutGrid, LogOut, Mail } from "lucide-react";
 import { logout } from "@/lib/admin/client";
 
 const links = [
   { href: "/admin", label: "Projects", icon: LayoutGrid },
+  { href: "/admin/carousel", label: "Home carousel", icon: Images },
   { href: "/admin/videos", label: "Videos", icon: Film },
   { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/account", label: "Password", icon: KeyRound },

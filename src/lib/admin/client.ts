@@ -2,7 +2,7 @@
 // /api/admin/* (cookie-authenticated); the browser never talks to Firebase.
 import { upload } from "@vercel/blob/client";
 import { slugify } from "@/lib/admin/slug";
-import type { AdminMessage, AdminProject, ProjectFields, ProjectsResponse, VideoFields, VideoRecord } from "@/lib/admin/types";
+import type { AdminMessage, CarouselImage, CarouselResponse, AdminProject, ProjectFields, ProjectsResponse, VideoFields, VideoRecord } from "@/lib/admin/types";
 
 export const UNAUTHORIZED_EVENT = "admin:unauthorized";
 
@@ -105,6 +105,19 @@ export async function deleteVideo(id: string): Promise<void> {
 
 export async function saveVideoOrder(ids: string[]): Promise<void> {
   await request("/api/admin/videos/order", json("PUT", { ids }));
+}
+
+// ---------- Home carousel ----------
+
+export const getCarousel = () => request<CarouselResponse>("/api/admin/carousel");
+
+export async function saveCarousel(images: CarouselImage[]): Promise<void> {
+  await request("/api/admin/carousel", json("PUT", { images }));
+}
+
+/** Goes back to showing every published project photograph. */
+export async function resetCarousel(): Promise<void> {
+  await request("/api/admin/carousel", json("DELETE"));
 }
 
 // ---------- Messages ----------

@@ -37,7 +37,7 @@ import { normalizeProject } from "@/lib/content/normalize";
 import { firebaseConfig, isFirebaseConfigured, USE_EMULATORS } from "@/lib/firebase/client";
 import { HttpError } from "@/lib/admin/errors";
 import { slugify } from "@/lib/admin/slug";
-import type { AdminMessage, ProjectFields, VideoFields, VideoRecord } from "@/lib/admin/types";
+import type { AdminMessage, CarouselImage, ProjectFields, VideoFields, VideoRecord } from "@/lib/admin/types";
 import { BLOB_HOST_SUFFIX } from "@/lib/admin/validate";
 
 const APP_NAME = "admin-service";
@@ -315,6 +315,47 @@ export async function reorderVideos(ids: string[]): Promise<void> {
     .filter((id) => existing.has(id))
     .forEach((id, index) => batch.update(doc(db, "videos", id), { order: index }));
   await batch.commit();
+}
+
+// ---------- Home carousel ----------
+
+/** The saved carousel list, or null when none has been saved yet. */
+export async function getCarousel(): Promise<CarouselImage[] | null> {
+  const db = await getDb();
+  const data = (await getDoc(doc(db, "settings", "homeCarousel"))).data();
+  if (!data || !Array.isArray(data.images)) return null;
+  return data.images
+    .filter((i: unknown): i is Record<string, unknown> => Boolean(i) && typeof (i as { src?: unknown }).src === "string")
+    .map((i: Record<string, unknown>) => ({
+      src: i.src as string,
+      alt: typeof i.alt === "string" ? i.alt : "",
+      ...(typeof i.slug === "string" && i.slug ? { slug: i.slug } : {}),
+    }));
+}
+
+/** Only files uploaded through the carousel editor are deleted from storage when removed; project photos are never touched. */
+function isCarouselUpload(url: string): boolean {
+  try {
+    return new URL(url).pathname.startsWith("/projects/carousel/");
+  } catch {
+    return false;
+  }
+}
+
+export async function saveCarousel(images: CarouselImage[]): Promise<void> {
+  const db = await getDb();
+  const previous = (await getCarousel()) ?? [];
+  await setDoc(doc(db, "settings", "homeCarousel"), { images, updatedAt: new Date().toISOString() });
+  const keep = new Set(images.map((i) => i.src));
+  await deleteBlobFiles(previous.map((i) => i.src).filter((src) => !keep.has(src) && isCarouselUpload(src)));
+}
+
+/** Forgets the saved list so the site goes back to using every published project photograph. */
+export async function resetCarousel(): Promise<void> {
+  const db = await getDb();
+  const previous = (await getCarousel()) ?? [];
+  await deleteDoc(doc(db, "settings", "homeCarousel"));
+  await deleteBlobFiles(previous.map((i) => i.src).filter(isCarouselUpload));
 }
 
 // ---------- Messages ----------

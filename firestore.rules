@@ -33,6 +33,12 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // settings: site-wide content (the home page carousel). Public read; server account writes.
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // messages: enquiries are validated and saved by the Next.js server
     // (/api/contact), which enforces consent, age declaration, size limits and
     // rate limits. Browsers cannot read or write them at all; only the server

@@ -22,15 +22,22 @@ function shuffled<T>(items: T[]): T[] {
  * drag it. Drifting pauses while the user touches, drags, hovers or focuses it, and resumes shortly after.
  * Under reduced motion it never drifts, it is just a draggable row. The order is shuffled in the browser
  * after load so server and client markup match. */
-export default function WorkGlimpse({ images, limit = 14 }: { images: GlimpseImage[]; limit?: number }) {
-  const [items, setItems] = useState(() => images.slice(0, limit));
+export default function WorkGlimpse({ images, limit = 14,
+  curated = false,
+}: {
+  images: GlimpseImage[];
+  limit?: number;
+  /** A list chosen in the admin: shown in full and in order, not shuffled or capped. */
+  curated?: boolean;
+}) {
+  const [items, setItems] = useState(() => (curated ? images : images.slice(0, limit)));
   const wrapRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setItems(shuffled(images).slice(0, limit));
-  }, [images, limit]);
+    setItems(curated ? images : shuffled(images).slice(0, limit));
+  }, [images, limit, curated]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -186,7 +193,7 @@ export default function WorkGlimpse({ images, limit = 14 }: { images: GlimpseIma
               {items.map((image, index) => (
                 <li key={image.src} className="w-[65vw] max-w-[340px] shrink-0 sm:w-[340px]">
                   <Link
-                    href={`/projects/${image.slug}`}
+                    href={image.slug ? `/projects/${image.slug}` : "/projects"}
                     tabIndex={duplicate ? -1 : undefined}
                     draggable={false}
                     className="relative block aspect-[4/5] overflow-hidden bg-paper-2"

@@ -7,7 +7,8 @@
 // Firebase client SDK for reads, which works fine server-side against
 // Firestore's public read rules and avoids needing admin credentials).
 import { cache } from "react";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
+import type { CarouselImage } from "@/lib/admin/types";
 import type { Project } from "@/lib/content/types";
 import { normalizeProject } from "@/lib/content/normalize";
 import { seedProjects } from "@/lib/content/seed";
@@ -73,4 +74,24 @@ export const getVideos = cache(async (): Promise<StudioVideo[]> => {
       return video;
     });
   return found.length > 0 ? found : seedVideos;
+});
+
+/** The home carousel list saved in the admin, or null (use every project photograph). A read problem, such as rules not yet deployed, also gives null so the home page still renders. */
+export const getHomeCarousel = cache(async (): Promise<CarouselImage[] | null> => {
+  const db = getDb();
+  if (!db) return null;
+  try {
+    const data = (await getDoc(doc(db, "settings", "homeCarousel"))).data();
+    if (!data || !Array.isArray(data.images) || data.images.length === 0) return null;
+    return data.images
+      .filter((i: unknown): i is Record<string, unknown> => Boolean(i) && typeof (i as { src?: unknown }).src === "string")
+      .map((i: Record<string, unknown>) => ({
+        src: i.src as string,
+        alt: typeof i.alt === "string" ? i.alt : "",
+        ...(typeof i.slug === "string" && i.slug ? { slug: i.slug } : {}),
+      }));
+  } catch (err) {
+    console.warn("[data] Could not read the home carousel; using project photos:", err);
+    return null;
+  }
 });
