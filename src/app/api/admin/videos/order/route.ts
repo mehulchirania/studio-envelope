@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { HttpError, handle, readJson, requireAdmin } from "@/lib/admin/http";
+import { HttpError } from "@/lib/admin/errors";
+import { handle, readJson, requireAdmin } from "@/lib/admin/http";
 import { revalidateSite } from "@/lib/admin/revalidate";
 import { reorderVideos } from "@/lib/firebase/admin-server";
 

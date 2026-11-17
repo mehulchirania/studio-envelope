@@ -1,15 +1,8 @@
 // Server-only helpers shared by every /api/admin/* route.
+import "server-only";
 import { NextResponse } from "next/server";
+import { HttpError } from "@/lib/admin/errors";
 import { getSession, getSessionUser } from "@/lib/admin/session";
-
-export class HttpError extends Error {
-  constructor(
-    public status: number,
-    message: string
-  ) {
-    super(message);
-  }
-}
 
 /** True when the request's Origin matches its host. A missing Origin passes unless `requireOrigin` is set. */
 export function isSameOrigin(request: Request, { requireOrigin = false }: { requireOrigin?: boolean } = {}): boolean {

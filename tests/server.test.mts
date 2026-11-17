@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- test stubs are loosely typed */
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
@@ -9,7 +10,7 @@ process.env.ADMIN_USERS = "admin:s3cret";
 const { createSessionToken, getSession, getSessionUser } = await import("../src/lib/admin/session.ts");
 const { issueTempPassword, verifyCredentials, verifyLogin } = await import("../src/lib/admin/users.ts");
 const { parseProjectFields, parseVideoFields } = await import("../src/lib/admin/validate.ts");
-const { HttpError } = await import("../src/lib/admin/http.ts");
+const { HttpError } = await import("../src/lib/admin/errors.ts");
 
 const SECRET = process.env.ADMIN_SESSION_SECRET!;
 const sign = (p: string, k = SECRET) => createHmac("sha256", k).update(p).digest("base64url");

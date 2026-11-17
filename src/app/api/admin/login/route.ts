@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { HttpError, handle, readJson } from "@/lib/admin/http";
+import { HttpError } from "@/lib/admin/errors";
+import { handle, readJson } from "@/lib/admin/http";
 import { SESSION_COOKIE, createSessionToken, sessionCookieOptions, sessionsConfigured } from "@/lib/admin/session";
 import { getPasswordVersion, verifyLogin } from "@/lib/admin/users";
 

@@ -1,5 +1,6 @@
 // Server-only: signed, httpOnly session cookie for the admin panel.
 // Token format: base64url(JSON {u, exp}) + "." + base64url(HMAC-SHA256).
+import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { getPasswordVersion } from "@/lib/admin/users";

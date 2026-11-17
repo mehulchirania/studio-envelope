@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { HttpError, handle, readJson, requireAdmin } from "@/lib/admin/http";
+import { HttpError } from "@/lib/admin/errors";
+import { handle, readJson, requireAdmin } from "@/lib/admin/http";
 import { SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/admin/session";
 import { getPasswordVersion, setPassword, verifyCredentials } from "@/lib/admin/users";
 

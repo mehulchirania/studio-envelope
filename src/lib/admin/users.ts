@@ -1,8 +1,9 @@
 // Server-only: admin logins. Both are full admins, there is no
 // per-user access difference. Set ADMIN_USERS="name:password,name2:password2"
 // in the environment to override default local accounts.
+import "server-only";
 import { createHash, randomBytes, randomInt, scryptSync, timingSafeEqual } from "node:crypto";
-import { HttpError } from "@/lib/admin/http";
+import { HttpError } from "@/lib/admin/errors";
 import { getPasswordRecord, setPasswordRecord, setTempPasswordRecord } from "@/lib/firebase/admin-server";
 
 interface AdminUser {

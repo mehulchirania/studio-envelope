@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { HttpError, handle, isSameOrigin, readJson } from "@/lib/admin/http";
+import { HttpError } from "@/lib/admin/errors";
+import { handle, isSameOrigin, readJson } from "@/lib/admin/http";
 import { sessionsConfigured } from "@/lib/admin/session";
 import { issueTempPassword } from "@/lib/admin/users";
 import { site } from "@/lib/content/site";

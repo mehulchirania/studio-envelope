@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server";
-import { HttpError, handle, readJson, requireAdmin } from "@/lib/admin/http";
+import { HttpError } from "@/lib/admin/errors";
+import { handle, readJson, requireAdmin } from "@/lib/admin/http";
 import { revalidateSite } from "@/lib/admin/revalidate";
 import { parseExpectedUpdatedAt, parseVideoFields } from "@/lib/admin/validate";
-import { deleteVideo, getVideo, updateVideo } from "@/lib/firebase/admin-server";
+import { deleteVideo, getVideoById, updateVideo } from "@/lib/firebase/admin-server";
 
 type Context = { params: Promise<{ id: string }> };
 
 export async function GET(request: Request, { params }: Context) {
   return handle(async () => {
     await requireAdmin(request);
-    const video = await getVideo((await params).id);
+    const video = await getVideoById((await params).id);
     if (!video) throw new HttpError(404, "Video not found.");
     return NextResponse.json({ video });
   });

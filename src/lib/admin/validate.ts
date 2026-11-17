@@ -1,6 +1,6 @@
 // Server-only: turns an untrusted admin form payload into a clean ProjectFields.
 import type { Drawing, ProjectScope, Room, RoomImage } from "@/lib/content/types";
-import { HttpError } from "@/lib/admin/http";
+import { HttpError } from "@/lib/admin/errors";
 import type { ProjectFields, VideoFields } from "@/lib/admin/types";
 import { parseYouTubeId } from "@/lib/admin/youtube";
 

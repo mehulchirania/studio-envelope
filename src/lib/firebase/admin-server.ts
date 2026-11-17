@@ -5,6 +5,7 @@
 // FIREBASE_ADMIN_EMAIL / FIREBASE_ADMIN_PASSWORD, never sent to the browser)
 // and signs in as it; firestore.rules only trusts that account for writes and
 // for reading drafts and messages. No service-account JSON is needed.
+import "server-only";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, signInWithEmailAndPassword, type Auth } from "firebase/auth";
 import {
@@ -15,6 +16,8 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  limit,
+  runTransaction,
   orderBy,
   serverTimestamp,
   query,
@@ -30,9 +33,9 @@ import {
 import { del } from "@vercel/blob";
 import type { ContactMessage, Project } from "@/lib/content/types";
 import { seedProjects } from "@/lib/content/seed";
-import { normalizeProject } from "@/lib/data";
+import { normalizeProject } from "@/lib/content/normalize";
 import { firebaseConfig, isFirebaseConfigured, USE_EMULATORS } from "@/lib/firebase/client";
-import { HttpError } from "@/lib/admin/http";
+import { HttpError } from "@/lib/admin/errors";
 import { slugify } from "@/lib/admin/slug";
 import type { AdminMessage, ProjectFields, VideoFields, VideoRecord } from "@/lib/admin/types";
 import { BLOB_HOST_SUFFIX } from "@/lib/admin/validate";
@@ -143,7 +146,13 @@ export async function listProjects(): Promise<Project[]> {
   return snapshot.docs.map((d) => normalizeProject(d.data(), d.id));
 }
 
-export async function getProject(id: string): Promise<Project | null> {
+/** True when the projects collection holds any document at all, drafts included. */
+export async function hasAnyProjects(): Promise<boolean> {
+  const db = await getDb();
+  return !(await getDocs(query(collection(db, "projects"), limit(1)))).empty;
+}
+
+export async function getProjectById(id: string): Promise<Project | null> {
   const db = await getDb();
   const snap = await getDoc(doc(db, "projects", id));
   return snap.exists() ? normalizeProject(snap.data(), snap.id) : null;
@@ -171,14 +180,17 @@ export async function createProject(fields: ProjectFields): Promise<Project> {
 export async function updateProject(id: string, fields: ProjectFields, expectedUpdatedAt?: string): Promise<Project> {
   const db = await getDb();
   const ref = doc(db, "projects", id);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) throw new HttpError(404, "That project no longer exists.");
-
-  assertNotStale(snap.data().updatedAt, expectedUpdatedAt);
-  const previous = normalizeProject(snap.data(), id);
-  // Slug (the page URL) and order are kept stable across edits.
-  const data = toDocument(fields, previous.slug, previous.order);
-  await setDoc(ref, data);
+  // Read, stale check and write in one transaction so a concurrent save can't slip between them.
+  const { previous, data } = await runTransaction(db, async (tx) => {
+    const snap = await tx.get(ref);
+    if (!snap.exists()) throw new HttpError(404, "That project no longer exists.");
+    assertNotStale(snap.data().updatedAt, expectedUpdatedAt);
+    const previous = normalizeProject(snap.data(), id);
+    // Slug (the page URL) and order are kept stable across edits.
+    const data = toDocument(fields, previous.slug, previous.order);
+    tx.set(ref, data);
+    return { previous, data };
+  });
 
   const next = normalizeProject(data, id);
   const stillUsed = new Set(imageUrls(next));
@@ -249,7 +261,7 @@ export async function listVideos(): Promise<VideoRecord[]> {
   return snapshot.docs.map((d) => normalizeVideo(d.data(), d.id));
 }
 
-export async function getVideo(id: string): Promise<VideoRecord | null> {
+export async function getVideoById(id: string): Promise<VideoRecord | null> {
   const db = await getDb();
   const snap = await getDoc(doc(db, "videos", id));
   return snap.exists() ? normalizeVideo(snap.data(), snap.id) : null;
@@ -268,13 +280,15 @@ export async function createVideo(fields: VideoFields): Promise<VideoRecord> {
 export async function updateVideo(id: string, fields: VideoFields, expectedUpdatedAt?: string): Promise<VideoRecord> {
   const db = await getDb();
   const ref = doc(db, "videos", id);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) throw new HttpError(404, "That video no longer exists.");
-
-  assertNotStale(snap.data().updatedAt, expectedUpdatedAt);
-  const previous = normalizeVideo(snap.data(), id);
-  const data = { ...fields, order: previous.order, updatedAt: new Date().toISOString() };
-  await setDoc(ref, data);
+  const { previous, data } = await runTransaction(db, async (tx) => {
+    const snap = await tx.get(ref);
+    if (!snap.exists()) throw new HttpError(404, "That video no longer exists.");
+    assertNotStale(snap.data().updatedAt, expectedUpdatedAt);
+    const previous = normalizeVideo(snap.data(), id);
+    const data = { ...fields, order: previous.order, updatedAt: new Date().toISOString() };
+    tx.set(ref, data);
+    return { previous, data };
+  });
 
   const next = normalizeVideo(data, id);
   const stillUsed = new Set(videoFiles(next));
