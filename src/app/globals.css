@@ -3,6 +3,11 @@
 /* Design tokens — see BRIEF "the letter". Everything else in this file lives
    inside @layer so Tailwind's own utilities always win over these rules. */
 @theme {
+  /* Phone browsers in "Desktop site" mode lay the page out at ~980px, just under Tailwind's
+     default lg (1024px), so they got the mobile header/layout. 60rem (960px) lets them through
+     while portrait tablets (<=834px) keep the mobile layout. */
+  --breakpoint-lg: 60rem;
+
   /* Palette: black + beige. Brand blue (--color-brand, the logo triangle) is the primary
      accent on beige: text links, hover lines, focus outlines, selection, buttons (solid and
      round Enquire; --color-brand-deep on hover), form focus, scrollbar, seal. On black it is
