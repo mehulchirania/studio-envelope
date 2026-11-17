@@ -7,7 +7,7 @@ export default function Hero() {
   return (
     // The fixed header overlays the top edge, so the section is padded by its height (64px on a phone,
     // 80px on desktop). Padding, not a margin on the photo: a top margin would collapse out of the section.
-    <section className="band-bone pt-16 lg:grid lg:min-h-[92svh] lg:grid-cols-[5fr_6fr] lg:pt-20">
+    <section className="band-bone pt-16 lg:grid lg:min-h-[min(92svh,52rem)] lg:grid-cols-[5fr_6fr] lg:pt-20">
       {/* The mount is padding on the column (about 80px left, 90px right, 35px top, 28px bottom at 1600px wide). */}
       <div className="px-4 pt-4 lg:order-2 lg:pb-[clamp(14px,1.75vw,32px)] lg:pl-[clamp(24px,5vw,96px)] lg:pr-[clamp(28px,5.6vw,108px)] lg:pt-[clamp(16px,2.2vw,40px)]">
         <div className="relative aspect-[4/3] w-full lg:aspect-auto lg:h-full">
