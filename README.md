@@ -4,7 +4,7 @@ Architecture & interior design studio website. Next.js 16 (App Router) + TypeScr
 optional backend (Firestore + Auth on Firebase's free Spark plan, plus Vercel Blob for image and video storage)
 and an admin panel at `/admin` for projects, videos and messages.
 
-- **Live:** https://studio-envelope.vercel.app (auto-deploys on every push to `main`)
+- **Live:** https://www.studioenvelope.com (auto-deploys on every push to `main`)
 - **Firebase project:** `studio-envelope-site`
 - **Vercel project:** `studio-envelope` (Blob store `studio-envelope-images`)
 
